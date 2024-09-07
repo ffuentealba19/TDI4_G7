@@ -17,8 +17,8 @@ import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Tab3 from './pages/Tab3';
 
-import Login from './pages/Login/login';
-import SignUp from './pages/SingUp/signup';
+import LoginRegister from './pages/LoginRegister/LoginRegister';
+
 import Invited from './pages/invited/invited';
 
 /* Core CSS required for Ionic components to work properly */
@@ -60,14 +60,12 @@ const App: React.FC = () => (
         <IonRouterOutlet>
           
           <Route exact path="/login">
-            <Login />
+            <LoginRegister />
           </Route>
           <Route exact path="/invited">
             <Invited />
           </Route>
-          <Route exact path="/SignUp">
-            <SignUp />
-          </Route>
+          
 
           <Route exact path="/tab1">
             <Tab1 />
