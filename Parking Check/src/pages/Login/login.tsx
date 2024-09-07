@@ -1,6 +1,6 @@
 import { IonContent, IonHeader, IonPage, IonTitle , IonToolbar , IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonInput, IonLabel, IonButton, IonNavLink } from '@ionic/react';
 import './login.css';
-import Tab1 from './Tab1';
+
 
 
 const Login: React.FC = () => {
@@ -28,7 +28,7 @@ const Login: React.FC = () => {
                     <IonLabel color='secondary'>¿Olvidaste tu contraseña?</IonLabel>
                 </IonCardContent>
                 <IonButton expand='block' color='primary'>Iniciar Sesión</IonButton>
-                <IonLabel>¿No tienes cuenta? <IonLabel color='secondary'>Sesion de invitado</IonLabel></IonLabel>
+                <IonLabel>¿No tienes cuenta? <IonLabel color='secondary'>Register</IonLabel></IonLabel>
             </IonCardHeader>
         </IonCard>
       </IonContent>
