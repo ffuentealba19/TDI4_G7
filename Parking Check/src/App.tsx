@@ -10,12 +10,12 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle } from 'ionicons/icons';
+import { ellipse, square, triangle,person } from 'ionicons/icons';
 
 /*paginas */ 
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
-import Tab3 from './pages/Tab3';
+import Profile from './pages/profile';
 
 import LoginRegister from './pages/LoginRegister/LoginRegister';
 
@@ -73,8 +73,8 @@ const App: React.FC = () => (
           <Route exact path="/tab2">
             <Tab2 />
           </Route>
-          <Route path="/tab3">
-            <Tab3 />
+          <Route path="/profile">
+            <Profile />
           </Route>
           <Route exact path="/">
             <Redirect to="/login" />
@@ -92,9 +92,9 @@ const App: React.FC = () => (
             <IonLabel>Register</IonLabel>
           </IonTabButton>
 
-          <IonTabButton tab="Invited" href="/invited">
-            <IonIcon aria-hidden="true" icon={square} />
-            <IonLabel>Invited</IonLabel>
+          <IonTabButton tab="Profile" href="/profile">
+            <IonIcon aria-hidden="true" icon={person} />
+            <IonLabel>Perfil</IonLabel>
 
           </IonTabButton>
         </IonTabBar>
