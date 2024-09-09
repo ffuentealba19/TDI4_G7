@@ -28,6 +28,7 @@ import Profile from './pages/profile';
 import LoginRegister from './pages/LoginRegister/LoginRegister';
 import Invited from './pages/invited/invited';
 import Home from './pages/Home';
+import ReportProblem from './pages/ReportProblem';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -70,7 +71,7 @@ const App: React.FC = () => (
               <IonIcon icon={person} slot="start" />
               <IonLabel>Mi Perfil</IonLabel>
             </IonItem>
-            <IonItem routerLink="/tab2">
+            <IonItem routerLink="/report-problem">
               <IonIcon icon={alertCircleOutline} slot="start" />
               <IonLabel>Reportar un problema</IonLabel>
             </IonItem>
@@ -98,13 +99,14 @@ const App: React.FC = () => (
             <Route path="/profile">
               <Profile />
             </Route>
-            <Route exact path="/login">
-              <Redirect to="/login" />
-            </Route>
             <Route path ="/home">
               <Home />
             </Route>
+            <Route path="/report-problem">
+            <ReportProblem />
+          </Route>
           </IonRouterOutlet>
+
 
           <IonTabBar slot="bottom">
             <IonTabButton tab="home" href="/home">
@@ -112,7 +114,7 @@ const App: React.FC = () => (
               <IonLabel>Home</IonLabel>
             </IonTabButton>
 
-            <IonTabButton tab="SignUp" href="/SignUp">
+            <IonTabButton tab="Login" href="/login">
               <IonIcon aria-hidden="true" icon={ellipse} />
               <IonLabel>Register</IonLabel>
             </IonTabButton>

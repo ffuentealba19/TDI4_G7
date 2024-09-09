@@ -1,0 +1,63 @@
+/* Estilos para la página de Reportar un Problema */
+
+/* Ajusta el padding y la alineación general */
+.ion-padding {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+/* Estilos para los elementos del formulario */
+ion-item {
+  width: 100%;
+  max-width: 500px;
+  margin-bottom: 15px;
+}
+
+/* Input y Textarea personalizados */
+ion-input,
+ion-textarea {
+  --background: #fff;
+  --border-radius: 8px;
+  --padding-start: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Título centrado y estilizado */
+ion-title {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Botón personalizado */
+ion-button {
+  width: 100%;
+  max-width: 500px;
+  height: 50px;
+  --border-radius: 8px;
+  --background: #3880ff;
+  font-size: 1.2rem;
+  --box-shadow: 0 4px 10px rgba(56, 128, 255, 0.5);
+}
+
+ion-button:hover {
+  --background: #3171e0;
+}
+
+ion-button:active {
+  --box-shadow: 0 2px 5px rgba(56, 128, 255, 0.3);
+}
+
+/* Margen superior para el botón */
+.ion-margin-top {
+  margin-top: 20px;
+}
+
+/* Espaciado general del contenido */
+ion-content {
+  padding: 20px;
+}
