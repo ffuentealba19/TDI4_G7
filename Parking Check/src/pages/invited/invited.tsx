@@ -1,4 +1,4 @@
-import { IonContent, IonHeader, IonPage, IonTitle , IonToolbar , IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonInput, IonLabel, IonButton, IonNavLink } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle , IonToolbar , IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonInput, IonLabel, IonButton, IonNavLink, IonRouterLink } from '@ionic/react';
 import './invited.css';
 
 const Invited: React.FC = () => {
@@ -6,28 +6,28 @@ const Invited: React.FC = () => {
       <IonPage>
         <IonHeader>
           <IonToolbar>
-            <IonTitle>Invitados</IonTitle>
+            <IonTitle>PARKING CHEK</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent fullscreen>
-          <IonHeader collapse="condense">
-            <IonToolbar>
-              <IonTitle size="large">Registro</IonTitle>
-            </IonToolbar>
-          </IonHeader>
-          <IonCard>
-              <IonCardHeader>
-                  <IonCardTitle>
-                      Parking Check
-                  </IonCardTitle>
-                  <IonCardContent class='ion-padding'>
-                      <IonInput type='email' label = "Correo" labelPlacement='floating' fill='outline' placeholder='Porfavor ingrese su correo'></IonInput>
-                      <IonInput type='password' label = "Contraseña" labelPlacement='floating' fill='outline' placeholder='Porfavor ingrese su contraseña'></IonInput>
-                     
-                  </IonCardContent>
-                  <IonButton expand='block' color='primary'>Registrarse</IonButton>
-                  
-              </IonCardHeader>
+        <IonContent fullscreen className="ion-padding invited-content">
+         
+          <IonCard className="invited-card">
+          <IonCardHeader>
+            <IonCardTitle className="card-title">INVITADOS</IonCardTitle>
+          </IonCardHeader> 
+          <div className="invited-input-wrapper">
+                <IonInput type="text" placeholder="Ingrese su nombre" className="invited-input-field" clearInput={true}  ></IonInput>
+                <IonInput type="tel" placeholder="Ingrese su numero de Telefono" className="invited-input-field" clearInput={true}></IonInput>
+                <IonInput type="text" placeholder="Ingrese su patente" className="invited-input-field" clearInput={true}></IonInput>
+                <IonButton expand="block" className="invited-button">REGISTRARSE</IonButton>
+                <div className="invited-guest-session">
+                  <IonLabel>Ya tienes una cuenta o quieres una? </IonLabel><br></br>
+                  <IonLabel color="primary" className="invited-guest-link" >
+                     <IonRouterLink routerLink='/login'> Inicia sesion o registrate</IonRouterLink>
+                  </IonLabel>
+                </div>
+                <br/>
+          </div>
           </IonCard>
         </IonContent>
       </IonPage>

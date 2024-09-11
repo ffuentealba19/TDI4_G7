@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonInput, IonLabel, IonButton, IonSegment, IonSegmentButton } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonInput, IonLabel, IonButton, IonSegment, IonSegmentButton, IonRouterLink } from '@ionic/react';
 import './login.css';
 
 const LoginRegister: React.FC = () => {
@@ -40,7 +40,9 @@ const LoginRegister: React.FC = () => {
                 <IonButton expand="block" className="login-button">INICIAR SESIÓN</IonButton>
                 <div className="guest-session">
                   <IonLabel>No tienes cuenta? </IonLabel>
-                  <IonLabel color="primary" className="guest-link">Sesión de invitado</IonLabel>
+                  <IonLabel color="primary" className="guest-link" >
+                     <IonRouterLink routerLink='/invited'> Sesion de Invitado</IonRouterLink>
+                  </IonLabel>
                 </div>
               </div>
             ) : (
@@ -51,7 +53,9 @@ const LoginRegister: React.FC = () => {
                 <IonButton expand="block" className="register-button">REGISTRARSE</IonButton>
                 <div className="guest-session">
                   <IonLabel>No tienes cuenta? </IonLabel>
-                  <IonLabel color="primary" className="guest-link">Sesión de invitado</IonLabel>
+                  <IonLabel color="primary" className="guest-link" >
+                     <IonRouterLink routerLink='/invited'> Sesion de Invitado</IonRouterLink>
+                  </IonLabel>
                 </div>
               </div>
             )}

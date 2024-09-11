@@ -1,0 +1,68 @@
+.invited-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+.invited-card {
+    width: 90%;
+    max-width: 400px;
+    border-radius: 20px;
+    box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+.invited-card-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+.invited-input-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  
+.invited-input-field {
+    --padding-start: 10px;
+    --padding-end: 10px;
+    border-radius: 10px;
+  }
+  
+.invited-forgot-password {
+    display: block;
+    text-align: right;
+    margin-top: 10px;
+    color: #007bff;
+    cursor: pointer;
+  }
+  
+.invited-button{
+    margin-top: 20px;
+    background: linear-gradient(90deg, #FFC107 0%, #FFEB3B 100%);
+    color: white;
+    border-radius: 10px;
+  }
+  
+.invited-guest-session {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+.invited-guest-link {
+    color: #FFC107;
+    cursor: pointer;
+  }
+  
+ion-segment-button {
+    background: transparent;
+    color: #000000;
+  }
+  
+ion-segment-button.checked {
+    background: linear-gradient(90deg, #FFC107 0%, #FFEB3B 100%);
+    color: white;
+    border-radius: 10px;
+  }
