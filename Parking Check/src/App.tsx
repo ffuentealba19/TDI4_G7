@@ -24,11 +24,11 @@ import { ellipse, square, triangle, person, homeOutline, alertCircleOutline } fr
 /*paginas */ 
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
-import Profile from './pages/profile';
+import Profile from './pages/profile/profile';
 import LoginRegister from './pages/LoginRegister/LoginRegister';
 import Invited from './pages/invited/invited';
-import Home from './pages/Home';
-import ReportProblem from './pages/ReportProblem';
+import Home from './pages/Home/Home';
+import ReportProblem from './pages/ReportProblem/ReportProblem';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
