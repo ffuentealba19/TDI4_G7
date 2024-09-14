@@ -6,4 +6,4 @@ const schema = new mongoose.Schema({
     correo: String,
 
 })
-export default model = mongoose.model("User", schema)
+export default mongoose.model("User", schema)
