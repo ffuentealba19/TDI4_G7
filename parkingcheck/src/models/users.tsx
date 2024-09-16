@@ -1,11 +1,20 @@
-import mongoose from 'mongoose'
+import mongoose, { Schema } from 'mongoose'
 
-const schema = new mongoose.Schema({
+
+const userschema = new Schema(
+    {
     Nombre: String,
     Vehiculos: [{
         Placa: String,
         Modelo: String,
     }]
-})
+    },
+    {
+        collection: 'usuarios'
+    }
+);
 
-export default mongoose.models.Usuario || mongoose.model('Usuario', schema)
+const usuarios = mongoose.models.usuarios || mongoose.model('usuarios', userschema);
+
+
+export default usuarios;
