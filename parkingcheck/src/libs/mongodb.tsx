@@ -15,6 +15,6 @@ export async function run() {
     await client.connect();
 
     await client.db("admin").command({ ping: 1 });
-    console.log("Sea conectado con MongoDB");
+    console.log("Se ha conectado con MongoDB");
 
 }

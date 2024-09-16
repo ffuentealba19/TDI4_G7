@@ -2,18 +2,10 @@ import { run } from "@/libs/mongodb"
 import {NextResponse} from "next/server"
 import Usuario from "@/models/users"
     
-
-
-export async function GET(){
-    await run()
-    
-    const users = Usuario.find()
-    return NextResponse.json(users)
-}
-export async function POST(request: any) {
+export async function POST(request) {
     await run()
     const data = await request.json()
-    const users = Usuario.create(data)
+    const users =  Usuario.create(data)
     return NextResponse.json(users)
     
 }
