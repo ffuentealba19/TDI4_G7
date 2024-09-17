@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const MONGO_URI = 'mongodb+srv://parker:ivDtqXVa7WnjZ1B7@parkingcheck.q8rss.mongodb.net/?retryWrites=true&w=majority&appName=ParkingCheck';
+const MONGO_URI = 'mongodb+srv://parker:k93AetAE2CAig3iC@parkingcheck.q8rss.mongodb.net/?retryWrites=true&w=majority&appName=ParkingCheck';
 
 // Conectar a MongoDB
 const connectDB = async () => {

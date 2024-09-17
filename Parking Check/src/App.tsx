@@ -14,8 +14,6 @@ import {
   IonContent,
   IonList,
   IonItem,
-  IonButtons,
-  IonMenuButton,
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
@@ -83,7 +81,7 @@ const App: React.FC = () => (
       <IonRouterOutlet id="main">
         <IonTabs>
           <IonRouterOutlet>
-            <Route exact path="/login">
+            <Route exact path="/">
               <LoginRegister />
             </Route>
             <Route exact path="/invited">
@@ -106,7 +104,6 @@ const App: React.FC = () => (
             <ReportProblem />
           </Route>
           </IonRouterOutlet>
-
 
           <IonTabBar slot="bottom">
             <IonTabButton tab="home" href="/home">
