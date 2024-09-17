@@ -1,22 +1,5 @@
 import React from 'react';
-import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonButtons,
-  IonMenuButton,
-  IonContent,
-  IonAvatar,
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonGrid,
-  IonRow,
-  IonCol,
-  IonText,
-  IonMenu
-} from '@ionic/react';
+import {  IonPage, IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, IonContent, IonAvatar, IonButton,IonCard, IonCardContent, IonGrid, IonRow, IonCol, IonText, IonMenu} from '@ionic/react';
 
 const perfil: React.FC = () => {
   return (

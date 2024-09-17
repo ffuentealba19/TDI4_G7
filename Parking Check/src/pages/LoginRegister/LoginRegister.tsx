@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
 import {
   IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonCardHeader,
   IonCardTitle, IonCardContent, IonInput, IonLabel, IonButton, IonSegment, IonSegmentButton,
-  IonRouterLink, IonToast
+  IonRouterLink, IonToast,
+  IonIcon
 } from '@ionic/react';
+import { logoGoogle } from 'ionicons/icons';
 import './login.css';
+import React, { useState } from 'react';
+import { auth, provider } from '../../firebase-config';
+import { signInWithPopup } from 'firebase/auth';
 import { registerUser } from '../../api/api';
 
 const LoginRegister: React.FC = () => {
-  // Estados para manejar la selección de login o registro
   const [selectedSegment, setSelectedSegment] = useState<'login' | 'register'>('login');
-
-  // Estados para manejar los datos del formulario de registro
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  // Estado para manejar mensajes de éxito o error
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
 
@@ -24,13 +23,40 @@ const LoginRegister: React.FC = () => {
   const handleRegister = async () => {
     try {
       const response = await registerUser(username, email, password);
-      setToastMessage('Registro exitoso');  // Mensaje de éxito
+      setToastMessage('Registro exitoso');
       setShowToast(true);
     } catch (error: any) {
-      setToastMessage(error.message);  // Mensaje de error
+      setToastMessage(error.message);
       setShowToast(true);
     }
   };
+
+  // Función para iniciar sesión con Google
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      console.log('User:', result.user);
+      setToastMessage('Inicio de sesión exitoso con Google');
+      setShowToast(true);
+    } catch (error) {
+      console.error('Error:', error);
+      setToastMessage('Error al iniciar sesión con Google');
+      setShowToast(true);
+    }
+  };
+  //funcion para registrarse con google
+  const handleGoogleRegister = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      console.log('User:', result.user);
+      setToastMessage('Registro exitoso con Google');
+      setShowToast(true);
+    } catch (error) {
+      console.error('Error:', error);
+      setToastMessage('Error al registrarse con Google');
+      setShowToast(true);
+    }
+  }
 
   return (
     <IonPage>
@@ -45,7 +71,6 @@ const LoginRegister: React.FC = () => {
             <IonCardTitle className="card-title">PARKING CHECK</IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
-            {/* Barra de selección entre Login y Register */}
             <IonSegment
               value={selectedSegment}
               onIonChange={(e) => setSelectedSegment(e.detail.value as 'login' | 'register')}
@@ -58,13 +83,16 @@ const LoginRegister: React.FC = () => {
               </IonSegmentButton>
             </IonSegment>
 
-            {/* Contenido dinámico: Login o Register */}
             {selectedSegment === 'login' ? (
               <div className="input-wrapper">
                 <IonInput type="email" placeholder="Ingrese su email" className="input-field"></IonInput>
                 <IonInput type="password" placeholder="Contraseña" className="input-field"></IonInput>
                 <IonLabel className="forgot-password">¿Olvidaste tu contraseña?</IonLabel>
                 <IonButton expand="block" className="login-button">INICIAR SESIÓN</IonButton>
+                <IonButton expand="block" className="google-login-button" onClick={handleGoogleLogin}>
+                  <IonIcon icon={logoGoogle} slot="start" />
+                  Iniciar sesión con Google
+                </IonButton>
                 <div className="guest-session">
                   <IonLabel>No tienes cuenta? </IonLabel>
                   <IonLabel color="primary" className="guest-link">
@@ -104,12 +132,16 @@ const LoginRegister: React.FC = () => {
                     <IonRouterLink routerLink='/invited'> Sesion de Invitado</IonRouterLink>
                   </IonLabel>
                 </div>
+                <IonButton expand="block" className="google-register-button" onClick={handleGoogleRegister}>
+                  <IonIcon icon={logoGoogle} slot="start" />
+                  Registrarse con Google
+                </IonButton>
+                
               </div>
             )}
           </IonCardContent>
         </IonCard>
 
-        {/* Toast para mostrar mensajes */}
         <IonToast
           isOpen={showToast}
           onDidDismiss={() => setShowToast(false)}
