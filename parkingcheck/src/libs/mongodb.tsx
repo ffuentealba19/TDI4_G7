@@ -23,7 +23,7 @@ import mongoose from "mongoose";
 
 const connectMongoDB = () => {
   try{
-    mongoose.connect('mongodb+srv://parker:avocato@parkingcheck.q8rss.mongodb.net/?retryWrites=true&w=majority');
+    mongoose.connect('mongodb+srv://parker:avocato@parkingcheck.q8rss.mongodb.net/ParkingCheckIntegra?retryWrites=true&w=majority');
     console.log("Se ha conectado con MongoDB");
   }
   catch{
