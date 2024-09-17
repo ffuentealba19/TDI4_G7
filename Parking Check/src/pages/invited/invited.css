@@ -28,21 +28,16 @@
 .invited-input-field {
     --padding-start: 10px;
     --padding-end: 10px;
-    border-radius: 10px;
+    
   }
   
-.invited-forgot-password {
-    display: block;
-    text-align: right;
-    margin-top: 10px;
-    color: #007bff;
-    cursor: pointer;
-  }
+
   
 .invited-button{
     margin-top: 20px;
-    background: linear-gradient(90deg, #FFC107 0%, #FFEB3B 100%);
-    color: white;
+    
+    
+    color: rgb(255, 255, 255);
     border-radius: 10px;
   }
   
@@ -56,13 +51,3 @@
     cursor: pointer;
   }
   
-ion-segment-button {
-    background: transparent;
-    color: #000000;
-  }
-  
-ion-segment-button.checked {
-    background: linear-gradient(90deg, #FFC107 0%, #FFEB3B 100%);
-    color: white;
-    border-radius: 10px;
-  }
