@@ -1,15 +1,17 @@
-import { run } from "@/libs/mongodb"
+import connectMongoDB from "@/libs/mongodb"
 import {NextResponse} from "next/server"
 import usuarios from "@/models/users";
     
-export async function POST(request) {
+export async function POST(request : any) {
 
     const data = await request.json();
     try {
-        await run();
+        await connectMongoDB();
         console.log("si se pudo1")
-        await usuarios.create(data);
+        const newuser = new usuarios(data);
         console.log("si se pudo2")
+        await newuser.save();
+        console.log("si se pudo3")
         return NextResponse.json({message : "nuevo usuario creado"});
     } 
     catch (error) {
@@ -17,3 +19,4 @@ export async function POST(request) {
         return NextResponse.json({ error: "Error al crear el usuario" }, { status: 500 });
     }
 }
+
