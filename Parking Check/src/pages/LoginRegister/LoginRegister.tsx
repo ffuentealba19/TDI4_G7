@@ -1,15 +1,14 @@
-import {
-  IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonCardHeader,
-  IonCardTitle, IonCardContent, IonInput, IonLabel, IonButton, IonSegment, IonSegmentButton,
-  IonRouterLink, IonToast,
-  IonIcon
-} from '@ionic/react';
+import React, { useState } from 'react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonInput, IonLabel, IonButton, IonSegment, IonSegmentButton, IonRouterLink, IonToast, IonIcon } from '@ionic/react';
 import { logoGoogle } from 'ionicons/icons';
 import './login.css';
-import React, { useState } from 'react';
 import { auth, provider } from '../../firebase-config';
 import { signInWithPopup } from 'firebase/auth';
 import { registerUser } from '../../api/api';
+import { useHistory } from 'react-router-dom'; // Importa useHistory para redirigir
+import { useAuth } from '../../context/authcontext';
+import { Redirect } from 'react-router-dom';
+
 
 const LoginRegister: React.FC = () => {
   const [selectedSegment, setSelectedSegment] = useState<'login' | 'register'>('login');
@@ -18,6 +17,12 @@ const LoginRegister: React.FC = () => {
   const [password, setPassword] = useState('');
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
+  const history = useHistory(); // Inicializa useHistory
+  const { user } = useAuth();  // Obtener el estado de autenticación
+
+  if (user) {
+    return <Redirect to="/home" />;  // Redirigir al home si ya está logueado
+  }
 
   // Función para manejar el registro de usuario
   const handleRegister = async () => {
@@ -25,6 +30,7 @@ const LoginRegister: React.FC = () => {
       const response = await registerUser(username, email, password);
       setToastMessage('Registro exitoso');
       setShowToast(true);
+      history.push('/home'); // Redirigir al Home después del registro
     } catch (error: any) {
       setToastMessage(error.message);
       setShowToast(true);
@@ -38,25 +44,28 @@ const LoginRegister: React.FC = () => {
       console.log('User:', result.user);
       setToastMessage('Inicio de sesión exitoso con Google');
       setShowToast(true);
+      history.push('/home'); // Redirigir al Home después del login
     } catch (error) {
       console.error('Error:', error);
       setToastMessage('Error al iniciar sesión con Google');
       setShowToast(true);
     }
   };
-  //funcion para registrarse con google
+
+  // Función para registrarse con Google
   const handleGoogleRegister = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
       console.log('User:', result.user);
       setToastMessage('Registro exitoso con Google');
       setShowToast(true);
+      history.push('/home'); // Redirigir al Home después del registro con Google
     } catch (error) {
       console.error('Error:', error);
       setToastMessage('Error al registrarse con Google');
       setShowToast(true);
     }
-  }
+  };
 
   return (
     <IonPage>
@@ -136,7 +145,6 @@ const LoginRegister: React.FC = () => {
                   <IonIcon icon={logoGoogle} slot="start" />
                   Registrarse con Google
                 </IonButton>
-                
               </div>
             )}
           </IonCardContent>
