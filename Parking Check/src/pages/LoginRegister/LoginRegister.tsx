@@ -98,7 +98,9 @@ const LoginRegister: React.FC = () => {
                 <IonInput type="password" placeholder="Contraseña" className="input-field"></IonInput>
                 <IonLabel className="forgot-password">¿Olvidaste tu contraseña?</IonLabel>
                 <IonButton expand="block" className="login-button">INICIAR SESIÓN</IonButton>
-                <IonButton expand="block" className="google-login-button" onClick={handleGoogleLogin}>
+                {/* label de separacion */}
+                <IonLabel className="separator">O</IonLabel>
+                <IonButton expand="block" className="google-login-button" onClick={handleGoogleLogin} color="secondary" >
                   <IonIcon icon={logoGoogle} slot="start" />
                   Iniciar sesión con Google
                 </IonButton>
@@ -141,10 +143,6 @@ const LoginRegister: React.FC = () => {
                     <IonRouterLink routerLink='/invited'> Sesion de Invitado</IonRouterLink>
                   </IonLabel>
                 </div>
-                <IonButton expand="block" className="google-register-button" onClick={handleGoogleRegister}>
-                  <IonIcon icon={logoGoogle} slot="start" />
-                  Registrarse con Google
-                </IonButton>
               </div>
             )}
           </IonCardContent>

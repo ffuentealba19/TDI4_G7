@@ -76,7 +76,6 @@ const App: React.FC = () => {
             </IonList>
           </IonContent>
         </IonMenu>
-
         {/* Contenido principal y Tabs */}
         <IonRouterOutlet id="main">
           <IonTabs>
@@ -88,8 +87,6 @@ const App: React.FC = () => {
               <Route exact path="/invited">
                 <Invited />
               </Route>
-
-              {/* Rutas que requieren autenticación */}
               {user ? (
                 <>
                   <Route exact path="/tab1">
@@ -112,8 +109,6 @@ const App: React.FC = () => {
                 <Redirect to="/" />  // Redirigir si no está autenticado
               )}
             </IonRouterOutlet>
-
-            {/* Barra de Tabs */}
             <IonTabBar slot="bottom">
               {user && (
                 <>
