@@ -1,11 +1,12 @@
 import mongoose, { Schema } from 'mongoose'
 
 
-const userschema = new Schema(
-    {
+const userschema = new mongoose.Schema({
     Nombre: String,
-    email : String,
-    password : String,
+    Vehiculos: [{
+        Placa: String,
+        Modelo: String,
+    }]
     },
     {
         collection: 'usuarios'
