@@ -8,21 +8,7 @@ export default function Login() {
     const [showRegisterElements, setShowRegisterElements] = useState(false);
     const [showMenu, setShowMenu] = useState(false);
 
-    // Función para mostrar/ocultar el menú
     const toggleMenu = () => setShowMenu(!showMenu);
-
-    // Cerrar el menú si se hace clic fuera de él
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (showMenu && !(event.target as Element).closest('.menu-button')) {
-                setShowMenu(false);
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, [showMenu]);
 
     const showRegisterForm = () => {
         setShowRegisterElements(true);
@@ -30,46 +16,6 @@ export default function Login() {
 
     const showLoginForm = () => {
         setShowRegisterElements(false);
-    };
-
-    const registerData = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        const formData = new FormData(event.currentTarget);
-        const data = {
-            UserEmail: formData.get('UserEmail'),
-            UserName: formData.get('UserName'),
-            UserPass: formData.get('UserPass'),
-            ConfirmPass: formData.get('ConfirmPass'),
-        };
-
-        // Check if passwords match
-        if (data.UserPass !== data.ConfirmPass) {
-            alert('Passwords do not match');
-            return;
-        }
-
-        // Send data to the API route
-        try {
-            const response = await fetch('/api/Register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                console.log('Registro Exitoso');
-            } else {
-                console.log(`Error: ${result.error || 'Algo ha salido mal'}`);
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Error al registrar');
-        }
     };
 
     return (
@@ -80,13 +26,16 @@ export default function Login() {
                         <img src="/Logo_UCT.webp" alt="Avatar" className="w-20 rounded-full" />
                         <p>PARKING CHECK</p>
                     </div>
-                    {/* Menú desplegable */}
-                    <div className="relative">
+                    {}
+                    <div className="relative menu-container">
                         <button 
                             className="menu-button p-3 rounded-full hover:bg-blue-700" 
-                            onClick={toggleMenu}
+                            onClick={() => {
+                                console.log("Menu button clicked");
+                                toggleMenu();
+                            }}
                         >
-                            &#9776; {/* Icono de menú de tres líneas */}
+                            &#9776; {}
                         </button>
                         {showMenu && (
                             <div className="menu-dropdown">
@@ -119,7 +68,7 @@ export default function Login() {
                     {showRegisterElements ? (
                         <div id="RegisterForm" className="form">
                             <h2 className="title">Registro</h2>
-                            <form onSubmit={registerData}>
+                            <form>
                                 <input id="UserEmail" name="UserEmail" type="text" placeholder="Ingrese su email" className="input" required />
                                 <input id="UserName" name="UserName" type="text" placeholder="Nombre Completo" className="input" required />
                                 <input id="UserPass" name="UserPass" type="password" placeholder="Contraseña" className="input" required />
