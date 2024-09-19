@@ -1,11 +1,28 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Image from "next/image";
 import '/styles/style1.css';
 
 export default function Login() {
     const [showRegisterElements, setShowRegisterElements] = useState(false);
+    const [showMenu, setShowMenu] = useState(false);
+
+    // Función para mostrar/ocultar el menú
+    const toggleMenu = () => setShowMenu(!showMenu);
+
+    // Cerrar el menú si se hace clic fuera de él
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (showMenu && !(event.target as Element).closest('.menu-button')) {
+                setShowMenu(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [showMenu]);
 
     const showRegisterForm = () => {
         setShowRegisterElements(true);
@@ -16,8 +33,8 @@ export default function Login() {
     };
 
     const registerData = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); 
-    
+        event.preventDefault();
+
         const formData = new FormData(event.currentTarget);
         const data = {
             UserEmail: formData.get('UserEmail'),
@@ -63,10 +80,26 @@ export default function Login() {
                         <img src="/Logo_UCT.webp" alt="Avatar" className="w-20 rounded-full" />
                         <p>PARKING CHECK</p>
                     </div>
+                    {/* Menú desplegable */}
+                    <div className="relative">
+                        <button 
+                            className="menu-button p-3 rounded-full hover:bg-blue-700" 
+                            onClick={toggleMenu}
+                        >
+                            &#9776; {/* Icono de menú de tres líneas */}
+                        </button>
+                        {showMenu && (
+                            <div className="menu-dropdown">
+                                <a href="/profile" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Mi Perfil</a>
+                                <a href="/reservar" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Reservar Estacionamiento</a>
+                                <a href="/reporte" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Reporte</a>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </header>
 
-            <main className="main"> {/* Centrado en el medio */}
+            <main className="main">
                 <div className="logo-container">
                     <Image 
                         src="/Logo_UCT.webp"
@@ -106,7 +139,6 @@ export default function Login() {
                             <p>¿No tienes una cuenta? <a href="/Guest" className="link">Sesión de invitado</a></p>
                         </div>
                     )}
-
                 </div>
             </main>
         </div>

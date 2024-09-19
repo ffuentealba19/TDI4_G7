@@ -99,11 +99,10 @@ form input {
   width: 300px;
 }
 
-/* Asegúrate de que los enlaces tengan un buen espaciado debajo de los inputs */
 form a {
-  margin-top: 20px; /* Ajusta el margen superior según sea necesario */
-  display: block; /* Para que ocupe toda la línea y se vea debajo */
-  text-align: left; /* Cambia esto a 'center' si lo quieres centrado */
+  margin-top: 20px; 
+  display: block; 
+  text-align: left; 
   font-size: 14px;
   color: #007bff;
 }
@@ -115,46 +114,68 @@ form a:hover {
 .input {
   padding: 12px;
   margin: 12px 0;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 16px;
+  width: 90%;
+  font-size: 18px;
+  border-radius: 10px;
+  border: 1px solid #007bff;
 }
 
-button {
-  background-image: linear-gradient(to right, #007bff, #ffc107);
-  color: white;
-  padding: 15px;
+.button {
+  width: 90%;
+  padding: 14px;
   font-size: 18px;
+  margin-top: 20px;
   border: none;
   border-radius: 20px;
-  width: 100%;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  background-image: linear-gradient(to right, #007bff, #ffc107);
+  color: white;
 }
 
-button:hover {
+.button:hover {
   background-image: linear-gradient(to right, #ffc107, #007bff);
 }
 
-a {
+.link {
   color: #007bff;
-  font-size: 14px;
-  text-decoration: none;
-}
-
-a:hover {
+  cursor: pointer;
   text-decoration: underline;
 }
 
-.forgot-password {
-  margin-top: -10px; /* Ajustar si es necesario el espacio entre la contraseña y el enlace */
-  text-align: left; /* O 'center' si prefieres que esté centrado */
-  display: block; /* Asegura que ocupe toda la fila */
-  font-size: 14px;
-  color: #007bff;
+.link:hover {
   text-decoration: none;
 }
 
-.forgot-password:hover {
-  text-decoration: underline;
+.menu-button {
+  font-size: 24px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  color: white;
+}
+
+.menu-button:hover {
+  color: #ffd700; /* Cambia el color al pasar el ratón */
+}
+
+.menu-dropdown {
+  position: absolute;
+  right: 0;
+  margin-top: 1rem;
+  background-color: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.menu-dropdown a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #333;
+  text-decoration: none;
+}
+
+.menu-dropdown a:hover {
+  background-color: #f0f0f0;
 }
