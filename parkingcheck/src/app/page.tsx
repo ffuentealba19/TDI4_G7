@@ -26,18 +26,18 @@ export default function Login() {
                 </div>
             </header>
 
-            <main className="flex min-h-screen flex-col items-center justify-between p-16">
+            <main className="main"> {/* Centrado en el medio */}
+                <div className="logo-container">
+                    <Image 
+                        src="/Logo_UCT.webp"
+                        alt="Logo UCT"
+                        width={700}
+                        height={700}
+                        className="logo-image"
+                        style={{ opacity: 0.5 }}
+                    />
+                </div>
                 <div className="container">
-                    <div className="logo-container">
-                        <Image 
-                            src="/Logo_UCT.webp"
-                            alt="Logo UCT"
-                            width={150}
-                            height={150}
-                            className="logo-image"
-                            style={{ opacity: 0.5 }}
-                        />
-                    </div>
                     <div className="button-group">
                         <button onClick={showLoginForm} className={`toggle-button ${!showRegisterElements ? 'active' : ''}`}>Login</button>
                         <button onClick={showRegisterForm} className={`toggle-button ${showRegisterElements ? 'active' : ''}`}>Register</button>
