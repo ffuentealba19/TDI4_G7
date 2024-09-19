@@ -4,10 +4,8 @@ import mongoose, { Schema } from 'mongoose'
 const userschema = new Schema(
     {
     Nombre: String,
-    Vehiculos: [{
-        Placa: String,
-        Modelo: String,
-    }]
+    email : String,
+    password : String,
     },
     {
         collection: 'usuarios'
