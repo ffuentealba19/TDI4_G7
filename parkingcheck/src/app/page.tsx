@@ -29,13 +29,12 @@ export default function Login() {
             ConfirmPass: formData.get('ConfirmPass'),
         };
 
-        // Check if passwords match
         if (data.UserPass !== data.ConfirmPass) {
             alert('Las contraseñas no coinciden');
             return;
         }
 
-        // Send data to the API route
+
         try {
             const response = await fetch('/api/Register', {
                 method: 'POST',

@@ -8,15 +8,14 @@ export async function POST(req: NextRequest) {
     const client = await run();
 
 
-    // Parse the incoming JSON data
+
     const { UserName, UserEmail, UserPass } = await req.json();
 
-    // Validate required fields
     if (!UserName || !UserEmail || !UserPass) {
       return NextResponse.json({ error: 'Campos faltantes' }, { status: 400 });
     }
 
-    // Insert into 'usuarios' collection
+
     const collection = client.db("ParkingCheckIntegra").collection("usuarios");
     const result = await collection.insertOne({
       UserName,
