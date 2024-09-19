@@ -18,6 +18,46 @@ export default function Login() {
         setShowRegisterElements(false);
     };
 
+    const registerData = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault(); 
+    
+        const formData = new FormData(event.currentTarget);
+        const data = {
+            UserEmail: formData.get('UserEmail'),
+            UserName: formData.get('UserName'),
+            UserPass: formData.get('UserPass'),
+            ConfirmPass: formData.get('ConfirmPass'),
+        };
+
+        // Check if passwords match
+        if (data.UserPass !== data.ConfirmPass) {
+            alert('Las contraseñas no coinciden');
+            return;
+        }
+
+        // Send data to the API route
+        try {
+            const response = await fetch('/api/Register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                console.log('Registro Exitoso');
+            } else {
+                console.log(`Error: ${result.error || 'Algo ha salido mal'}`);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error al registrar');
+        }
+    };
+
     return (
         <div>
             <header className="bg-sky-500 text-white dark:bg-sky-550 lg:text-left">
@@ -68,7 +108,7 @@ export default function Login() {
                     {showRegisterElements ? (
                         <div id="RegisterForm" className="form">
                             <h2 className="title">Registro</h2>
-                            <form>
+                            <form onSubmit={registerData}>
                                 <input id="UserEmail" name="UserEmail" type="text" placeholder="Ingrese su email" className="input" required />
                                 <input id="UserName" name="UserName" type="text" placeholder="Nombre Completo" className="input" required />
                                 <input id="UserPass" name="UserPass" type="password" placeholder="Contraseña" className="input" required />
