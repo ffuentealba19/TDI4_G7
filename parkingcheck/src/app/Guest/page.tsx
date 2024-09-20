@@ -1,4 +1,5 @@
-import '../styles/style1.css';
+import '../../styles/style1.css';
+
 
 export default function Guest() {
   return (

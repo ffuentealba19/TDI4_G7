@@ -1,8 +1,8 @@
 "use client";
-
 import { useState, useEffect } from 'react';
 import Image from "next/image";
-import '/styles/style1.css';
+import '../styles/style1.css';
+
 
 export default function Login() {
     const [showRegisterElements, setShowRegisterElements] = useState(false);
@@ -29,14 +29,8 @@ export default function Login() {
             ConfirmPass: formData.get('ConfirmPass'),
         };
 
-        if (data.UserPass !== data.ConfirmPass) {
-            alert('Las contraseñas no coinciden');
-            return;
-        }
-
-
         try {
-            const response = await fetch('/api/Register', {
+            const response = await fetch('/api/auth/Register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -56,6 +50,42 @@ export default function Login() {
             alert('Error al registrar');
         }
     };
+
+
+    const LoginData = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault(); // Evitar el envío del formulario
+    
+        const formData = new FormData(event.currentTarget);
+        const data = {
+            UserEmail: formData.get('RegistedEmail'),
+            UserPass: formData.get('RegistedPass'),
+        };
+    
+        try {
+            const response = await fetch('/api/auth/Login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+    
+            const result = await response.json();
+    
+            if (response.ok) {
+                console.log('Éxito:', result);
+                window.location.href = '/Home';
+            } else {
+                console.log(`Error: ${result.message || 'Algo ha salido mal'}`);
+                alert(result.message || 'Algo ha salido mal');
+            }
+    
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error al iniciar sesión');
+        }
+    };
+    
 
     return (
         <div>
@@ -118,11 +148,11 @@ export default function Login() {
                     ) : (
                         <div id="LoginForm" className="form">
                             <h2 className="title">Iniciar Sesión</h2>
-                            <form>
-                                <input id="UserEmail" name="UserEmail" type="text" placeholder="Ingrese su email" className="input" />
-                                <input id="UserPass" name="UserPass" type="password" placeholder="Contraseña" className="input" />
+                            <form onSubmit={LoginData}>
+                                <input id="RegistedEmail" name="RegistedEmail" type="text" placeholder="Ingrese su email" className="input" />
+                                <input id="RegistedPass" name="RegistedPass" type="password" placeholder="Contraseña" className="input" />
                                 <a href='/LostmyPassword' className="link">¿Olvidó su contraseña?</a>
-                                <button className="button">INICIAR SESIÓN</button>
+                                <button type='submit' className="button">INICIAR SESIÓN</button>
                             </form>
                             <p>¿No tienes una cuenta? <a href="/Guest" className="link">Sesión de invitado</a></p>
                         </div>

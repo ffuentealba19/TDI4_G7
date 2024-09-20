@@ -1,22 +1,26 @@
-import { MongoClient, ServerApiVersion } from 'mongodb';
+import mongoose from 'mongoose';
 
-const uri = process.env.CLUSTER || 'mongodb+srv://parker:avocato@parkingcheck.q8rss.mongodb.net/?retryWrites=true&w=majority';
+const uri = process.env.CLUSTER || 'mongodb+srv://parker:avocato@parkingcheck.q8rss.mongodb.net/ParkingCheckIntegra?retryWrites=true&w=majority&appName=ParkingCheck';
 
-const client = new MongoClient(uri, {
-  serverApi: {
-    version: ServerApiVersion.v1,
-    strict: true,
-    deprecationErrors: true,
-  },
-});
+let isConnected: boolean = false; 
 
 export async function run() {
+  if (isConnected) {
+    console.log('Reutilizando la conexión existente con MongoDB');
+    return mongoose; 
+  }
+
   try {
-    await client.connect();
-    console.log("Conectado a MongoDB");
-    return client;
+    await mongoose.connect(uri, {
+      serverSelectionTimeoutMS: 5000,
+      dbName: "ParkingCheckIntegra", 
+    });
+      
+    isConnected = true;
+    console.log('Conectado a MongoDB');
+    return mongoose; 
   } catch (error) {
-    console.error("Error al conectar con MongoDB", error);
-    throw error;
+    console.error('Error al conectar con MongoDB:', error);
+    throw error; 
   }
 }
