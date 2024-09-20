@@ -1,0 +1,68 @@
+/* Estilos generales del carrusel */
+.ion-padding {
+  background-color: #f4f6f9;
+}
+
+.plan-card {
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.plan-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0;
+}
+
+.plan-card ul li {
+  font-size: 1.2rem;
+  color: #4a4a4a;
+  margin: 10px 0;
+}
+
+.plan-card ul li del {
+  color: #d32f2f;
+}
+
+/* Estilos de cada plan */
+.normal-plan {
+  background-color: #fff;
+}
+
+.vip-plan {
+  background-color: #e0f7fa;
+}
+
+.vip-plus-plan {
+  background-color: #ffe0b2;
+}
+
+/* Estilos de la oferta */
+.offer-label {
+  color: #e53935;
+  font-size: 0.9rem;
+  background-color: #ffeb3b;
+  border-radius: 5px;
+  padding: 2px 6px;
+  margin-left: 10px;
+}
+
+.plan-card ion-card-title {
+  font-size: 1.8rem;
+  color: #333;
+}
+
+.plan-card ion-card-subtitle {
+  font-size: 1.3rem;
+  margin-top: 5px;
+}
+
+.plan-card ion-button {
+  --border-radius: 8px;
+  margin-top: 20px;
+  font-size: 1.2rem;
+}

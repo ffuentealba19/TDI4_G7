@@ -29,6 +29,8 @@ import LoginRegister from './pages/LoginRegister/LoginRegister';
 import Invited from './pages/invited/invited';
 import Home from './pages/Home/Home';
 import ReportProblem from './pages/ReportProblem/ReportProblem';
+import EditProfile from './pages/EditProfile';
+import UpgradeSubscription from './pages/UpgradeSubscription';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -88,6 +90,12 @@ const App: React.FC = () => (
             </Route>
             <Route exact path="/invited">
               <Invited />
+            </Route>
+            <Route exact path="/edit-profile">
+            <EditProfile />
+            </Route>
+            <Route exact path="/upgrade-subscription">
+               <UpgradeSubscription />
             </Route>
 
             <Route exact path="/tab1">

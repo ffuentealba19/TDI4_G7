@@ -54,8 +54,13 @@ const perfil: React.FC = () => {
             <p>lortega2020@alu.uct.cl</p>
             <p>Usuario estándar <a href="#">Mejorar suscripción!</a></p>
           </IonText>
+          <IonButton expand="full" color="secondary" routerLink="/upgrade-subscription">
+  Mejorar suscripción
+</IonButton>
 
-          <IonButton expand="block" color="medium">Editar perfil</IonButton>
+          <IonButton expand="block" color="medium" routerLink="/edit-profile"> 
+              Editar Perfil
+          </IonButton>
 
           <IonGrid>
             <IonRow>
