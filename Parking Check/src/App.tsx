@@ -27,6 +27,7 @@ import Tab2 from './pages/Tab2';
 import Profile from './pages/profile/profile';
 import LoginRegister from './pages/LoginRegister/LoginRegister';
 import Invited from './pages/invited/invited';
+import ForgotPassword from './pages/olvido_pass/ForgotPassword';
 import Home from './pages/Home/Home';
 import ReportProblem from './pages/ReportProblem/ReportProblem';
 import EditProfile from './pages/EditProfile';
@@ -90,6 +91,9 @@ const App: React.FC = () => (
             </Route>
             <Route exact path="/invited">
               <Invited />
+            </Route>
+            <Route exact path = "/ForgotPassword">
+              <ForgotPassword />
             </Route>
             <Route exact path="/edit-profile">
             <EditProfile />

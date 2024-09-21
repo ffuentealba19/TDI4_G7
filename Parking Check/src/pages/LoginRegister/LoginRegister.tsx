@@ -36,7 +36,9 @@ const LoginRegister: React.FC = () => {
               <div className="input-wrapper">
                 <IonInput type="email" placeholder="Ingrese su email" className="input-field"></IonInput>
                 <IonInput type="password" placeholder="Contraseña" className="input-field"></IonInput>
-                <IonLabel className="forgot-password">¿Olvidaste tu contraseña?</IonLabel>
+                <IonLabel className="forgot-password"> 
+                  <IonRouterLink routerLink='/ForgotPassword'>¿Olvidaste tu contraseña?</IonRouterLink>
+                </IonLabel>
                 <IonButton expand="block" className="login-button">INICIAR SESIÓN</IonButton>
                 <div className="guest-session">
                   <IonLabel>No tienes cuenta? </IonLabel>
