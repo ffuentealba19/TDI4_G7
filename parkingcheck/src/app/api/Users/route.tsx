@@ -1,4 +1,4 @@
-import { run } from "@/libs/mongodb"
+import { run } from "@/libs/mongodb";
 import {NextResponse} from "next/server"
 import Usuario from "@/models/users"
     

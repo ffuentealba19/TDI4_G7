@@ -74,7 +74,6 @@ export default function Login() {
     
             if (response.ok) {
                 console.log('Éxito:', result);
-                window.location.href = '/Home';
             } else {
                 console.log(`Error: ${result.message || 'Algo ha salido mal'}`);
                 alert(result.message || 'Algo ha salido mal');

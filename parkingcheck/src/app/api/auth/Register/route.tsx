@@ -12,7 +12,6 @@ export async function POST(req: NextRequest) {
 
     const { UserName, UserEmail, UserPass, ConfirmPass } = await req.json();
 
-    // Validaciones
     if (!UserName || !UserEmail || !UserPass || !ConfirmPass) {
       return NextResponse.json({
         message: messages.error.needProps,
@@ -46,17 +45,17 @@ export async function POST(req: NextRequest) {
       UserPass: HashedPass,
     });
 
-    
     await newUser.save(); 
-
-    
     const token = jwt.sign(
       { userId: newUser._id, email: newUser.UserEmail },
       process.env.JWT_SECRET || 'default_secret',
       { expiresIn: '8h' }
     );
-    
-    return NextResponse.redirect('/Home');
+
+    return NextResponse.json({
+      message: 'Registro exitoso',
+      token,
+    }, { status: 200 });
 
   } catch (error) {
     console.error("Error en la operación:", error);
