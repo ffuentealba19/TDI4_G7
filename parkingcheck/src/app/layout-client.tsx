@@ -1,4 +1,4 @@
-'use client'; // Marcado como cliente
+'use client'; 
 import React, { useState } from 'react';
 import Image from 'next/image';
 import '../styles/style1.css';
@@ -37,7 +37,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         </div>
       </header>
 
-      {/* Sección de logo y contenedor principal */}
+      {}
       <div className="login-page">
         <main className="main">
           <div className="logo-container">
@@ -50,13 +50,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               style={{ opacity: 0.5 }}
             />
           </div>
-          {/* Contenido específico de la página */}
+          {}
           {children}
         </main>
       </div>
       
       <footer className="footer">
-        <p>© 2024 Universidad Católica de Temuco. Todos los derechos reservados.</p>
+        <p>© 2024 Todos los derechos reservados.</p>
       </footer>
     </>
   );
