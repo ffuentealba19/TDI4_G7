@@ -33,17 +33,35 @@ const UpgradeSubscription: React.FC = () => {
           <SwiperSlide>
             <IonCard className="plan-card normal-plan">
               <IonCardHeader>
-                <IonCardTitle>Plan Normal</IonCardTitle>
-                <IonCardSubtitle>FREE</IonCardSubtitle>
+                <IonCardTitle>Plan Básico</IonCardTitle>
+                <IonCardSubtitle>GRATIS</IonCardSubtitle>
               </IonCardHeader>
               <IonCardContent>
                 <ul>
-                  <li><del>Acceso VIP a eventos</del></li>
-                  <li><del>Soporte prioritario</del></li>
-                  <li><del>Descuentos exclusivos</del></li>
+                  <li><del>Reserva Anticipada de Estacionamientos</del></li>
+                  <li><del>Reserva Prioritaria</del></li>
+                  <li><del>Servicios Adicionales</del></li>
                   <li>Acceso básico a la plataforma</li>
                 </ul>
                 <IonButton expand="full" color="primary">Seleccionar</IonButton>
+              </IonCardContent>
+            </IonCard>
+          </SwiperSlide>
+
+          {/*Plan Preferencial*/}
+          <SwiperSlide>
+            <IonCard className="plan-card preferencial-plan">
+              <IonCardHeader>
+                <IonCardTitle>Plan Preferencial</IonCardTitle>
+                <IonCardSubtitle>Autorizacion Especial</IonCardSubtitle>
+              </IonCardHeader>
+              <IonCardContent>
+                <ul>
+                  <li>Reserva de Estacionamientos Preferenciales</li>
+                  <li>Soporte Prioritario</li>
+                  <li>Acceso Básico a la plataforma</li>
+                </ul>
+                <IonButton expand='full' color="secondary">Postular</IonButton>
               </IonCardContent>
             </IonCard>
           </SwiperSlide>
@@ -53,14 +71,14 @@ const UpgradeSubscription: React.FC = () => {
             <IonCard className="plan-card vip-plan">
               <IonCardHeader>
                 <IonCardTitle>Plan VIP</IonCardTitle>
-                <IonCardSubtitle>$5 / mes</IonCardSubtitle>
+                <IonCardSubtitle>$5.000 CLP / mes</IonCardSubtitle>
               </IonCardHeader>
               <IonCardContent>
                 <ul>
-                  <li>Acceso VIP a eventos</li>
-                  <li><del>Soporte prioritario</del></li>
-                  <li>Descuentos exclusivos</li>
-                  <li>Acceso básico a la plataforma</li>
+                    <li>Reserva Anticipada de Estacionamientos</li>
+                    <li><del>Reserva Prioritaria</del></li>
+                    <li><del>Servicios Adicionales</del></li>
+                    <li>Acceso básico a la plataforma</li>
                 </ul>
                 <IonButton expand="full" color="success">Seleccionar</IonButton>
               </IonCardContent>
@@ -73,20 +91,22 @@ const UpgradeSubscription: React.FC = () => {
               <IonCardHeader>
                 <IonCardTitle>Plan VIP+</IonCardTitle>
                 <IonCardSubtitle>
-                  <del>$10 / mes</del> <strong>$8 / mes</strong> <span className="offer-label">¡Oferta!</span>
+                  <del>$10.000 CLP / mes</del> <strong>$8.000 CLP / mes</strong> <span className="offer-label">¡Oferta!</span>
                 </IonCardSubtitle>
               </IonCardHeader>
               <IonCardContent>
                 <ul>
-                  <li>Acceso VIP a eventos</li>
-                  <li>Soporte prioritario</li>
-                  <li>Descuentos exclusivos</li>
+                  <li>Reserva Anticipada de Estacionamientos</li>
+                  <li>Reserva Prioritaria</li>
+                  <li>Servicios Adicionales</li>
                   <li>Acceso básico a la plataforma</li>
                 </ul>
                 <IonButton expand="full" color="tertiary">Seleccionar</IonButton>
               </IonCardContent>
             </IonCard>
           </SwiperSlide>
+
+          
         </Swiper>
       </IonContent>
     </IonPage>

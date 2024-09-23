@@ -32,7 +32,9 @@
 .normal-plan {
   background-color: #fff;
 }
-
+.preferencial-plan{
+  background-color: #e6fcff;
+}
 .vip-plan {
   background-color: #e0f7fa;
 }
