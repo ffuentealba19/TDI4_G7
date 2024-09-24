@@ -11,7 +11,6 @@ export async function POST(req: NextRequest) {
 
         const { UserEmail, UserPass } = await req.json();
         
-        // Validaciones
         if (!UserEmail || !UserPass) {
             return NextResponse.json({
                 message: messages.error.needProps,

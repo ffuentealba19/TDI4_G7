@@ -8,7 +8,7 @@ import jwt from "jsonwebtoken";
 
 export async function POST(req: NextRequest) {
   try {
-    await run(); 
+    await run();
 
     const { UserName, UserEmail, UserPass, ConfirmPass } = await req.json();
 
@@ -46,9 +46,15 @@ export async function POST(req: NextRequest) {
     });
 
     await newUser.save(); 
+
+    const JWT_SECRET = process.env.JWT_SECRET;
+    if (!JWT_SECRET) {
+      throw new Error('JWT_SECRET no está configurado en las variables de entorno');
+    }
+
     const token = jwt.sign(
       { userId: newUser._id, email: newUser.UserEmail },
-      process.env.JWT_SECRET || 'default_secret',
+      JWT_SECRET,
       { expiresIn: '8h' }
     );
 
