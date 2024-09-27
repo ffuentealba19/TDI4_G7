@@ -1,33 +1,24 @@
 import React from 'react';
-import { 
-  IonPage, IonHeader, IonToolbar, IonTitle, IonButtons, IonMenuButton, 
-  IonContent, IonAvatar, IonButton, IonCard, IonCardContent, IonGrid, IonRow, 
-  IonCol, IonText, IonMenu 
+import {
+  IonPage,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonButtons,
+  IonMenuButton,
+  IonContent,
+  IonAvatar,
+  IonButton,
+  IonCard,
+  IonCardContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonText,
+  IonMenu
 } from '@ionic/react';
-import { useAuth } from '../../context/authcontext';
-import { auth } from '../../firebase-config'; // Importar auth desde Firebase para cerrar sesión
-import { signOut } from 'firebase/auth'; // Método para cerrar sesión
-import { Redirect } from 'react-router';
 
-const Perfil: React.FC = () => {
-  const { user } = useAuth(); // Obtener el estado de autenticación
-
-  if (!user) {
-    // Si no hay usuario logueado, redirigir al login
-    return <Redirect to="/" />;
-  }
-
-  // Función para cerrar sesión
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      // Redirigir al usuario a la página de login
-      return <Redirect to="/" />;
-    } catch (error) {
-      console.error("Error al cerrar sesión:", error);
-    }
-  };
-
+const perfil: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
@@ -46,6 +37,7 @@ const Perfil: React.FC = () => {
               </IonHeader>
               <IonContent className="ion-padding">This is the menu content.</IonContent>
             </IonMenu>
+
         </IonToolbar>
       </IonHeader>
 
@@ -54,19 +46,12 @@ const Perfil: React.FC = () => {
           <IonText className='ion-text-center'>
             <h2>MI PERFIL</h2>
           </IonText>
-
-          {/* Mostrar foto de perfil desde Firebase */}
           <IonAvatar style={{ margin: '0 auto' }}>
-            <img 
-              src={user.photoURL || "https://via.placeholder.com/150"} 
-              alt="User Avatar" 
-            />
+            <img src="https://z-p3-scontent.fzco1-1.fna.fbcdn.net/v/t1.6435-9/30724703_10211886277014701_7427747709064314880_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=1d70fc&_nc_ohc=SF9jviTlDJUQ7kNvgG_sNG2&_nc_ht=z-p3-scontent.fzco1-1.fna&_nc_gid=A0-elPL04roPU_c-5x8xCnq&oh=00_AYCJf8q2PBTm6A6i0ZUSEh0yx6F56jbaxFMZe6hE-mNNug&oe=6704BF82" alt="User Avatar" />
           </IonAvatar>
-
-          {/* Mostrar nombre y correo desde Firebase */}
           <IonText className="ion-text-center">
-            <h3>{user.displayName || 'Usuario'}</h3>
-            <p>{user.email}</p>
+            <h3>Luis Felipe Ortega Curillan</h3>
+            <p>lortega2020@alu.uct.cl</p>
             <p>Usuario estándar <a href="#">Mejorar suscripción!</a></p>
           </IonText>
           <IonButton expand="full" color="secondary" routerLink="/upgrade-subscription">
@@ -77,7 +62,6 @@ const Perfil: React.FC = () => {
               Editar Perfil
           </IonButton>
 
-          {/* Mostrar tarjetas de autos */}
           <IonGrid>
             <IonRow>
               <IonCol size="6">
@@ -93,11 +77,13 @@ const Perfil: React.FC = () => {
                 </IonCard>
               </IonCol>
             </IonRow>
-          </IonGrid>          
+          </IonGrid>
+
+          <IonButton expand="block" color="danger">Cerrar sesión</IonButton>
         </IonCard>
       </IonContent>
     </IonPage>
   );
 };
 
-export default Perfil;
+export default perfil;
