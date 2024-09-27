@@ -30,8 +30,8 @@ import Invited from './pages/invited/invited';
 import ForgotPassword from './pages/olvido_pass/ForgotPassword';
 import Home from './pages/Home/Home';
 import ReportProblem from './pages/ReportProblem/ReportProblem';
-import EditProfile from './pages/EditProfile';
-import UpgradeSubscription from './pages/UpgradeSubscription';
+import EditProfile from './pages/EditProfile/EditProfile';
+import UpgradeSubscription from './pages/Subscriptions/UpgradeSubscription';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -124,11 +124,6 @@ const App: React.FC = () => (
             <IonTabButton tab="home" href="/home">
               <IonIcon aria-hidden="true" icon={triangle} />
               <IonLabel>Home</IonLabel>
-            </IonTabButton>
-
-            <IonTabButton tab="Login" href="/login">
-              <IonIcon aria-hidden="true" icon={ellipse} />
-              <IonLabel>Register</IonLabel>
             </IonTabButton>
 
             <IonTabButton tab="Profile" href="/profile">
