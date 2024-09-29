@@ -9,6 +9,7 @@ export interface IUser extends Document {
     Placa: string;
     Modelo: string;
   }[];
+  url: string;
 }
 
 // Definición del esquema del usuario
@@ -19,7 +20,8 @@ const userSchema = new Schema<IUser>({
   Vehiculos: [{
     Placa: String,
     Modelo: String,
-  }]
+  }],
+  url: {type: String, required: false}
 }, {
   collection: 'usuarios',
   timestamps: true,

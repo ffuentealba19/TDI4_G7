@@ -1,5 +1,5 @@
 'use client';
-import { useState } from "react";
+import { ImgHTMLAttributes, useState } from "react";
 
 export default function upload(){
     const [file, setFile] = useState(null);
@@ -19,7 +19,7 @@ export default function upload(){
                         })
                         const data = await response.json()
                         console.log(data)
-                        setImg(data.url)
+                        
 
                     }}>
                         <input type="file" onChange={(e) =>{
@@ -29,12 +29,27 @@ export default function upload(){
                             Enviar
                         </button>
                     </form>
+                    <form onClick={async(e) =>{
+                        e.preventDefault()
+                        
+                        const respuesta = await fetch("/api/Get_Img", {
+                            method: 'GET',
+                        })
+                        const dataImg = await respuesta.json()
+                        console.log(dataImg)
+                        setImg(dataImg.ImgUrl)
+                    }}>
+
+
+                    </form>
                     {
-                        img &&(
-                            <img src={img} alt=""/>
+                        img && (
+                            <img src={img} alt= ""/>
                         )
                     }
+                    
             </div>
+            
 
     )
 }

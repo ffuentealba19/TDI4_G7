@@ -5,6 +5,7 @@ import { isValidEmail } from "@/utils/isValidEmail";
 import User from "@/models/users"; 
 import bcrypt from 'bcryptjs';
 import jwt from "jsonwebtoken";
+import { url } from "inspector";
 
 export async function POST(req: NextRequest) {
   try {
@@ -43,6 +44,7 @@ export async function POST(req: NextRequest) {
       UserName,
       UserEmail,
       UserPass: HashedPass,
+      url: "https://res.cloudinary.com/dhlfth3i0/image/upload/v1727491033/i6sxdq4xgfkti4hnidot.jpg",
     });
 
     await newUser.save(); 

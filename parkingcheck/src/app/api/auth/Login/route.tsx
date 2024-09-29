@@ -4,7 +4,7 @@ import { messages } from "@/utils/messages";
 import User from "@/models/users"; 
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-
+import { cookies } from "next/headers";
 export async function POST(req: NextRequest) {
     try {
         await run();
@@ -36,8 +36,8 @@ export async function POST(req: NextRequest) {
             process.env.JWT_SECRET || 'default_secret',
             { expiresIn: '8h' }
         );
-
-
+        const galleta = cookies()
+        galleta.set("token",token)
         return NextResponse.json({
             message: 'Inicio de sesión exitoso',
             token,
