@@ -30,7 +30,7 @@ export default function upload(){
                         </button>
                     </form>
                     <form onClick={async(e) =>{
-                        e.preventDefault()
+                        
                         
                         const respuesta = await fetch("/api/Get_Img", {
                             method: 'GET',

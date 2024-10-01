@@ -5,9 +5,9 @@ import { cookies } from "next/headers";
 import {run} from '@/libs/mongodb'
 import User from '@/models/users'
 cloudinary.config({ 
-    cloud_name: 'dhlfth3i0', 
-    api_key: '191465743562129', 
-    api_secret: 'NWAlM-GCDJiRviWGwz9K83Eemrw' 
+    cloud_name: process.env.Cloud_name, 
+    api_key: process.env.Api_key, 
+    api_secret: process.env.Api_secret 
 });
 
 export async function POST(req: NextRequest ){
