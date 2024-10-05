@@ -17,20 +17,6 @@
   margin: 20px 0;
 }
 
-.separator::before,
-.separator::after {
-  content: '';
-  flex: 1;
-  border-bottom: 1px solid #ddd;
-}
-
-.separator:not(:empty)::before {
-  margin-right: 10px;
-}
-
-.separator:not(:empty)::after {
-  margin-left: 10px;
-}
 
 .card-title {
   text-align: center;

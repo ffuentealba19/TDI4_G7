@@ -22,7 +22,7 @@ const LoginRegister: React.FC = () => {
       const response = await registerUser(username, email, password);
       setToastMessage('Registro exitoso');
       setShowToast(true);
-      history.push('/home'); // Redirigir al Home después del registro
+      // despues de comprobar que se registra ****** history.push('/home'); // Redirigir al Home después del registro
     } catch (error: any) {
       setToastMessage(error.message);
       setShowToast(true);
@@ -64,11 +64,6 @@ const LoginRegister: React.FC = () => {
                 </IonLabel>
                 <IonButton expand="block" className="login-button">INICIAR SESIÓN</IonButton>
                 {/* label de separacion */}
-                <IonLabel className="separator">O</IonLabel>
-                <IonButton expand="block" className="google-login-button" onClick={alert} color="secondary" >
-                  <IonIcon icon={logoGoogle} slot="start" />
-                  Iniciar sesión con Google
-                </IonButton>
                 <div className="guest-session">
                   <IonLabel>No tienes cuenta? </IonLabel>
                   <IonLabel color="primary" className="guest-link">
