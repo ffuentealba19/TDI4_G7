@@ -21,11 +21,12 @@ router.post('/register', async (req, res) => {
     }
 
     // Encriptar la contraseña
-    const hashedPassword = await bcrypt.hash(password, 10);
-
+   
     // Crear nuevo usuario
-    const user = new User({ UserName, UserEmail: email, UserPass: hashedPassword });
+    const user = new User({ UserName, UserEmail: email, UserPass: password});
+    
     await user.save();
+    console.log(hashedPassword)
     res.status(201).send({ message: 'Usuario registrado exitosamente' });
   } catch (err) {
     res.status(500).send({ error: 'Error al registrar el usuario' });
@@ -35,21 +36,24 @@ router.post('/register', async (req, res) => {
 // Ruta para autenticar un usuario (login)
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-
+  
   // Validar que los campos no estén vacíos
   if (!email || !password) {
     return res.status(400).send({ error: 'Todos los campos son obligatorios' });
   }
 
   try {
-    const user = await User.findOne({ UserEmail: email });
+    const user = await User.findOne({ UserEmail : email });
+    
     if (!user) {
-      return res.status(401).send({ error: 'Credenciales inválidas' });
+      return res.status(401).send({ error: 'Email incorrecto' });
     }
 
     const isMatch = await bcrypt.compare(password, user.UserPass);
     if (!isMatch) {
-      return res.status(401).send({ error: 'Credenciales inválidas' });
+      
+      console.log(user.UserPass)
+      return res.status(401).send({ error: 'Contraseña incorrecta' });
     }
 
     const token = jwt.sign({ userId: user._id }, 'SECRET_KEY', { expiresIn: '1h' });
