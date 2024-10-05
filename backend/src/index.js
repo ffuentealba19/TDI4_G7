@@ -1,32 +1,23 @@
-const express = require("express")
-const app = express();
-const cors = require('cors');
+const express = require('express');
 const mongoose = require('mongoose');
-const port = 3000;
+const cors = require('cors'); // Asegúrate de tener esto
+const authRoutes = require('./routes/AuthRoutes');
+const protectedRoutes = require('./routes/ProtectedRoutes');
+const app = express();
 
+// Conexión a MongoDB
+const uri = 'mongodb+srv://parker:avocato@parkingcheck.q8rss.mongodb.net/ParkingCheckIntegra?retryWrites=true&w=majority&appName=ParkingCheck';
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('Error connecting to MongoDB', err));
 
-
+// Middleware
+app.use(cors()); // Asegúrate de que CORS está configurado
 app.use(express.json());
-app.use(cors());
+app.use(authRoutes);        // Rutas de autenticación (registro y login)
+app.use(protectedRoutes);   // Rutas protegidas que requieren autenticación
 
-app.get("/api/data", (req, res) =>{
-
-    res.json({ message: 'hola papu!' });
+// Iniciar el servidor
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
 });
-app.listen(port, () => {
-    console.log(`Servidor corriendo en http://localhost:${port}`); // Asegúrate de que está bien escrito
-});
-
-
-
-//mongo conexion
-/*const uri = 'mongodb+srv://parker:avocato@parkingcheck.q8rss.mongodb.net/?retryWrites=true&w=majority';
-
-mongoose.connect(uri)
-    .then(() => {
-        console.log('Connected to MongoDB');
-    })
-    .catch((err) => {
-        console.error('Error connecting to MongoDB', err);
-    });
-*/
