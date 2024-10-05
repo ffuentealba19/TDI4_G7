@@ -1,24 +1,22 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import ExploreContainer from '../components/ExploreContainer';
 import './Tab1.css';
-
+import React, {useEffect,useState} from 'react';
 const Tab1: React.FC = () => {
-  return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Tab 1</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Tab 1</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <ExploreContainer name="Tab 1 page" />
-      </IonContent>
-    </IonPage>
+  const [data, setData] = useState<string | null>(null);
+
+  useEffect(() => {
+    fetch('http://localhost:3000/api/data')
+      .then(response => response.json())
+      .then(data => setData(data.message))
+      .catch(error => console.error('Error al obtener datos:', error));
+  }, []);
+
+  return(
+    <div>
+      <h1>Datos desde el backend</h1>
+      <p>{data ? data: "cargando..."}</p>
+    </div>
   );
 };
 
