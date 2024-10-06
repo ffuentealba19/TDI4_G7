@@ -14,14 +14,12 @@ import {
   IonContent,
   IonList,
   IonItem,
-  IonButtons,
-  IonMenuButton,
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { ellipse, square, triangle, person, homeOutline, alertCircleOutline } from 'ionicons/icons';
 
-/*paginas */ 
+/* Paginas */
 import Tab1 from './pages/Tab1';
 import Tab2 from './pages/Tab2';
 import Profile from './pages/profile/profile';
@@ -51,36 +49,59 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import { getToken } from './services/AuthServices';
 
 setupIonicReact();
+
+const PrivateRoute: React.FC<any> = ({ children, ...rest }) => {
+  return (
+    <Route
+      {...rest}
+      render={({ location }) =>
+        getToken() ? (
+          children
+        ) : (
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: location }
+            }}
+          />
+        )
+      }
+    />
+  );
+};
 
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
-      {/* Menú lateral */}
-      <IonMenu side="end" contentId="main">
-        <IonHeader>
-          <IonToolbar color="primary">
-            <IonTitle>Parking Check</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <IonContent>
-          <IonList>
-            <IonItem routerLink="/tab1">
-              <IonIcon icon={homeOutline} slot="start" />
-              <IonLabel>Asignación Estacionamiento</IonLabel>
-            </IonItem>
-            <IonItem routerLink="/profile">
-              <IonIcon icon={person} slot="start" />
-              <IonLabel>Mi Perfil</IonLabel>
-            </IonItem>
-            <IonItem routerLink="/report-problem">
-              <IonIcon icon={alertCircleOutline} slot="start" />
-              <IonLabel>Reportar un problema</IonLabel>
-            </IonItem>
-          </IonList>
-        </IonContent>
-      </IonMenu>
+      {getToken() && (
+        /* Menú lateral */
+        <IonMenu side="end" contentId="main">
+          <IonHeader>
+            <IonToolbar color="primary">
+              <IonTitle>Parking Check</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent>
+            <IonList>
+              <IonItem routerLink="/tab1">
+                <IonIcon icon={homeOutline} slot="start" />
+                <IonLabel>Asignación Estacionamiento</IonLabel>
+              </IonItem>
+              <IonItem routerLink="/profile">
+                <IonIcon icon={person} slot="start" />
+                <IonLabel>Mi Perfil</IonLabel>
+              </IonItem>
+              <IonItem routerLink="/report-problem">
+                <IonIcon icon={alertCircleOutline} slot="start" />
+                <IonLabel>Reportar un problema</IonLabel>
+              </IonItem>
+            </IonList>
+          </IonContent>
+        </IonMenu>
+      )}
 
       {/* Contenido principal y Tabs */}
       <IonRouterOutlet id="main">
@@ -92,33 +113,33 @@ const App: React.FC = () => (
             <Route exact path="/invited">
               <Invited />
             </Route>
-            <Route exact path = "/ForgotPassword">
+            <Route exact path="/ForgotPassword">
               <ForgotPassword />
             </Route>
-            <Route exact path="/edit-profile">
-            <EditProfile />
-            </Route>
-            <Route exact path="/upgrade-subscription">
-               <UpgradeSubscription />
-            </Route>
-
-            <Route exact path="/tab1">
+            
+            {/* Rutas privadas */}
+            <PrivateRoute exact path="/edit-profile">
+              <EditProfile />
+            </PrivateRoute>
+            <PrivateRoute exact path="/upgrade-subscription">
+              <UpgradeSubscription />
+            </PrivateRoute>
+            <PrivateRoute exact path="/tab1">
               <Tab1 />
-            </Route>
-            <Route exact path="/tab2">
+            </PrivateRoute>
+            <PrivateRoute exact path="/tab2">
               <Tab2 />
-            </Route>
-            <Route path="/profile">
+            </PrivateRoute>
+            <PrivateRoute path="/profile">
               <Profile />
-            </Route>
-            <Route path ="/home">
+            </PrivateRoute>
+            <PrivateRoute path="/home">
               <Home />
-            </Route>
-            <Route path="/report-problem">
-            <ReportProblem />
-          </Route>
+            </PrivateRoute>
+            <PrivateRoute path="/report-problem">
+              <ReportProblem />
+            </PrivateRoute>
           </IonRouterOutlet>
-
 
           <IonTabBar slot="bottom">
             <IonTabButton tab="home" href="/home">

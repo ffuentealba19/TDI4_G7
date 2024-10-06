@@ -18,8 +18,8 @@ import {
   IonRouterLink,
   IonToast,
 } from '@ionic/react';
-import { useHistory } from 'react-router-dom'; // Importa useHistory para redirigir
-import { registerUser, loginUser } from '../../services/AuthServices'; // Asegúrate de que la ruta sea correcta
+import { useHistory } from 'react-router-dom';
+import { registerUser, loginUser, isAuthenticated } from '../../services/AuthServices';
 import './login.css';
 
 const LoginRegister: React.FC = () => {
@@ -29,18 +29,17 @@ const LoginRegister: React.FC = () => {
   const [password, setPassword] = useState('');
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
-  const history = useHistory(); // Inicializa useHistory
+  const history = useHistory();
 
   // Función para manejar el registro de usuario
   const handleRegister = async () => {
     try {
-      // Envía 'UserName', 'UserEmail' y 'UserPass' como se definen en el modelo
       await registerUser(username, email, password);
       setToastMessage('Registro exitoso');
       setShowToast(true);
-      history.push('/home'); // Redirigir al Home después del registro
+      history.push('/home');
     } catch (error: any) {
-      setToastMessage(error.response?.data.error || 'Error en el registro');
+      setToastMessage(error.message || 'Error en el registro');
       setShowToast(true);
     }
   };
@@ -51,12 +50,17 @@ const LoginRegister: React.FC = () => {
       await loginUser(email, password);
       setToastMessage('Inicio de sesión exitoso');
       setShowToast(true);
-      history.push('/home'); // Redirigir al Home después del inicio de sesión
+      history.push('/home');
     } catch (error: any) {
-      setToastMessage(error.response?.data.error || 'Error en el inicio de sesión');
+      setToastMessage(error.message || 'Error en el inicio de sesión');
       setShowToast(true);
     }
   };
+
+  // Verificar si el usuario ya está autenticado
+  if (isAuthenticated()) {
+    history.push('/home'); // Si ya está autenticado, redirigir al home
+  }
 
   return (
     <IonPage>
@@ -108,7 +112,7 @@ const LoginRegister: React.FC = () => {
                 <div className="guest-session">
                   <IonLabel>No tienes cuenta? </IonLabel>
                   <IonLabel color="primary" className="guest-link">
-                    <IonRouterLink routerLink='/invited'> Sesion de Invitado</IonRouterLink>
+                    <IonRouterLink routerLink='/invited'> Sesión de Invitado</IonRouterLink>
                   </IonLabel>
                 </div>
               </div>
@@ -141,7 +145,7 @@ const LoginRegister: React.FC = () => {
                 <div className="guest-session">
                   <IonLabel>No tienes cuenta? </IonLabel>
                   <IonLabel color="primary" className="guest-link">
-                    <IonRouterLink routerLink='/invited'> Sesion de Invitado</IonRouterLink>
+                    <IonRouterLink routerLink='/invited'> Sesión de Invitado</IonRouterLink>
                   </IonLabel>
                 </div>
               </div>

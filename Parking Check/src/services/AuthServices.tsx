@@ -16,5 +16,23 @@ export const registerUser = async (username: string, email: string, password: st
 
 export const loginUser = async (email: string, password: string) => {
   const response = await apiClient.post('/login', { email, password });
+
+  if (response.data.token) {
+    localStorage.setItem('token', response.data.token);
+  }
   return response.data;
 };
+
+export const isAuthenticated = () => {
+  const token = localStorage.getItem('token');
+  return token !== null;
+};
+
+export const getToken = () => {
+  return localStorage.getItem('token');
+};
+
+export const logout = () => {
+  localStorage.removeItem('token');
+};
+

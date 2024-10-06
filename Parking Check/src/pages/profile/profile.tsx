@@ -15,51 +15,65 @@ import {
   IonRow,
   IonCol,
   IonText,
-  IonMenu
+  IonMenu,
 } from '@ionic/react';
+import { useHistory } from 'react-router-dom';
+import { logout } from '../../services/AuthServices'; // Importa la función logout
 
-const perfil: React.FC = () => {
+const Perfil: React.FC = () => {
+  const history = useHistory(); // Inicializa useHistory para redirigir
+
+  const handleLogout = () => {
+    logout(); // Llama a la función logout para eliminar el token
+    history.push('/login'); // Redirige al usuario a la página de login
+  };
+
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar color="primary">
-          <IonTitle color="light">
-            PARKING CHECK
-          </IonTitle>
+          <IonTitle color="light">PARKING CHECK</IonTitle>
           <IonButtons slot="end">
             <IonMenuButton></IonMenuButton>
           </IonButtons>
-            <IonMenu contentId="main-content">
-              <IonHeader>
-                <IonToolbar>
-                  <IonTitle>Menu Content</IonTitle>
-                </IonToolbar>
-              </IonHeader>
-              <IonContent className="ion-padding">This is the menu content.</IonContent>
-            </IonMenu>
-
+          <IonMenu contentId="main-content">
+            <IonHeader>
+              <IonToolbar>
+                <IonTitle>Menu Content</IonTitle>
+              </IonToolbar>
+            </IonHeader>
+            <IonContent className="ion-padding">This is the menu content.</IonContent>
+          </IonMenu>
         </IonToolbar>
       </IonHeader>
 
       <IonContent className="ion-padding">
         <IonCard className="ion-padding">
-          <IonText className='ion-text-center'>
+          <IonText className="ion-text-center">
             <h2>MI PERFIL</h2>
           </IonText>
           <IonAvatar style={{ margin: '0 auto' }}>
-            <img src="https://z-p3-scontent.fzco1-1.fna.fbcdn.net/v/t1.6435-9/30724703_10211886277014701_7427747709064314880_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=1d70fc&_nc_ohc=SF9jviTlDJUQ7kNvgG_sNG2&_nc_ht=z-p3-scontent.fzco1-1.fna&_nc_gid=A0-elPL04roPU_c-5x8xCnq&oh=00_AYCJf8q2PBTm6A6i0ZUSEh0yx6F56jbaxFMZe6hE-mNNug&oe=6704BF82" alt="User Avatar" />
+            <img
+              src="https://z-p3-scontent.fzco1-1.fna.fbcdn.net/v/t1.6435-9/30724703_10211886277014701_7427747709064314880_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=1d70fc&_nc_ohc=SF9jviTlDJUQ7kNvgG_sNG2&_nc_ht=z-p3-scontent.fzco1-1.fna&_nc_gid=A0-elPL04roPU_c-5x8xCnq&oh=00_AYCJf8q2PBTm6A6i0ZUSEh0yx6F56jbaxFMZe6hE-mNNug&oe=6704BF82"
+              alt="User Avatar"
+            />
           </IonAvatar>
           <IonText className="ion-text-center">
             <h3>Luis Felipe Ortega Curillan</h3>
             <p>lortega2020@alu.uct.cl</p>
-            <p>Usuario estándar <a href="#">Mejorar suscripción!</a></p>
+            <p>
+              Usuario estándar <a href="#">Mejorar suscripción!</a>
+            </p>
           </IonText>
           <IonButton expand="full" color="secondary" routerLink="/upgrade-subscription">
-  Mejorar suscripción
-</IonButton>
+            Mejorar suscripción
+          </IonButton>
 
-          <IonButton expand="block" color="medium" routerLink="/edit-profile"> 
-              Editar Perfil
+          <IonButton expand="block" color="medium" routerLink="/edit-profile">
+            Editar Perfil
+          </IonButton>
+          <IonButton expand="block" color="danger" onClick={handleLogout}>
+            Cerrar sesión
           </IonButton>
 
           <IonGrid>
@@ -78,12 +92,10 @@ const perfil: React.FC = () => {
               </IonCol>
             </IonRow>
           </IonGrid>
-
-          <IonButton expand="block" color="danger">Cerrar sesión</IonButton>
         </IonCard>
       </IonContent>
     </IonPage>
   );
 };
 
-export default perfil;
+export default Perfil;
