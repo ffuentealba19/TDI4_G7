@@ -31,6 +31,7 @@ import Home from './pages/Home/Home';
 import ReportProblem from './pages/ReportProblem/ReportProblem';
 import EditProfile from './pages/EditProfile/EditProfile';
 import UpgradeSubscription from './pages/Subscriptions/UpgradeSubscription';
+import Vehiculos from './pages/vehiculo/vehiculo';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -137,6 +138,9 @@ const App: React.FC = () => (
               </PrivateRoute>
               <PrivateRoute path="/report-problem">
                 <ReportProblem />
+              </PrivateRoute>
+              <PrivateRoute path="/vehiculo">
+                <Vehiculos />
               </PrivateRoute>
             </IonRouterOutlet>
 
