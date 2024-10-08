@@ -15,7 +15,7 @@ export const messages = {
     },
     success : {
         UserCreated : "Se ha podido registrar con exito",
-        SuccesLogin : "Se ha iniciado session"
+        SuccesLogin : "Se ha iniciado sesion"
     }
 
 }

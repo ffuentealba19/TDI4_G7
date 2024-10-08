@@ -124,7 +124,7 @@ export default function Login() {
                         width={700}
                         height={700}
                         className="logo-image"
-                        style={{ opacity: 0.5 }}
+                        style={{ opacity: 0.5 }}    
                     />
                 </div>
                 <div className="container">
@@ -144,7 +144,7 @@ export default function Login() {
                                 <button className="button" type="submit">REGISTRARSE</button>
                             </form>
                         </div>
-                    ) : (
+                    ) : ( 
                         <div id="LoginForm" className="form">
                             <h2 className="title">Iniciar Sesión</h2>
                             <form onSubmit={LoginData}>
