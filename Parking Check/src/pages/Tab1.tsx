@@ -1,22 +1,94 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
-import ExploreContainer from '../components/ExploreContainer';
-import './Tab1.css';
-import React, {useEffect,useState} from 'react';
+import React, { useEffect, useState } from 'react';
+import {
+  IonPage,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+} from '@ionic/react';
+import { getParkings } from '../services/AuthServices'; // Importa tu servicio
+import './tab1.css';
+
+interface Parking {
+  id: number; // Cambié el nombre a id
+  section: number;
+  status: string; // 'enabled' o 'disabled'
+  occupiedBy: string | null; // Puede ser el ID de usuario o null
+}
+
 const Tab1: React.FC = () => {
-  const [data, setData] = useState<string | null>(null);
+  const [parkings, setParkings] = useState<Parking[]>([]);
+  const [groupedParkings, setGroupedParkings] = useState<Record<number, Parking[]>>({});
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/data')
-      .then(response => response.json())
-      .then(data => setData(data.message))
-      .catch(error => console.error('Error al obtener datos:', error));
+    const fetchParkings = async () => {
+      try {
+        const data = await getParkings();
+        setParkings(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchParkings();
   }, []);
 
-  return(
-    <div>
-      <h1>Datos desde el backend</h1>
-      <p>{data ? data: "cargando..."}</p>
-    </div>
+  useEffect(() => {
+    // Agrupar los estacionamientos por sección
+    const grouped = parkings.reduce<Record<number, Parking[]>>((acc, parking) => {
+      if (!acc[parking.section]) {
+        acc[parking.section] = [];
+      }
+      acc[parking.section].push(parking);
+      return acc;
+    }, {});
+
+    setGroupedParkings(grouped);
+  }, [parkings]);
+
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar color="primary">
+          <IonTitle>Estacionamiento</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+
+      <IonContent className="ion-padding">
+        <IonGrid>
+          <IonRow>
+            {Object.entries(groupedParkings).map(([section, parkings]) => (
+              <IonCol key={section}>
+                <IonCard color="light">
+                  <IonCardHeader>
+                    <IonCardTitle>Sección {section}</IonCardTitle>
+                  </IonCardHeader>
+                  <div className="parking-spots">
+                    {parkings.map((parking) => (
+                      <div 
+                        key={parking.id} 
+                        className={`spot ${parking.status === 'enabled' ? 'available' : 'occupied'}`}>
+                        {parking.status === 'enabled' ? (
+                          <div>{parking.id}</div> // Muestra el ID del estacionamiento
+                        ) : (
+                          <div>Used</div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </IonCard>
+              </IonCol>
+            ))}
+          </IonRow>
+        </IonGrid>
+      </IonContent>
+    </IonPage>
   );
 };
 

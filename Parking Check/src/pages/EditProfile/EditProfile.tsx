@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   IonPage,
   IonHeader,
@@ -11,18 +11,48 @@ import {
   IonButton,
   IonAvatar,
   IonButtons,
-  IonBackButton
+  IonBackButton,
+  IonLoading,
 } from '@ionic/react';
+import { useHistory } from 'react-router-dom';
+import { getUserProfile, updateUserProfile } from '../../services/AuthServices'; // Asegúrate de que la función esté importada
 import './EditProfile.css';
 
 const EditProfile: React.FC = () => {
-  const [name, setName] = useState('Luis Felipe Ortega Curillan');
-  const [email, setEmail] = useState('lortega2020@alu.uct.cl');
+  const history = useHistory();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [profileImage, setProfileImage] = useState('/assets/profile-placeholder.png'); // Ruta de la imagen por defecto
+  const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false);
 
-  const handleSave = () => {
-    // Aquí puedes añadir la lógica para guardar los cambios en el servidor
-    alert('Cambios guardados');
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await getUserProfile(); // Obtiene los datos del perfil
+        setName(response.UserName);
+        setEmail(response.UserEmail);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
+  const handleSave = async () => {
+    setUpdating(true);
+    try {
+      await updateUserProfile({ UserName: name, UserEmail: email }); // Llama a la API para actualizar
+      alert('Cambios guardados');
+      history.push('/perfil'); // Redirige al perfil después de guardar
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setUpdating(false);
+    }
   };
 
   const handleImageChange = (event: any) => {
@@ -35,6 +65,10 @@ const EditProfile: React.FC = () => {
       reader.readAsDataURL(file);
     }
   };
+
+  if (loading) {
+    return <IonLoading isOpen={loading} message="Cargando..." />;
+  }
 
   return (
     <IonPage>
@@ -75,8 +109,8 @@ const EditProfile: React.FC = () => {
           <IonInput type="email" value={email} onIonChange={(e) => setEmail(e.detail.value!)} />
         </IonItem>
 
-        <IonButton expand="block" className="ion-margin-top" onClick={handleSave}>
-          Guardar Cambios
+        <IonButton expand="block" className="ion-margin-top" onClick={handleSave} disabled={updating}>
+          {updating ? 'Guardando...' : 'Guardar Cambios'}
         </IonButton>
       </IonContent>
     </IonPage>

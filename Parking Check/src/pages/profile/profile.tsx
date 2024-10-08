@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   IonPage,
   IonHeader,
@@ -18,15 +18,40 @@ import {
   IonMenu,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
-import { logout } from '../../services/AuthServices'; // Importa la función logout
+import { logout, getUserProfile } from '../../services/AuthServices'; // Asegúrate de que la función esté importada
 
 const Perfil: React.FC = () => {
-  const history = useHistory(); // Inicializa useHistory para redirigir
+  const history = useHistory(); 
+  const [userData, setUserData] = useState<any>(null); // Estado para almacenar los datos del usuario
+  const [loading, setLoading] = useState(true); // Estado para manejar la carga
+
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await getUserProfile(); // Llama a la función para obtener el perfil
+        setUserData(response); // Guarda los datos del usuario
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false); // Finaliza la carga
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
 
   const handleLogout = () => {
-    logout(); // Llama a la función logout para eliminar el token
-    history.push('/login'); // Redirige al usuario a la página de login
+    logout(); 
+    history.push('/home'); 
   };
+
+  if (loading) {
+    return <IonContent>Loading...</IonContent>; // Puedes personalizar el loading
+  }
+
+  if (!userData) {
+    return <IonContent>Error al cargar los datos del perfil</IonContent>; // Maneja el error
+  }
 
   return (
     <IonPage>
@@ -59,8 +84,8 @@ const Perfil: React.FC = () => {
             />
           </IonAvatar>
           <IonText className="ion-text-center">
-            <h3>Luis Felipe Ortega Curillan</h3>
-            <p>lortega2020@alu.uct.cl</p>
+            <h3>{userData.UserName}</h3>
+            <p>{userData.UserEmail}</p>
             <p>
               Usuario estándar <a href="#">Mejorar suscripción!</a>
             </p>
