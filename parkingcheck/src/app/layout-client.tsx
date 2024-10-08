@@ -30,7 +30,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               <div className="menu-dropdown">
                 <a href="/Perfil" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Mi Perfil</a>
                 <a href="/reservar" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Reservar Estacionamiento</a>
-                <a href="/reporte" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Reporte</a>
+                <a href="/report" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Reporte</a>
               </div>
             )}
           </div>

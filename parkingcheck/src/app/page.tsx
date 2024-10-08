@@ -1,10 +1,17 @@
 "use client";
 import { useState } from 'react';
-import ClientLayout from './layout-client';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import '../styles/style1.css';
 
 export default function Login() {
     const [showRegisterElements, setShowRegisterElements] = useState(false);
+    const [showMenu, setShowMenu] = useState(false);
+    const router = useRouter();
+    
+
+    const toggleMenu = () => setShowMenu(!showMenu);
+  
 
     const showRegisterForm = () => {
         setShowRegisterElements(true);
@@ -69,6 +76,7 @@ export default function Login() {
 
             if (response.ok) {
                 console.log('Éxito:', result);
+                router.push(result.redirectUrl);
             } else {
                 console.log(`Error: ${result.message || 'Algo ha salido mal'}`);
                 alert(result.message || 'Algo ha salido mal');
@@ -101,9 +109,9 @@ export default function Login() {
                         </button>
                         {showMenu && (
                             <div className="menu-dropdown">
-                                <a href="/profile" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Mi Perfil</a>
+                                <a href="/Perfil" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Mi Perfil</a>
                                 <a href="/reservar" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Reservar Estacionamiento</a>
-                                <a href="/reporte" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Reporte</a>
+                                <a href="/report" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Reporte</a>
                             </div>
                         )}
                     </div>
@@ -141,7 +149,7 @@ export default function Login() {
                     ) : (
                         <div id="LoginForm" className="form">
                             <h2 className="title">Iniciar Sesión</h2>
-                            <form onSubmit={LoginData}>
+                            <form onSubmit={loginData}>
                                 <input id="RegistedEmail" name="RegistedEmail" type="text" placeholder="Ingrese su email" className="input" />
                                 <input id="RegistedPass" name="RegistedPass" type="password" placeholder="Contraseña" className="input" />
                                 <a href='/LostmyPassword' className="link">¿Olvidó su contraseña?</a>

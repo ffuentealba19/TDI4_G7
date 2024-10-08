@@ -38,9 +38,11 @@ export async function POST(req: NextRequest) {
         );
         const galleta = cookies()
         galleta.set("token",token)
+
         return NextResponse.json({
             message: 'Inicio de sesión exitoso',
             token,
+            redirectUrl: '/reservar',
         }, { status: 200 });
 
     } catch (error) {
