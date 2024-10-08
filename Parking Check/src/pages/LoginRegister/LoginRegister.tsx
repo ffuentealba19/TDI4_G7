@@ -1,5 +1,4 @@
-// src/components/LoginRegister.tsx
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {
   IonContent,
   IonHeader,
@@ -19,7 +18,8 @@ import {
   IonToast,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
-import { registerUser, loginUser, isAuthenticated } from '../../services/AuthServices';
+import { registerUser, loginUser } from '../../services/AuthServices';
+import { AuthContext } from '../../context/authcontext'; // Importar el contexto
 import './login.css';
 
 const LoginRegister: React.FC = () => {
@@ -30,6 +30,8 @@ const LoginRegister: React.FC = () => {
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
   const history = useHistory();
+  
+  const { setAuthToken } = useContext(AuthContext); // Usar el contexto para actualizar el token
 
   // Función para manejar el registro de usuario
   const handleRegister = async () => {
@@ -47,20 +49,16 @@ const LoginRegister: React.FC = () => {
   // Función para manejar el inicio de sesión
   const handleLogin = async () => {
     try {
-      await loginUser(email, password);
+      const data = await loginUser(email, password);
+      setAuthToken(data.token); // Actualizar el token en el contexto
       setToastMessage('Inicio de sesión exitoso');
       setShowToast(true);
-      history.push('/home');
+      history.push('/home'); // Redirigir al home
     } catch (error: any) {
       setToastMessage(error.message || 'Error en el inicio de sesión');
       setShowToast(true);
     }
   };
-
-  // Verificar si el usuario ya está autenticado
-  if (isAuthenticated()) {
-    history.push('/home'); // Si ya está autenticado, redirigir al home
-  }
 
   return (
     <IonPage>

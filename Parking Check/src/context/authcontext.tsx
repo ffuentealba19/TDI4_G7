@@ -1,40 +1,48 @@
-import React, { createContext, useContext, useState, useEffect, PropsWithChildren } from 'react';
-import { auth } from '../firebase-config'; // Asegúrate de que el auth esté correctamente configurado.
-import { onAuthStateChanged, User } from 'firebase/auth';
+// src/contexts/AuthContext.tsx
+import React, { createContext, useState, useEffect, ReactNode } from 'react';
+import { getToken, logout } from '../services/AuthServices';
 
-// Crear el contexto de autenticación
-interface AuthContextType {
-  user: User | null;
-  setUser: React.Dispatch<React.SetStateAction<User | null>>;
+// Definir la interfaz del contexto de autenticación
+interface AuthContextProps {
+  isAuthenticated: boolean;
+  setAuthToken: (token: string) => void;
+  clearAuthToken: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+// Crear el contexto
+export const AuthContext = createContext<AuthContextProps>({
+  isAuthenticated: false,
+  setAuthToken: () => {},
+  clearAuthToken: () => {},
+});
 
-export const AuthProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+// Crear el provider del contexto
+export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-  // Monitoriza el estado de autenticación
+  // Cargar el token cuando se monta el componente
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      console.log("Usuario autenticado:", currentUser); // Debug para ver el estado del usuario
-    });
-
-    return () => unsubscribe();
+    const token = getToken();
+    if (token) {
+      setIsAuthenticated(true);
+    }
   }, []);
 
+  // Función para establecer el token y autenticar al usuario
+  const setAuthToken = (token: string) => {
+    localStorage.setItem('token', token);
+    setIsAuthenticated(true);
+  };
+
+  // Función para limpiar el token y cerrar la sesión
+  const clearAuthToken = () => {
+    logout();
+    setIsAuthenticated(false);
+  };
+
   return (
-    <AuthContext.Provider value={{ user, setUser }}>
+    <AuthContext.Provider value={{ isAuthenticated, setAuthToken, clearAuthToken }}>
       {children}
     </AuthContext.Provider>
   );
-};
-
-// Hook personalizado para acceder al contexto
-export const useAuth = (): AuthContextType => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error("useAuth debe ser usado dentro de un AuthProvider");
-  }
-  return context;
 };
