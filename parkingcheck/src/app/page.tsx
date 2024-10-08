@@ -1,14 +1,10 @@
 "use client";
-import { useState, useEffect } from 'react';
-import Image from "next/image";
+import { useState } from 'react';
+import ClientLayout from './layout-client';
 import '../styles/style1.css';
-
 
 export default function Login() {
     const [showRegisterElements, setShowRegisterElements] = useState(false);
-    const [showMenu, setShowMenu] = useState(false);
-
-    const toggleMenu = () => setShowMenu(!showMenu);
 
     const showRegisterForm = () => {
         setShowRegisterElements(true);
@@ -19,8 +15,8 @@ export default function Login() {
     };
 
     const registerData = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); 
-    
+        event.preventDefault();
+
         const formData = new FormData(event.currentTarget);
         const data = {
             UserEmail: formData.get('UserEmail'),
@@ -51,16 +47,15 @@ export default function Login() {
         }
     };
 
+    const loginData = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
 
-    const LoginData = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault(); // Evitar el envío del formulario
-    
         const formData = new FormData(event.currentTarget);
         const data = {
             UserEmail: formData.get('RegistedEmail'),
             UserPass: formData.get('RegistedPass'),
         };
-    
+
         try {
             const response = await fetch('/api/auth/Login', {
                 method: 'POST',
@@ -69,22 +64,21 @@ export default function Login() {
                 },
                 body: JSON.stringify(data),
             });
-    
+
             const result = await response.json();
-    
+
             if (response.ok) {
                 console.log('Éxito:', result);
             } else {
                 console.log(`Error: ${result.message || 'Algo ha salido mal'}`);
                 alert(result.message || 'Algo ha salido mal');
             }
-    
+
         } catch (error) {
             console.error('Error:', error);
             alert('Error al iniciar sesión');
         }
     };
-    
 
     return (
         <div>
@@ -124,7 +118,7 @@ export default function Login() {
                         width={700}
                         height={700}
                         className="logo-image"
-                        style={{ opacity: 0.5 }}    
+                        style={{ opacity: 0.5 }}
                     />
                 </div>
                 <div className="container">
@@ -144,7 +138,7 @@ export default function Login() {
                                 <button className="button" type="submit">REGISTRARSE</button>
                             </form>
                         </div>
-                    ) : ( 
+                    ) : (
                         <div id="LoginForm" className="form">
                             <h2 className="title">Iniciar Sesión</h2>
                             <form onSubmit={LoginData}>

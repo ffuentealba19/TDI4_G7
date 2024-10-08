@@ -5,10 +5,11 @@ import { isValidEmail } from "@/utils/isValidEmail";
 import User from "@/models/users"; 
 import bcrypt from 'bcryptjs';
 import jwt from "jsonwebtoken";
+import { url } from "inspector";
 
 export async function POST(req: NextRequest) {
   try {
-    await run(); 
+    await run();
 
     const { UserName, UserEmail, UserPass, ConfirmPass } = await req.json();
 
@@ -43,12 +44,19 @@ export async function POST(req: NextRequest) {
       UserName,
       UserEmail,
       UserPass: HashedPass,
+      url: "https://res.cloudinary.com/dhlfth3i0/image/upload/v1727491033/i6sxdq4xgfkti4hnidot.jpg",
     });
 
     await newUser.save(); 
+
+    const JWT_SECRET = process.env.JWT_SECRET;
+    if (!JWT_SECRET) {
+      throw new Error('JWT_SECRET no está configurado en las variables de entorno');
+    }
+
     const token = jwt.sign(
       { userId: newUser._id, email: newUser.UserEmail },
-      process.env.JWT_SECRET || 'default_secret',
+      JWT_SECRET,
       { expiresIn: '8h' }
     );
 
