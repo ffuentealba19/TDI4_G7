@@ -1,1 +1,25 @@
 node_modules/
+
+# Ignorar archivos de entorno
+.env
+
+# Ignorar archivos de logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignorar archivos de distribución o compilación
+/dist
+/build
+
+# Ignorar archivos de configuración del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Ignorar dependencias en contenedores (si estás usando Docker)
+docker-compose.override.yml
+.dockerignore
+
+# Ignorar otros archivos de configuración locales (opcional)
+.vscode/
+.idea/
