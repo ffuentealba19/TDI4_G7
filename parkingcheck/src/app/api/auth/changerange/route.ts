@@ -1,18 +1,19 @@
 // src/app/api/updateConfig/route.ts
 import { NextRequest, NextResponse } from "next/server";
-import { run } from "@/libs/mongodb"; // Asegúrate de tener tu función de conexión a MongoDB
+import { run } from "@/libs/mongodb"; 
 import { Config } from "@/models/config";
+
 export async function POST(req: NextRequest) {
     try {
-        await run(); // Conéctate a MongoDB
+        await run(); 
 
-        const { configKey, configValue } = await req.json(); // Obtener los datos del cuerpo de la solicitud
+        const { configKey, configValue } = await req.json(); 
 
-        // Actualiza la configuración en la base de datos
+        
         const updatedConfig = await Config.findOneAndUpdate(
-            { key: configKey }, // Condición para encontrar el documento
-            { value: configValue }, // Nuevo valor
-            { new: true } // Devuelve el documento actualizado
+            { key: configKey }, 
+            { value: configValue }, 
+            { new: true } 
         );
 
         if (!updatedConfig) {

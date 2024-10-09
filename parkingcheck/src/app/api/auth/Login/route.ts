@@ -5,6 +5,7 @@ import User from "@/models/users";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+
 export async function POST(req: NextRequest) {
     try {
         await run();
