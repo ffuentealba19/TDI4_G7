@@ -6,14 +6,14 @@ const userSchema = new mongoose.Schema({
   UserEmail: { type: String, required: true, unique: true },
   UserPass: { type: String, required: true },
   Vehiculos: [{
-    Placa: { type: String, required: true },
-    Marca: { type: String, required: true },
-    Modelo: { type: String, required: true },
-    Color: { type: String, required: true },
+    Placa: { type: String, required: false },
+    Marca: { type: String, required: false },
+    Modelo: { type: String, required: false },
+    Color: { type: String, required: false },
   }],
   profileImage: { type: String, required: false }, // Cambio del nombre del campo a algo más descriptivo
 }, { 
-  collection: 'Usuarios',
+  collection: 'usuarios',
   timestamps: true // Agrega `createdAt` y `updatedAt` automáticamente
 });
 
