@@ -1,8 +1,8 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import transporter from '@/utils/GmailRes'; // Asegúrate de que la ruta sea correcta
+import transporter from '@/utils/GmailRes';
 
 export async function POST(req: Request) {
-    const { email, subject, message } = await req.json(); // Asegúrate de que sea un POST
+    const { email, subject, message } = await req.json();
 
     // Validación de entradas
     if (!email || !subject || !message) {
