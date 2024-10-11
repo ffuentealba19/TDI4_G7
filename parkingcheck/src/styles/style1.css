@@ -183,4 +183,85 @@ form a:hover {
 }
 
 
+.parking-map {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 1280px;
+  height: 720px;
+  background-color: #bbbbbb;
+  margin: 0 auto;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.parking-lane {
+  background-color: #ffc107;
+  display: flex;
+  flex-direction: column;
+  height: 550px;
+  width: 150px;
+  border: 1px solid black;
+  margin: 5px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.parking-spot {
+  background-color: rgba(117, 249, 115, 0.753);
+  border: 1px solid rgb(0, 0, 0);  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer; 
+  flex-grow: 0; 
+}
+
+.parking-spot.selected {
+  background-color: yellow;
+}
+
+#E, #D {
+  height: 495px;
+  margin-top: 5%;
+}
+
+.parking-spot.used {
+  background-color: rgb(253, 42, 42);
+}
+
+.empty-space {
+  width: 25%;
+}
+
+.parking-lane:after {
+  content: attr(id);
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+}
+
+.reserveButton {
+  color: #f0f0f0;
+  width: 250px;
+  height: 50px;
+  margin: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 25px;
+}
+
+.centralReserve {
+  display: flex;
+  margin: 5px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 
