@@ -1,3 +1,4 @@
+// src/app/api/login/route.ts
 import { run } from "@/libs/mongodb";
 import { NextRequest, NextResponse } from "next/server";
 import { messages } from "@/utils/messages";
@@ -5,6 +6,7 @@ import User from "@/models/users";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
+
 export async function POST(req: NextRequest) {
     try {
         await run();
@@ -32,18 +34,26 @@ export async function POST(req: NextRequest) {
         }
 
         const token = jwt.sign(
-            { userId: UserFind._id, email: UserFind.UserEmail },
+            { userId: UserFind._id, email: UserFind.UserEmail, userName: UserFind.userName, vip: UserFind.vip },
             process.env.JWT_SECRET || 'default_secret',
             { expiresIn: '8h' }
         );
-        const galleta = cookies()
-        galleta.set("token",token)
 
-        return NextResponse.json({
+        // Establecer la cookie
+        const response = NextResponse.json({
             message: 'Inicio de sesión exitoso',
-            token,
             redirectUrl: '/reservar',
         }, { status: 200 });
+        
+        // Configurar la cookie en la respuesta
+        response.cookies.set("token", token, {
+            path: '/',
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+        });
+
+        return response;
 
     } catch (error) {
         console.error("Error en la operación:", error);

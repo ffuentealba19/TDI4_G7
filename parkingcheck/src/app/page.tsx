@@ -6,13 +6,8 @@ import '../styles/style1.css';
 
 export default function Login() {
     const [showRegisterElements, setShowRegisterElements] = useState(false);
-    const [showMenu, setShowMenu] = useState(false);
     const router = useRouter();
     
-
-    const toggleMenu = () => setShowMenu(!showMenu);
-  
-
     const showRegisterForm = () => {
         setShowRegisterElements(true);
     };
@@ -44,9 +39,11 @@ export default function Login() {
             const result = await response.json();
 
             if (response.ok) {
-                console.log('Registro Exitoso');
+                console.log('Éxito:', result);
+                router.push(result.redirectUrl);
             } else {
-                console.log(`Error: ${result.error || 'Algo ha salido mal'}`);
+                console.log(`Error: ${result.message || 'Algo ha salido mal'}`);
+                alert(result.message || 'Algo ha salido mal'); // Mostrar un mensaje de error al usuario
             }
         } catch (error) {
             console.error('Error:', error);
@@ -90,34 +87,6 @@ export default function Login() {
 
     return (
         <div>
-            <header className="bg-sky-500 text-white dark:bg-sky-550 lg:text-left">
-                <div className="flex items-center justify-between border-b-2 border-sky-200 p-2 dark:border-sky-400">
-                    <div className="flex items-center space-x-4 text-3xl font-extrabold">
-                        <img src="/Logo_UCT.webp" alt="Avatar" className="w-20 rounded-full" />
-                        <p>PARKING CHECK</p>
-                    </div>
-                    {}
-                    <div className="relative menu-container">
-                        <button 
-                            className="menu-button p-3 rounded-full hover:bg-blue-700" 
-                            onClick={() => {
-                                console.log("Menu button clicked");
-                                toggleMenu();
-                            }}
-                        >
-                            &#9776; {}
-                        </button>
-                        {showMenu && (
-                            <div className="menu-dropdown">
-                                <a href="/Perfil" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Mi Perfil</a>
-                                <a href="/reservar" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Reservar Estacionamiento</a>
-                                <a href="/report" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Reporte</a>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </header>
-
             <main className="main">
                 <div className="logo-container">
                     <Image 

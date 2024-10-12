@@ -10,8 +10,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   return (
     <>
-      <header className="bg-sky-500 text-white dark:bg-sky-550 lg:text-left">
-        <div className="flex items-center justify-between border-b-2 border-sky-200 p-2 dark:border-sky-400">
+      <header className="bg-[#5785A4] text-white dark:bg-[#5785A4] lg:text-left">
+        <div className="flex items-center justify-between border-b-2 border-[#5785A4] p-2 dark:border-[#5785A4]">
           <div className="flex items-center space-x-4 text-3xl font-extrabold">
             <img src="/Logo_UCT.webp" alt="Avatar" className="w-20 rounded-full" />
             <p>PARKING CHECK</p>

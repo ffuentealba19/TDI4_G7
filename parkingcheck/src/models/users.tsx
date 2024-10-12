@@ -10,6 +10,7 @@ export interface IUser extends Document {
     Modelo: string;
   }[];
   url: string;
+  vip: boolean;
 }
 
 // Definición del esquema del usuario
@@ -21,7 +22,8 @@ const userSchema = new Schema<IUser>({
     Placa: String,
     Modelo: String,
   }],
-  url: {type: String, required: false}
+  url: {type: String, required: false},
+  vip: {type: Boolean, required: false, default: false},
 }, {
   collection: 'usuarios',
   timestamps: true,

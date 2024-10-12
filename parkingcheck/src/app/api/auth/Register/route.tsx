@@ -5,7 +5,6 @@ import { isValidEmail } from "@/utils/isValidEmail";
 import User from "@/models/users"; 
 import bcrypt from 'bcryptjs';
 import jwt from "jsonwebtoken";
-import { url } from "inspector";
 
 export async function POST(req: NextRequest) {
   try {
@@ -45,8 +44,8 @@ export async function POST(req: NextRequest) {
       UserEmail,
       UserPass: HashedPass,
       url: "https://res.cloudinary.com/dhlfth3i0/image/upload/v1727491033/i6sxdq4xgfkti4hnidot.jpg",
+      vip: false,
     });
-
     await newUser.save(); 
 
     const JWT_SECRET = process.env.JWT_SECRET;
@@ -63,6 +62,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       message: 'Registro exitoso',
       token,
+      redirectUrl: '/reservar',
     }, { status: 200 });
 
   } catch (error) {
