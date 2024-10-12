@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import '../styles/style1.css';
+import { Navbar } from './components/Navbar';
 
 export default function Login() {
     const [showRegisterElements, setShowRegisterElements] = useState(false);
@@ -87,6 +88,11 @@ export default function Login() {
 
     return (
         <div>
+<<<<<<< HEAD
+=======
+            <Navbar/>
+
+>>>>>>> 290c266a9d50090b60373c89e1d5e7ecec404073
             <main className="main">
                 <div className="logo-container">
                     <Image 

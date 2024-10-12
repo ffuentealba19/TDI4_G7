@@ -42,7 +42,12 @@ export async function POST(req: NextRequest) {
         // Establecer la cookie
         const response = NextResponse.json({
             message: 'Inicio de sesión exitoso',
+<<<<<<< HEAD
             redirectUrl: '/reservar',
+=======
+            token,
+            redirectUrl: '/Home',
+>>>>>>> 290c266a9d50090b60373c89e1d5e7ecec404073
         }, { status: 200 });
         
         // Configurar la cookie en la respuesta

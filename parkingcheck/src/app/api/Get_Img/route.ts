@@ -10,7 +10,7 @@ export async function GET() {
     const token = String(galleta.get("token")?.value)
     const secret = String(process.env.JWT_SECRET) 
     const user =  verify(token, secret )
-    const id= String(user.userId)
+    const id = String(user.userId)
     const usuario = await User.findById(id)
     const url = usuario.url
     return NextResponse.json({

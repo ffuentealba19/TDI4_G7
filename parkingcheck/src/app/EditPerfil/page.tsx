@@ -1,7 +1,7 @@
 import { Navbar } from "../components/Navbar";
 
-export default function report(){
-    return(
+export default function EditMyProfile() { 
+    return (
         <div>
             <Navbar/>
         </div>

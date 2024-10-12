@@ -35,7 +35,6 @@ export async function POST(req: NextRequest) {
 
         console.log(response);
 
-        // Obtener el token de las cookies
         const galleta = cookies();
         const token = galleta.get("token")?.value;
 
@@ -48,7 +47,7 @@ export async function POST(req: NextRequest) {
             throw new Error("JWT_SECRET not set in environment variables");
         }
 
-        // Verificar el token
+
         const user = verify(token, secret) as { userId: string };
 
         const id = user.userId;
@@ -56,7 +55,7 @@ export async function POST(req: NextRequest) {
             url: response.secure_url,
         };
 
-        // Conectar a la base de datos y actualizar el usuario
+
         await run();
         const usuario = await User.findByIdAndUpdate(id, dataurl, { new: true });
 
