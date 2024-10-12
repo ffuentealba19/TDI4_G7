@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 "use client"; 
 import { redirect } from 'next/dist/server/api-utils';
-=======
-import { Navbar } from '../components/Navbar';
->>>>>>> 290c266a9d50090b60373c89e1d5e7ecec404073
 import '../../styles/style1.css';
 import Image from 'next/image';
 
@@ -12,7 +8,6 @@ export default function Guest() {
 
   }
   return (
-<<<<<<< HEAD
     <main className="main">
     <div className="logo-container">
             <Image 
@@ -25,10 +20,6 @@ export default function Guest() {
             />
         </div>
     <div className='flex items-center justify-center h-screen'>
-=======
-    <div>
-      <Navbar/>
->>>>>>> 290c266a9d50090b60373c89e1d5e7ecec404073
       <div id="RegisterForm" className="container">
         <h2 className="title">Registro de Invitados</h2>
         <form className="form" onSubmit={redirect}>
@@ -51,11 +42,7 @@ export default function Guest() {
           <a href="../" className="link">volver</a>
         </form>
       </div>
-<<<<<<< HEAD
       </div>
       </main>
-=======
-    </div>
->>>>>>> 290c266a9d50090b60373c89e1d5e7ecec404073
   );
 }

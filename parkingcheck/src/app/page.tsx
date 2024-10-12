@@ -88,11 +88,6 @@ export default function Login() {
 
     return (
         <div>
-<<<<<<< HEAD
-=======
-            <Navbar/>
-
->>>>>>> 290c266a9d50090b60373c89e1d5e7ecec404073
             <main className="main">
                 <div className="logo-container">
                     <Image 

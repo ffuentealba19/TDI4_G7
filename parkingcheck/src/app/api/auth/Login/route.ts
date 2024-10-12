@@ -34,30 +34,21 @@ export async function POST(req: NextRequest) {
         }
 
         const token = jwt.sign(
-            { userId: UserFind._id, email: UserFind.UserEmail, userName: UserFind.userName, vip: UserFind.vip },
+            { userId: UserFind._id, email: UserFind.UserEmail, username: UserFind.UserName, vip: UserFind.vip },
             process.env.JWT_SECRET || 'default_secret',
             { expiresIn: '8h' }
         );
+        const galleta = cookies()
+        galleta.set("token",token)
+        galleta.set("username", UserFind.UserName);
 
-        // Establecer la cookie
         const response = NextResponse.json({
             message: 'Inicio de sesión exitoso',
-<<<<<<< HEAD
-            redirectUrl: '/reservar',
-=======
             token,
-            redirectUrl: '/Home',
->>>>>>> 290c266a9d50090b60373c89e1d5e7ecec404073
+            
+            redirectUrl: '/reservar',
         }, { status: 200 });
         
-        // Configurar la cookie en la respuesta
-        response.cookies.set("token", token, {
-            path: '/',
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax',
-        });
-
         return response;
 
     } catch (error) {

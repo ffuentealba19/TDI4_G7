@@ -1,6 +1,5 @@
 "use client"; 
 import '../../styles/style1.css';
-<<<<<<< HEAD
 import Image from 'next/image';
 
 export default function LostmyPassword() {
@@ -19,17 +18,6 @@ export default function LostmyPassword() {
             <div className="flex items-center justify-center h-screen">
                 <div id="RegisterForm"className="container">
                 <h1 className="title">¿Olvidaste tu contraseña?</h1>
-=======
-import { Navbar } from '../components/Navbar';
-
-export default function LostmyPassword() {
-    return (
-        <div>
-            <Navbar/>
-            <div className="main">
-                <div className="container">
-                    <h1 className="title">¿Olvidaste tu contraseña?</h1>
->>>>>>> 290c266a9d50090b60373c89e1d5e7ecec404073
                     <p>Aquí puedes restablecer tu contraseña épicamente.</p>
                     <form className="form">
                         <input
@@ -44,13 +32,7 @@ export default function LostmyPassword() {
                     ¿Recordaste tu contraseña? <a href="../" className="link">Inicia sesión</a>
                 </p>
             </div>
-<<<<<<< HEAD
             </div>
         </main>
-=======
-        </div>
-
-        
->>>>>>> 290c266a9d50090b60373c89e1d5e7ecec404073
     );
 }
