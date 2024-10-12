@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-// Definición de la interfaz para el usuario
+
 export interface IUser extends Document {
   UserName: string;
   UserEmail: string;
