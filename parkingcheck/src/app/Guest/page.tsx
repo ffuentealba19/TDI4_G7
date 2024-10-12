@@ -1,9 +1,10 @@
-import ClientLayout from '../layout-client'; 
+import { Navbar } from '../components/Navbar';
 import '../../styles/style1.css';
 
 export default function Guest() {
   return (
-    <ClientLayout>
+    <div>
+      <Navbar/>
       <div id="RegisterForm" className="container">
         <h2 className="title">Registro de Invitados</h2>
         <form className="form">
@@ -25,6 +26,6 @@ export default function Guest() {
           <button className="button">Registrarse</button>
         </form>
       </div>
-    </ClientLayout>
+    </div>
   );
 }

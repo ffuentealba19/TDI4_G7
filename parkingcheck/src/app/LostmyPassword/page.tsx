@@ -1,10 +1,11 @@
 "use client"; 
-import ClientLayout from '../layout-client'; 
 import '../../styles/style1.css';
+import { Navbar } from '../components/Navbar';
 
 export default function LostmyPassword() {
     return (
-        <ClientLayout>
+        <div>
+            <Navbar/>
             <div className="main">
                 <div className="container">
                     <h1 className="title">¿Olvidaste tu contraseña?</h1>
@@ -23,6 +24,8 @@ export default function LostmyPassword() {
                     </p>
                 </div>
             </div>
-        </ClientLayout>
+        </div>
+
+        
     );
 }

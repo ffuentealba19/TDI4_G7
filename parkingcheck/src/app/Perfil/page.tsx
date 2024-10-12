@@ -1,11 +1,12 @@
 'use client';
 import { useState } from "react";
-import ClientLayout from '../layout-client'; 
+import { Navbar } from "../components/Navbar";
 import '../../styles/style1.css';
 
 export default function Upload() {
     return (
-        <ClientLayout> 
+        <div>
+            <Navbar/>
             <div className="main">
                 <div className="container">
                     <h1 className="title">MI PERFIL</h1>
@@ -21,6 +22,7 @@ export default function Upload() {
                         </button>
                 </div>
             </div>
-        </ClientLayout>
+        </div>
+            
     );
 }

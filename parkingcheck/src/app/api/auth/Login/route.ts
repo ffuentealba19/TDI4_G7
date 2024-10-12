@@ -43,7 +43,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({
             message: 'Inicio de sesión exitoso',
             token,
-            redirectUrl: '/reservar',
+            redirectUrl: '/Home',
         }, { status: 200 });
 
     } catch (error) {

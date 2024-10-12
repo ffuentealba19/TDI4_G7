@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 
 const ParkingMap = () => {
-  // Estado para la plaza seleccionada
   const [selectedSpot, setSelectedSpot] = useState<string | null>(null);
 
 
