@@ -257,3 +257,33 @@ form a:hover {
   justify-content: center;
 }
 
+.Profile-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-EditProfile {
+  display: flex;
+  width: 100%; 
+  max-width: 1200px;
+  height: auto; 
+  background-color: #ffffff;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); 
+  border-radius: 8px;
+  margin-top: 5%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.Changer-div{
+  padding: 10px;
+  width: 100%;
+  max-width: 1160px;
+  display: flex;
+  justify-content: space-between;
+}

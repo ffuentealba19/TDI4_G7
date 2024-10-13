@@ -42,7 +42,7 @@ export default function Upload() {
     }, [router]);
     
     const changeVip = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault(); // Previene que el formulario se envíe por defecto
+        e.preventDefault(); 
         try {
             const token = document.cookie.split('; ').find(row => row.startsWith('token='));
             const tokenValue = token ? token.split('=')[1] : null;
@@ -96,9 +96,10 @@ export default function Upload() {
     };
 
     return (
-
+        <div>
+            <Navbar></Navbar>
             <div className="main">
-                <Navbar/>
+                
                 <div className="container">
                     <h1 className="title">MI PERFIL</h1>
                     <h2 className='font-bold'>Bienvenido, {UserName}!</h2>
@@ -129,6 +130,6 @@ export default function Upload() {
                     </form> 
                 </div>
             </div>
-
+        </div>
     );
 }
