@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import Popup from './Popup'; // Asegúrate de importar el componente Popup
+import Popup from './Popup'; 
 
 const EditInfo = () => {
     const [userInfo, setUserInfo] = useState(null); 
