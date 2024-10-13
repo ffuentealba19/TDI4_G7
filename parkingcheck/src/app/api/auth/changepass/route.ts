@@ -3,11 +3,11 @@ import bcrypt from 'bcryptjs';
 import { run } from '@/libs/mongodb';
 import User from '@/models/users';
 
-// Manejar el método POST
+
 export async function POST(req: NextRequest) {
   const { email, newPassword, confirmPassword } = await req.json();
 
-  // Verificar que los datos sean correctos
+
   if (!email || !newPassword || !confirmPassword) {
     return NextResponse.json({ message: 'Email, nueva contraseña y confirmación de contraseña son requeridos' }, { status: 400 });
   }
@@ -17,19 +17,18 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    await run();  // Conectar a MongoDB
+    await run();  
 
-    // Encontrar al usuario por su correo
+
     const user = await User.findOne({ UserEmail: email });
     
     if (!user) {
       return NextResponse.json({ message: 'Usuario no encontrado' }, { status: 404 });
     }
 
-    // Hashear la nueva contraseña
     const hashedPassword = await bcrypt.hash(newPassword, 10);
 
-    // Actualizar la contraseña del usuario
+
     user.UserPass = hashedPassword;
     await user.save();
 

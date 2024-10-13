@@ -13,11 +13,8 @@ export async function GET() {
     const id = String(user.userId)
     const usuario = await User.findById(id)
     const url = usuario.url
+    
     return NextResponse.json({
         ImgUrl: url,
-    });
-
-
-    
-    
+    });   
 }
