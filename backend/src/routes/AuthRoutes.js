@@ -138,25 +138,26 @@ router.get('/profile', middleware, async (req, res) => {
 
 // Ruta para registrar un nuevo usuario
 router.post('/register', async (req, res) => {
-    const { email, password, UserName } = req.body;
+    const { UserName, UserEmail, UserPass } = req.body;
+    console.log(req.body)
 
   // Validar que todos los campos estén presentes
-  if (!UserName || !email || !password) {
+  if (!UserName || !UserEmail || !UserPass) {
     return res.status(400).send({ error: 'Todos los campos son obligatorios' });
   }
 
   try {
     // Verifica si el usuario ya existe
-    const existingUser = await User.findOne({ UserEmail: email });
+    const existingUser = await User.findOne({ UserEmail });
     if (existingUser) {
       return res.status(400).send({ error: 'El usuario ya existe' });
     }
    
     // Crear nuevo usuario
-    const user = new User({ UserName, UserEmail: email, UserPass: password});
+    const user = new User({ UserName, UserEmail, UserPass});
     
     await user.save();
-    console.log(hashedPassword)
+    
     res.status(201).send({ message: 'Usuario registrado exitosamente' });
   } catch (err) {
     res.status(500).send({ error: 'Error al registrar el usuario' });
@@ -165,24 +166,24 @@ router.post('/register', async (req, res) => {
 
 // Ruta para autenticar un usuario (login)
 router.post('/login', async (req, res) => {
-  const { email, password } = req.body;
+  const { UserEmail, UserPass } = req.body;
   
   // Validar que los campos no estén vacíos
-  if (!email || !password) {
+  if (!UserEmail || !UserPass) {
     return res.status(400).send({ error: 'Todos los campos son obligatorios' });
   }
 
   try {
-    const user = await User.findOne({ UserEmail : email });
+    const user = await User.findOne({ UserEmail});
     
     if (!user) {
       return res.status(401).send({ error: 'Email incorrecto' });
     }
 
-    const isMatch = await bcrypt.compare(password, user.UserPass);
+    const isMatch = await bcrypt.compare(UserPass, user.UserPass);
     if (!isMatch) {
       
-      console.log(user.UserPass)
+      
       return res.status(401).send({ error: 'Contraseña incorrecta' });
     }
 

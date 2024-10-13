@@ -29,10 +29,11 @@ export const getUserProfile = async () => {
 
 // Función para registrar usuario
 export const registerUser = async (username: string, email: string, password: string) => {
+  console.log({ username, email, password });
   const response = await apiClient.post('/register', { 
     UserName: username,  // Cambiado a UserName
-    email: email,        // Cambiado a UserEmail
-    password: password   // Cambiado a UserPass
+    UserEmail: email,        // Cambiado a UserEmail
+    UserPass: password   // Cambiado a UserPass
   });
   return response.data;
 };
