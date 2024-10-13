@@ -11,11 +11,16 @@ export const messages = {
         LoginError : "No se ha podido iniciar sesion",
         NotAuthorised : "No tiene acceso",
         InternalServerError : "Error del servidor",
-        InvalidToken : "Token no valido"
+        InvalidToken : "Token no valido",
+        userNotFound : "Usuario no encontrado",
+        tokenExpired : "Token expirado",
+        somethingWentWrong : "Error algo ha ocurrido",
+        tokenNotFound : "Token no encontrado"       
     },
     success : {
         UserCreated : "Se ha podido registrar con exito",
-        SuccesLogin : "Se ha iniciado sesion"
+        SuccesLogin : "Se ha iniciado sesion",
+        tokenValid : "Token valido"
     }
 
 }

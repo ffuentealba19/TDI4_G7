@@ -1,9 +1,9 @@
 "use client";
-import ClientLayout from '../layout-client';
 import '../../styles/style1.css';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import jwt from 'jsonwebtoken';
+import { Navbar } from '../components/Navbar';
 
 export default function Upload() {
     const [UserName, setUserName] = useState('');
@@ -96,8 +96,9 @@ export default function Upload() {
     };
 
     return (
-        <ClientLayout>
+
             <div className="main">
+                <Navbar/>
                 <div className="container">
                     <h1 className="title">MI PERFIL</h1>
                     <h2 className='font-bold'>Bienvenido, {UserName}!</h2>
@@ -128,6 +129,6 @@ export default function Upload() {
                     </form> 
                 </div>
             </div>
-        </ClientLayout>
+
     );
 }

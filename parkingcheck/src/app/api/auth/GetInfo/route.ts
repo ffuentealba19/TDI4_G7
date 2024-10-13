@@ -1,77 +1,59 @@
-import { NextRequest, NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
+import { NextResponse } from "next/server";
+import jwt, { JwtPayload } from "jsonwebtoken"; 
 import { run } from '@/libs/mongodb';
-import User from '@/models/users';  
+import User from '@/models/users';
+import { cookies } from "next/headers";
+import { messages } from "@/utils/messages"; 
 
-
-async function verifyToken(req: NextRequest) {
-  const authHeader = req.headers.get("authorization");
-
-  if (!authHeader) {
-    return { error: "Token no proporcionado", status: 401 };
-  }
-
-  const token = authHeader.split(" ")[1];
-
-  if (!token) {
-    return { error: "Token no válido", status: 401 };
-  }
-
- 
-  const secret = process.env.JWT_SECRET;
-
-  if (!secret) {
-    return { error: "Falta la clave secreta para verificar el token", status: 500 };
-  }
-
+export async function GET() {
   try {
-    const decoded = jwt.verify(token, secret);  
-    return { decoded };
-  } catch (error) {
-    return { error: "Token inválido o expirado", status: 401 };
-  }
-}
+    const galleta = cookies();
+    const token = galleta.get('token')?.value; 
 
-export async function GET(req: NextRequest): Promise<NextResponse> {
-  try {
-    // Verificar el token JWT
-    const tokenVerification = await verifyToken(req);
-    if (tokenVerification.error) {
-      return NextResponse.json({ error: tokenVerification.error }, { status: tokenVerification.status });
+    // Si no hay token, devolvemos un error
+    if (!token) {
+      return NextResponse.json({ error: messages.error.tokenNotFound || 'Token no encontrado' }, { status: 401 });
     }
 
-    const userId = tokenVerification.decoded.id; 
+    // Verificar el token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'default_secret');
 
-    // Conectar a MongoDB
+    
+    if (typeof decoded === 'string' || !('userId' in decoded)) {
+      return NextResponse.json({ error: messages.error.InvalidToken || 'Token inválido' }, { status: 401 });
+    }
+
+    const { userId } = decoded as JwtPayload;  
+
+    
     await run();
 
+   
+    const UserFind = await User.findById(userId);
 
-    const user = await User.findById(userId).select("-UserPass"); 
-
-    if (!user) {
-      return NextResponse.json({ error: "Usuario no encontrado" }, { status: 404 });
+    
+    if (!UserFind) {
+      return NextResponse.json({ error: messages.error.userNotFound || 'Usuario no encontrado' }, { status: 404 });
     }
 
+    
+    return NextResponse.json({ message: messages.success.tokenValid || 'Token válido', user: UserFind });
+    
+  } catch (err) {
+    
+    if (err instanceof Error) {
+      console.error('Error al verificar el token:', err);
 
-    const userData = {
-      nombre: user.UserName,
-      correo: user.UserEmail,
-      vehiculos: user.Vehiculos?.map(vehiculo => ({
-        placa: vehiculo.Placa,
-        modelo: vehiculo.Modelo
-      })),
-      url: user.url,
-    };
+      if (err.name === 'TokenExpiredError') {
+        return NextResponse.json({ error: messages.error.tokenExpired || 'Token expirado' }, { status: 401 });
+      }
 
+      if (err.name === 'JsonWebTokenError') {
+        return NextResponse.json({ error: messages.error.InvalidToken || 'Token inválido' }, { status: 401 });
+      }
+    }
 
-    return NextResponse.json({
-      success: true,
-      message: "Datos del usuario obtenidos correctamente",
-      data: userData
-    });
-
-  } catch (error) {
-    console.error("Error en la solicitud:", error);
-    return NextResponse.json({ error: "Error interno del servidor" }, { status: 500 });
+    
+    return NextResponse.json({ error: messages.error.somethingWentWrong || 'Algo salió mal' }, { status: 500 });
   }
 }

@@ -1,9 +1,9 @@
 // app/reservar/page.tsx
 "use client";
 import { useEffect, useState } from 'react';
-import ClientLayout from '../layout-client'; 
 import { useRouter } from 'next/navigation';
 import jwt from 'jsonwebtoken';
+import { Navbar } from '../components/Navbar';
 
 export default function UserReservation() {
     const [isVip, setIsVip] = useState<boolean | null>(null);
@@ -30,7 +30,8 @@ export default function UserReservation() {
     }, [router]);
 
     return (
-        <ClientLayout>
+        <div>
+            <Navbar/>
             {isVip ? (
                 <div>
                     <h1>VIP osea sos crack</h1> {/*Dentro de este div se pone el apartado vip*/}
@@ -40,6 +41,7 @@ export default function UserReservation() {
                     <h1>NO VIP ja tonto qlo</h1>{/*Dentro de este div se pone el apartado no vip*/}
                 </div>
             )}
-        </ClientLayout>
+
+        </div>
     );
 }

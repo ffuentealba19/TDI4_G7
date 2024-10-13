@@ -88,6 +88,7 @@ export default function Login() {
 
     return (
         <div>
+            <Navbar/>
             <main className="main">
                 <div className="logo-container">
                     <Image 

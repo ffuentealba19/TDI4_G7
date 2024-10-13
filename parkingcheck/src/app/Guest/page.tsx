@@ -1,7 +1,6 @@
 "use client"; 
-import { redirect } from 'next/dist/server/api-utils';
 import '../../styles/style1.css';
-import Image from 'next/image';
+import { Navbar } from '../components/Navbar';
 
 export default function Guest() {
   const redirect =async (event: React.FormEvent<HTMLFormElement>) => {
@@ -9,16 +8,7 @@ export default function Guest() {
   }
   return (
     <main className="main">
-    <div className="logo-container">
-            <Image 
-                src="/Logo_UCT.webp"
-                alt="Logo UCT"
-                width={700}
-                height={700}
-                className="logo-image"
-                style={{ opacity: 0.5 }}
-            />
-        </div>
+    <Navbar/>
     <div className='flex items-center justify-center h-screen'>
       <div id="RegisterForm" className="container">
         <h2 className="title">Registro de Invitados</h2>
