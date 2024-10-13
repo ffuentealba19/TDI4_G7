@@ -31,10 +31,9 @@ const EditInfo = () => {
         <div className="main-EditProfile">
             <h1>Información del usuario</h1>
             
-            {/* Muestra el mensaje de error, si existe */}
+
             {error && <div className="text-red-500">{error}</div>}
 
-            {/* Verifica si hay información del usuario y muéstrala */}
             {userInfo ? (
                 <>
                     <div className="Changer-div">
@@ -57,7 +56,7 @@ const EditInfo = () => {
                     </div>
                 </>
             ) : (
-                <div>Cargando información del usuario...</div> // Mensaje mientras se carga la información
+                <div>Cargando información del usuario...</div>
             )}
         </div>
     );
