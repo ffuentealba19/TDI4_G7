@@ -139,7 +139,7 @@ router.get('/profile', middleware, async (req, res) => {
 // Ruta para registrar un nuevo usuario
 router.post('/register', async (req, res) => {
     const { UserName, UserEmail, UserPass } = req.body;
-    console.log(req.body)
+    
 
   // Validar que todos los campos estén presentes
   if (!UserName || !UserEmail || !UserPass) {
