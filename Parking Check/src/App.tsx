@@ -116,7 +116,7 @@ const App: React.FC = () => (
               <Route exact path="/ForgotPassword">
                 <ForgotPassword />
               </Route>
-              
+              <Route exact path="/" render={()=> <Redirect to="/login" />}></Route>
               {/* Rutas privadas */}
               <PrivateRoute exact path="/edit-profile">
                 <EditProfile />
