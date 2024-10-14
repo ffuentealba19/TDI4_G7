@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const middleware = require('../middleware/AuthMiddleware');
 const multer = require('multer'); // Para manejar archivos
 const { v2: cloudinary } = require('cloudinary'); // Cloudinary
+const bcrypt = require('bcrypt');
 
 // Ruta para obtener todos los estacionamientos
 router.get('/parkings', async (req, res) => {
@@ -166,30 +167,40 @@ router.post('/register', async (req, res) => {
 
 // Ruta para autenticar un usuario (login)
 router.post('/login', async (req, res) => {
-  const { UserEmail, UserPass } = req.body;
-  
-  // Validar que los campos no estén vacíos
-  if (!UserEmail || !UserPass) {
-    return res.status(400).send({ error: 'Todos los campos son obligatorios' });
-  }
-
   try {
-    const user = await User.findOne({ UserEmail});
-    
+    // Verifica qué datos están llegando en el body
+    console.log('Datos recibidos en /login:', req.body);
+
+    const { UserEmail, UserPass } = req.body;
+
+    // Validar que los campos no estén vacíos
+    if (!UserEmail || !UserPass) {
+      console.log('Faltan campos en la solicitud'); // Log para indicar que faltan campos
+      return res.status(400).send({ error: 'Todos los campos son obligatorios' });
+    }
+
+    // Buscar al usuario por su email
+    const user = await User.findOne({ UserEmail });
     if (!user) {
+      console.log('Email incorrecto:', UserEmail); // Log para indicar que no se encontró el usuario
       return res.status(401).send({ error: 'Email incorrecto' });
     }
 
+    // Comparar la contraseña
     const isMatch = await bcrypt.compare(UserPass, user.UserPass);
     if (!isMatch) {
-      
-      
+      console.log('Contraseña incorrecta para el usuario:', UserEmail); // Log para indicar que la contraseña es incorrecta
       return res.status(401).send({ error: 'Contraseña incorrecta' });
     }
 
+    // Generar el token JWT
     const token = jwt.sign({ userId: user._id }, 'SECRET_KEY', { expiresIn: '1h' });
+    console.log('Token generado:', token); // Log del token generado
+    
+    // Enviar el token como respuesta
     res.send({ token });
   } catch (err) {
+    console.error('Error en el servidor durante /login:', err.message); // Log del error del servidor
     res.status(500).send({ error: 'Error en el servidor' });
   }
 });

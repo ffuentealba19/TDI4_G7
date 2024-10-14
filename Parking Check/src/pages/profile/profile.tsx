@@ -31,12 +31,12 @@ const Perfil: React.FC = () => {
         const response = await getUserProfile(); // Llama a la función para obtener el perfil
         setUserData(response); // Guarda los datos del usuario
       } catch (error) {
-        console.error(error);
+        console.error('Error al cargar el perfil:', error);
       } finally {
         setLoading(false); // Finaliza la carga
       }
     };
-
+  
     fetchUserProfile();
   }, []);
 
