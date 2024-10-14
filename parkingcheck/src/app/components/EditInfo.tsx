@@ -38,6 +38,106 @@ const EditInfo = () => {
         setPopupContent(null);
     };
 
+    const handleChangeName = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const newName = event.currentTarget.NewName.value;
+        const userPass = event.currentTarget.UserPass.value;
+
+        try {
+            const response = await fetch('/api/auth/changeName', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ NewName: newName, UserPass: userPass }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al cambiar el nombre');
+            }
+
+            const data = await response.json();
+            setUserInfo(data.user); 
+            closePopup();
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    const handleChangeEmail = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const newEmail = event.currentTarget.NewEmail.value;
+        const userPass = event.currentTarget.UserPass.value;
+
+        try {
+            const response = await fetch('/api/auth/changeEmail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ NewEmail: newEmail, UserPass: userPass }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al cambiar el email');
+            }
+
+            const data = await response.json();
+            setUserInfo(data.user); 
+            closePopup();
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    const handleChangePassword = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const newPass = event.currentTarget.NewPass.value;
+        const userPass = event.currentTarget.UserPass.value;
+
+        try {
+            const response = await fetch('/api/auth/changeMypass', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ NewPass: newPass, UserPass: userPass }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al cambiar la contraseña');
+            }
+
+            closePopup();
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    const handleDeleteAccount = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const userPass = event.currentTarget.UserPass.value; 
+    
+        try {
+            const response = await fetch('/api/auth/deleteAccount', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ UserPass: userPass }), 
+            });
+    
+            if (!response.ok) {
+                throw new Error('Error al eliminar la cuenta');
+            }
+    
+            // Redirigir al usuario o cerrar sesión después de eliminar la cuenta
+            closePopup(); 
+        } catch (err) {
+            setError(err.message); 
+        }
+    };
+
     return (
         <div className="main-EditProfile">
             <h1 className="font-bold p-3 text-lg">Información del usuario</h1>
@@ -53,9 +153,9 @@ const EditInfo = () => {
                         <button onClick={() => openPopup(
                             'Cambiar nombre',
                              <div>
-                                <form action="">
+                                <form onSubmit={handleChangeName}>
                                     <input type="text" name="NewName" id="NewName" placeholder="Por favor ingrese el nuevo nombre" required/>
-                                    <input type="text" name="UserPass" id="UserPass" placeholder="Por favor ingrese la contraseña actual" required/>
+                                    <input type="password" name="UserPass" id="UserPass" placeholder="Por favor ingrese la contraseña actual" required/>
                                     <button type='submit'>Cambiar</button>
                                 </form>
                              </div>
@@ -67,9 +167,9 @@ const EditInfo = () => {
                         <button onClick={() => openPopup(
                             'Cambiar email', 
                             <div>
-                                <form action="">
-                                    <input type="text" name="NewName" id="NewName" placeholder="Por favor ingrese el nuevo email" required/>
-                                    <input type="text" name="UserPass" id="UserPass" placeholder="Por favor ingrese la contraseña actual" required/>
+                                <form onSubmit={handleChangeEmail}>
+                                    <input type="email" name="NewEmail" id="NewEmail" placeholder="Por favor ingrese el nuevo email" required/>
+                                    <input type="password" name="UserPass" id="UserPass" placeholder="Por favor ingrese la contraseña actual" required/>
                                     <button type='submit'>Cambiar</button>
                                 </form>
                             </div>
@@ -83,23 +183,27 @@ const EditInfo = () => {
                         <button onClick={() => openPopup(
                             'Cambiar contraseña', 
                             <div>
-                                <form action="">
-                                    <input type="text" name="NewName" id="NewName" placeholder="Por favor ingrese la nueva contraseña" required/>
-                                    <input type="text" name="UserPass" id="UserPass" placeholder="Por favor ingrese la antigua contraseña" required/>
+                                <form onSubmit={handleChangePassword}>
+                                    <input type="password" name="NewPass" id="NewPass" placeholder="Por favor ingrese la nueva contraseña" required/>
+                                    <input type="password" name="UserPass" id="UserPass" placeholder="Por favor ingrese la antigua contraseña" required/>
                                     <button type='submit'>Cambiar</button>
                                 </form>
                             </div>
-                    )} className="font-bold p-3 text-lg bg-[#e18432] text-white rounded-xl">Cambiar mi contraseña</button>
-                        <button onClick={() => openPopup(
-                            'Cambiar foto de perfil', 
-                            <div>Stand BY</div>
-                            )} className="font-bold p-3 text-lg bg-sky-500 text-white rounded-xl">Cambiar mi foto de perfil</button>
+
+                    )} className="font-bold p-3 text-lg bg-sky-500 text-white rounded-xl">Cambiar mi contraseña</button>
+                    <button onClick={() => openPopup(
+                            'Cambiar foto', 
+                            <div>
+                                STANDBY
+                            </div>
+
+                    )} className="font-bold p-3 text-lg bg-[#e18432] text-white rounded-xl">Cambiar foto de perfil</button>
                         <button onClick={() => openPopup(
                             'Eliminar cuenta', 
                             <div>
-                                <form action="">
-                                    <input type="text" name="UserPass" id="UserPass" placeholder="Por favor ingrese la actual contraseña" required/>
-                                    <button type="submit">ELIMINAR  </button>
+                                <form onSubmit={handleDeleteAccount}>
+                                    <input type="password" name="UserPass" id="UserPass" placeholder="Por favor ingrese la contraseña actual" required/>
+                                    <button type="submit">ELIMINAR</button>
                                 </form>
                             </div>
                             )} className="font-bold p-3 text-lg bg-[#e13232] text-white rounded-xl">Eliminar mi cuenta</button>

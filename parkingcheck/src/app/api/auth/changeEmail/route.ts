@@ -20,29 +20,27 @@ export async function POST(req: NextRequest) {
         }
 
         const { userId } = decoded as { userId: string };
-        const { NewName, UserPass } = await req.json();
+        const { NewEmail, UserPass } = await req.json();
 
         await run();
-
 
         const user = await User.findById(userId);
         if (!user) {
             return NextResponse.json({ error: 'Usuario no encontrado' }, { status: 404 });
         }
 
-
+        // Verifica la contraseña utilizando bcrypt
         const isPasswordValid = await bcrypt.compare(UserPass, user.UserPass);
         if (!isPasswordValid) {
             return NextResponse.json({ error: 'Contraseña incorrecta' }, { status: 401 });
         }
 
-        // Actualiza el nombre de usuario
-        user.UserName = NewName;
+        user.UserEmail = NewEmail;
         await user.save();
 
-        return NextResponse.json({ message: 'Nombre actualizado con éxito' });
+        return NextResponse.json({ message: 'Email actualizado con éxito' });
     } catch (error) {
-        console.error('Error en la actualización del nombre:', error); // Para depuración
+        console.error('Error en la actualización del email:', error); // Para depuración
         return NextResponse.json({ error: 'Algo salió mal' }, { status: 500 });
     }
 }
