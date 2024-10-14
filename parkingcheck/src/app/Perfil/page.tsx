@@ -1,12 +1,13 @@
 "use client";
-import '../../styles/style1.css';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import jwt from 'jsonwebtoken';
+import React from 'react';
 import { Navbar } from '../components/Navbar';
 
 export default function Upload() {
     const [UserName, setUserName] = useState('');
+    const [UserId, setUserId] = useState('');
     const [isVip, setIsVip] = useState<boolean | null>(null);
     const router = useRouter();
 
@@ -32,6 +33,9 @@ export default function Upload() {
                 if (decodedToken.vip !== undefined) {
                     setIsVip(decodedToken.vip);
                 }
+                if (decodedToken.userId){
+                    setUserId(decodedToken.userId);
+                }
             } else {
                 console.warn("El token decodificado no es un objeto válido.");
             }
@@ -52,12 +56,12 @@ export default function Upload() {
                 return;
             }
     
-            const response = await fetch('/api/changerange', {
+            const response = await fetch('/api/auth/changerange', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({changeToVip: true })
+                body: JSON.stringify({ userId: UserId, changeToVip: true })
             });
     
             const data = await response.json();
@@ -72,20 +76,26 @@ export default function Upload() {
         }
     };
     
-
     const Logout = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+
         try {
-            const response = await fetch('/api/logout', {
+            const response = await fetch('/api/auth/logout', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
             });
+    
             const data = await response.json();
-            if(response.ok){
+            
+            if (response.ok) {
                 console.log('Sesión cerrada:', data);
-                document.cookie = 'token=; Max-Age=0';
+    
+                // Elimina la cookie del token
+                document.cookie = 'token=; Max-Age=0; path=/';  // Añadí 'path=/'
+    
+                // Redirige a la URL proporcionada o a la raíz
                 router.push(data.redirectUrl || '/');
             } else {
                 console.error('Error al cerrar sesión:', data.message);
@@ -94,6 +104,7 @@ export default function Upload() {
             console.error('Error en la solicitud de cierre de sesión:', error);
         }
     };
+    
 
     return (
         <div>
@@ -104,21 +115,19 @@ export default function Upload() {
                     <h1 className="title">MI PERFIL</h1>
                     <h2 className='font-bold'>Bienvenido, {UserName}!</h2>
                     {isVip ? (
-                        <div>
-                        <form onSubmit={changeVip}>
-                            <button type="submit" 
-                            className="w-[90%] font-bold p-3 text-lg mt-5 border-0 rounded-full cursor-pointer bg-[#EDC557] text-black flex justify-between items-center"
-                            >
-                            <p>Usuario VIP+</p>
-                            <span className="text-[#008EBB]">Mejorar subscripción!</span>
+                        <div className="w-[100%] flex justify-center items-center">
+                            <button className="w-[90%] font-bold p-3 text-lg mt-5 border-0 rounded-full cursor-pointer bg-[#EDC557] text-black flex justify-center items-center">
+                                <p className="text-center">Usuario VIP+</p>
                             </button>
-                        </form> 
                         </div>
+
                     ) : (
-                        <button className="w-[90%] font-bold p-3 text-lg mt-5 border-0 rounded-full cursor-pointer bg-[#D9D9D9] text-black flex justify-between items-center">
+                        <form onSubmit={changeVip} className="w-[100%] flex justify-center">
+                        <button type="submit" className="w-[90%] font-bold p-3 text-lg mt-5 border-0 rounded-full cursor-pointer bg-[#D9D9D9] text-black flex justify-between items-center">
                             <p>Usuario estándar</p>
                             <span className="text-[#008EBB]">Mejorar subscripción!</span>
                         </button>
+                        </form>
                     )}
                     <button className="w-[90%] font-bold p-3 text-lg mt-5 border-0 rounded-full cursor-pointer bg-[#D9D9D9] text-black">
                         Editar Perfil

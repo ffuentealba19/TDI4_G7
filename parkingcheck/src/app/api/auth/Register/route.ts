@@ -62,7 +62,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       message: 'Registro exitoso',
       token,
-      redirectUrl: '/reservar',
+      redirectUrl: '/',
     }, { status: 200 });
 
   } catch (error) {

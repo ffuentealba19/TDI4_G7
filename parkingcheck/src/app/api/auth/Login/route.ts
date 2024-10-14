@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
             message: 'Inicio de sesión exitoso',
             token,
             
-            redirectUrl: '/reservar',
+            redirectUrl: '/Home',
         }, { status: 200 });
         
         return response;
