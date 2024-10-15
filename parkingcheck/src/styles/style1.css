@@ -1,0 +1,349 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  background: white;
+  background: url('/ruta/al/logo-uct.png') no-repeat center center fixed;
+  background-size: cover;
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 500px;
+  height: 20vh; 
+  position: relative; 
+  bottom: 80px;
+}
+
+.logo-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.2;
+  z-index: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+  background-color: white;
+  padding: 20px;
+  width: 500px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+  font-size: 28px;
+  font-weight: bold;
+  color: black;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.toggle-button {
+  width: 150px;
+  padding: 12px;
+  font-size: 18px;
+  margin: 0 5px;
+  border-radius: 20px;
+  background-image: linear-gradient(to right, #007bff, #ffc107);
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.toggle-button.active {
+  background-image: linear-gradient(to right, #ffc107, #007bff);
+}
+
+
+form input {
+  width: 300px;
+}
+
+form a {
+  margin-top: 20px; 
+  display: block; 
+  text-align: left; 
+  font-size: 14px;
+  color: #007bff;
+}
+
+form a:hover {
+  text-decoration: underline;
+}
+
+.input {
+  padding: 12px;
+  margin: 12px 0;
+  width: 90%;
+  font-size: 18px;
+  border-radius: 10px;
+  border: 1px solid #007bff;
+}
+
+.button {
+  width: 90%;
+  padding: 14px;
+  font-size: 18px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  background-image: linear-gradient(to right, #007bff, #ffc107);
+  color: white;
+}
+
+.button:hover {
+  background-image: linear-gradient(to right, #ffc107, #007bff);
+}
+
+.link {
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.link:hover {
+  text-decoration: none;
+}
+
+.menu-button {
+  position: relative; 
+  z-index: 10;
+  border: 2px solid ; 
+}
+
+.menu-dropdown {
+  position: absolute;
+  top: 100%; 
+  right: 0;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  z-index: 100;
+}
+
+.menu-container {
+  position: relative; 
+  z-index: 20; 
+}
+
+.menu-button:hover {
+  color: #ffd700; 
+}
+
+.menu-dropdown a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #333;
+  text-decoration: none;
+}
+
+.menu-dropdown a:hover {
+  background-color: #f0f0f0;
+}
+
+
+.parking-map {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 1280px;
+  height: 720px;
+  background-color: #bbbbbb;
+  margin: 0 auto;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.parking-lane {
+  background-color: #ffc107;
+  display: flex;
+  flex-direction: column;
+  height: 550px;
+  width: 150px;
+  border: 1px solid black;
+  margin: 5px;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.parking-spot {
+  background-color: rgba(117, 249, 115, 0.753);
+  border: 1px solid rgb(0, 0, 0);  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer; 
+  flex-grow: 0; 
+}
+
+.parking-spot.selected {
+  background-color: yellow;
+}
+
+#E, #D {
+  height: 495px;
+  margin-top: 5%;
+}
+
+.parking-spot.used {
+  background-color: rgb(253, 42, 42);
+}
+
+.empty-space {
+  width: 25%;
+}
+
+.parking-lane:after {
+  content: attr(id);
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+}
+
+.reserveButton {
+  color: #f0f0f0;
+  width: 250px;
+  height: 50px;
+  margin: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 25px;
+}
+
+.centralReserve {
+  display: flex;
+  margin: 5px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Profile-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.main-EditProfile {
+  display: flex;
+  width: 100%; 
+  max-width: 1200px;
+  height: auto; 
+  background-color: #ffffff;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); 
+  border-radius: 8px;
+  margin-top: 5%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Changer-div{
+  margin: 10px;
+  background-color: #f1f1f1;
+  padding: 10px;
+  width: 100%;
+  max-width: 1160px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Rounded-img {
+  margin: 10px;
+  background-color: #f1f1f1;
+  padding: 10px;
+  width: 100%;
+  height: 100%;
+  max-width: 350px;
+  max-height: 350px;
+  display: flex;
+  justify-content: center;
+  border-radius: 50%; 
+  overflow: hidden; 
+}
+
+.Rounded-img img {
+  width: 100%;
+  height: auto;
+  border-radius:75%; 
+}
+
+.popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Asegúrate de que el popup esté por encima de otros elementos */
+}
+
+.popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease, slideIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-30px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
