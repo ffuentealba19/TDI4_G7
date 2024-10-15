@@ -7,12 +7,13 @@ export default function Guest() {
 
   }
   return (
-    <main className="main">
-    <Navbar/>
-    <div className='flex items-center justify-center h-screen'>
-      <div id="RegisterForm" className="container">
-        <h2 className="title">Registro de Invitados</h2>
-        <form className="form" onSubmit={redirect}>
+    <div>
+     <Navbar></Navbar>
+     <main className="main">
+       <div className='flex items-center justify-center h-screen'>
+       <div id="RegisterForm" className="container">
+         <h2 className="title">Registro de Invitados</h2>
+         <form className="form" onSubmit={redirect}>
           <input
             type="email"
             placeholder="Ingrese su email"
@@ -34,5 +35,6 @@ export default function Guest() {
       </div>
       </div>
       </main>
+    </div>
   );
 }
