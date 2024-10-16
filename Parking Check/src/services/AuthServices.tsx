@@ -15,11 +15,27 @@ export const getParkings = async () => {
   }
 };
 
+// Función para obtener la foto de perfil del usuario
+export const getProfileImage = async () => {
+  const response = await apiClient.get('/profile-image'); // Cambia la ruta si es necesario
+  return response.data; // Retorna la URL de la imagen
+};
+
+//funcion para subir la imagen a cloudinary
+export const uploadImage = async (image: File) => {
+  const formData = new FormData();
+  formData.append('file', image);
+  formData.append('upload_preset', 'parking-check'); // Cambia el nombre del preset si es necesario
+  const response = await apiClient.post('/upload', formData);
+  return response.data.secure_url;
+};
+
 // Función para actualizar el perfil del usuario
-export const updateUserProfile = async (userData: { UserName: string; UserEmail: string }) => {
+export const updateUserProfile = async (userData: { UserName: string; UserEmail: string; profileImage?: string }) => {
   const response = await apiClient.put('/profile', userData); // Cambia la ruta si es necesario
   return response.data; // Retorna la respuesta
 };
+
 
 // Función para obtener el perfil del usuario
 export const getUserProfile = async () => {
@@ -29,7 +45,6 @@ export const getUserProfile = async () => {
 
 // Función para registrar usuario
 export const registerUser = async (username: string, email: string, password: string) => {
-  console.log({ username, email, password });
   const response = await apiClient.post('/register', { 
     UserName: username,  // Cambiado a UserName
     UserEmail: email,        // Cambiado a UserEmail

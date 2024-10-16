@@ -15,7 +15,6 @@ import {
   IonRow,
   IonCol,
   IonText,
-  IonMenu,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import { logout, getUserProfile } from '../../services/AuthServices'; // Asegúrate de que la función esté importada
@@ -24,12 +23,14 @@ const Perfil: React.FC = () => {
   const history = useHistory(); 
   const [userData, setUserData] = useState<any>(null); // Estado para almacenar los datos del usuario
   const [loading, setLoading] = useState(true); // Estado para manejar la carga
+  const [profileImage, setProfileImage] = useState('/assets/profile-placeholder.png'); // Ruta de la imagen por defecto
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
         const response = await getUserProfile(); // Llama a la función para obtener el perfil
         setUserData(response); // Guarda los datos del usuario
+        setProfileImage(response.profileImage); // Guarda la URL de la imagen de perfil
       } catch (error) {
         console.error('Error al cargar el perfil:', error);
       } finally {
@@ -46,7 +47,7 @@ const Perfil: React.FC = () => {
   };
 
   if (loading) {
-    return <IonContent>Loading...</IonContent>; // Puedes personalizar el loading
+    return <IonContent>Cargando...</IonContent>; // Puedes personalizar el loading
   }
 
   if (!userData) {
@@ -61,14 +62,6 @@ const Perfil: React.FC = () => {
           <IonButtons slot="end">
             <IonMenuButton></IonMenuButton>
           </IonButtons>
-          <IonMenu contentId="main-content">
-            <IonHeader>
-              <IonToolbar>
-                <IonTitle>Menu Content</IonTitle>
-              </IonToolbar>
-            </IonHeader>
-            <IonContent className="ion-padding">This is the menu content.</IonContent>
-          </IonMenu>
         </IonToolbar>
       </IonHeader>
 
@@ -78,10 +71,7 @@ const Perfil: React.FC = () => {
             <h2>MI PERFIL</h2>
           </IonText>
           <IonAvatar style={{ margin: '0 auto' }}>
-            <img
-              src="https://z-p3-scontent.fzco1-1.fna.fbcdn.net/v/t1.6435-9/30724703_10211886277014701_7427747709064314880_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=1d70fc&_nc_ohc=SF9jviTlDJUQ7kNvgG_sNG2&_nc_ht=z-p3-scontent.fzco1-1.fna&_nc_gid=A0-elPL04roPU_c-5x8xCnq&oh=00_AYCJf8q2PBTm6A6i0ZUSEh0yx6F56jbaxFMZe6hE-mNNug&oe=6704BF82"
-              alt="User Avatar"
-            />
+            <img src={profileImage} alt="Profile" />
           </IonAvatar>
           <IonText className="ion-text-center">
             <h3>{userData.UserName}</h3>

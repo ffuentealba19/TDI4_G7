@@ -15,7 +15,7 @@ import {
   IonLoading,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
-import { getUserProfile, updateUserProfile } from '../../services/AuthServices'; // Asegúrate de que la función esté importada
+import { getUserProfile, updateUserProfile, uploadImage } from '../../services/AuthServices'; // Asegúrate de que las funciones estén importadas
 import './EditProfile.css';
 
 const EditProfile: React.FC = () => {
@@ -25,6 +25,7 @@ const EditProfile: React.FC = () => {
   const [profileImage, setProfileImage] = useState('/assets/profile-placeholder.png'); // Ruta de la imagen por defecto
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState(false);
+  const [newImage, setNewImage] = useState<File | null>(null); // Almacena la nueva imagen
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -32,6 +33,7 @@ const EditProfile: React.FC = () => {
         const response = await getUserProfile(); // Obtiene los datos del perfil
         setName(response.UserName);
         setEmail(response.UserEmail);
+        setProfileImage(response.profileImage || '/assets/profile-placeholder.png'); // Establece la imagen de perfil
       } catch (error) {
         console.error(error);
       } finally {
@@ -45,7 +47,13 @@ const EditProfile: React.FC = () => {
   const handleSave = async () => {
     setUpdating(true);
     try {
-      await updateUserProfile({ UserName: name, UserEmail: email }); // Llama a la API para actualizar
+      // Si hay una nueva imagen, la sube primero
+      if (newImage) {
+        const imageUrl = await uploadImage(newImage); // Sube la imagen y obtiene la URL
+        await updateUserProfile({ UserName: name, UserEmail: email, profileImage: imageUrl }); // Actualiza el perfil con la URL de la imagen
+      } else {
+        await updateUserProfile({ UserName: name, UserEmail: email }); // Actualiza el perfil sin cambiar la imagen
+      }
       alert('Cambios guardados');
       history.push('/perfil'); // Redirige al perfil después de guardar
     } catch (error) {
@@ -55,12 +63,13 @@ const EditProfile: React.FC = () => {
     }
   };
 
-  const handleImageChange = (event: any) => {
-    const file = event.target.files[0];
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files![0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
         setProfileImage(reader.result as string);
+        setNewImage(file); // Guarda el archivo de la nueva imagen
       };
       reader.readAsDataURL(file);
     }

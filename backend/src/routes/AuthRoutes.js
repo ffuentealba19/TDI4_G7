@@ -14,8 +14,8 @@ router.get('/parkings', async (req, res) => {
     const parkings = await Parking.find();
     res.status(200).json(parkings);
   } catch (err) {
-    console.error(err); // Agregar log de error
-    res.status(500).send({ error: 'Error al obtener los estacionamientos' });
+    console.error(err);
+    res.status(500).json({ error: 'Error al obtener los estacionamientos' });
   }
 });
 
@@ -23,14 +23,14 @@ router.get('/parkings', async (req, res) => {
 cloudinary.config({
   cloud_name: process.env.Cloud_name,
   api_key: process.env.Api_key,
-  api_secret: process.env.Api_secret
+  api_secret: process.env.Api_secret,
 });
 
 // Configuración de multer (almacena archivos en memoria)
 const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// Ruta para subir una imagen a cloudinary
+// Ruta para subir una imagen a Cloudinary
 router.post('/upload', middleware, upload.single('file'), async (req, res) => {
   try {
     // Asegúrate de que haya un archivo en la solicitud
@@ -38,10 +38,8 @@ router.post('/upload', middleware, upload.single('file'), async (req, res) => {
       return res.status(400).json({ message: 'No se ha subido ninguna imagen' });
     }
 
-    // Convertir el archivo a buffer
+    // Convertir el archivo a buffer y subir a Cloudinary
     const buffer = req.file.buffer;
-
-    // Subir a Cloudinary
     const response = await new Promise((resolve, reject) => {
       cloudinary.uploader.upload_stream({}, (err, result) => {
         if (err) {
@@ -52,8 +50,6 @@ router.post('/upload', middleware, upload.single('file'), async (req, res) => {
       }).end(buffer);
     });
 
-    console.log(response);
-
     // Obtener el usuario autenticado
     const userId = req.user.userId;
 
@@ -61,7 +57,7 @@ router.post('/upload', middleware, upload.single('file'), async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(userId, { profileImage: response.secure_url }, { new: true });
 
     if (!updatedUser) {
-      return res.status(404).send({ message: 'Usuario no encontrado' });
+      return res.status(404).json({ message: 'Usuario no encontrado' });
     }
 
     res.status(200).json({
@@ -78,18 +74,15 @@ router.post('/upload', middleware, upload.single('file'), async (req, res) => {
 // Ruta para obtener la URL de la imagen del perfil del usuario autenticado
 router.get('/profile-image', middleware, async (req, res) => {
   try {
-    // `req.user` contiene la información del usuario extraída del token gracias al middleware
     const userId = req.user.userId;
-
-    // Buscar al usuario en la base de datos por su ID
     const usuario = await User.findById(userId);
 
     if (!usuario) {
       return res.status(404).json({ message: 'Usuario no encontrado' });
     }
 
-    // Devolver la URL de la imagen de perfil (campo 'url')
-    res.json({ ImgUrl: usuario.url });
+    // Devolver la URL de la imagen de perfil
+    res.json({ ImgUrl: usuario.profileImage }); // Asegúrate de que 'profileImage' sea el campo correcto
 
   } catch (error) {
     console.error('Error al obtener la imagen del perfil:', error);
@@ -97,111 +90,93 @@ router.get('/profile-image', middleware, async (req, res) => {
   }
 });
 
-
 // Ruta para actualizar el perfil del usuario
 router.put('/profile', middleware, async (req, res) => {
   const { UserName, UserEmail } = req.body;
 
   // Validar que los campos no estén vacíos
   if (!UserName || !UserEmail) {
-    return res.status(400).send({ error: 'Todos los campos son obligatorios' });
+    return res.status(400).json({ error: 'Todos los campos son obligatorios' });
   }
 
   try {
-    // Encuentra el usuario por su ID y actualiza los campos
     const updatedUser = await User.findByIdAndUpdate(req.user.userId, { UserName, UserEmail }, { new: true });
     if (!updatedUser) {
-      return res.status(404).send({ error: 'Usuario no encontrado' });
+      return res.status(404).json({ error: 'Usuario no encontrado' });
     }
-    
-    res.send({ message: 'Perfil actualizado con éxito', user: updatedUser });
+
+    res.status(200).json({ message: 'Perfil actualizado con éxito', user: updatedUser });
   } catch (err) {
-    res.status(500).send({ error: 'Error al actualizar el perfil' });
+    console.error('Error al actualizar el perfil:', err);
+    res.status(500).json({ error: 'Error al actualizar el perfil' });
   }
 });
-
 
 // Ruta para obtener los datos del usuario autenticado
 router.get('/profile', middleware, async (req, res) => {
   try {
-    const user = await User.findById(req.user.userId); // Obtiene el usuario por ID
+    const user = await User.findById(req.user.userId);
     if (!user) {
-      return res.status(404).send({ error: 'Usuario no encontrado' });
+      return res.status(404).json({ error: 'Usuario no encontrado' });
     }
 
     // Excluir la contraseña del objeto del usuario antes de enviarlo
-    const { UserPass, ...userData } = user._doc; // Suponiendo que UserPass es el campo de contraseña
-    res.send(userData); // Devuelve el resto de la información del usuario
+    const { UserPass, ...userData } = user._doc;
+    res.status(200).json(userData);
   } catch (err) {
-    res.status(500).send({ error: 'Error al obtener los datos del perfil' });
+    console.error('Error al obtener los datos del perfil:', err);
+    res.status(500).json({ error: 'Error al obtener los datos del perfil' });
   }
 });
 
 // Ruta para registrar un nuevo usuario
 router.post('/register', async (req, res) => {
-    const { UserName, UserEmail, UserPass } = req.body;
-    
+  const { UserName, UserEmail, UserPass } = req.body;
 
-  // Validar que todos los campos estén presentes
   if (!UserName || !UserEmail || !UserPass) {
-    return res.status(400).send({ error: 'Todos los campos son obligatorios' });
+    return res.status(400).json({ error: 'Todos los campos son obligatorios' });
   }
 
   try {
-    // Verifica si el usuario ya existe
     const existingUser = await User.findOne({ UserEmail });
     if (existingUser) {
-      return res.status(400).send({ error: 'El usuario ya existe' });
+      return res.status(400).json({ error: 'El usuario ya existe' });
     }
-   
-    // Crear nuevo usuario
-    const user = new User({ UserName, UserEmail, UserPass});
+    const user = new User({ UserName, UserEmail, UserPass: UserPass });
     
     await user.save();
     
-    res.status(201).send({ message: 'Usuario registrado exitosamente' });
+    res.status(201).json({ message: 'Usuario registrado exitosamente' });
   } catch (err) {
-    res.status(500).send({ error: 'Error al registrar el usuario' });
+    console.error('Error al registrar el usuario:', err);
+    res.status(500).json({ error: 'Error al registrar el usuario' });
   }
 });
 
 // Ruta para autenticar un usuario (login)
 router.post('/login', async (req, res) => {
   try {
-    // Verifica qué datos están llegando en el body
-    console.log('Datos recibidos en /login:', req.body);
-
     const { UserEmail, UserPass } = req.body;
 
-    // Validar que los campos no estén vacíos
     if (!UserEmail || !UserPass) {
-      console.log('Faltan campos en la solicitud'); // Log para indicar que faltan campos
-      return res.status(400).send({ error: 'Todos los campos son obligatorios' });
+      return res.status(400).json({ error: 'Todos los campos son obligatorios' });
     }
 
-    // Buscar al usuario por su email
     const user = await User.findOne({ UserEmail });
     if (!user) {
-      console.log('Email incorrecto:', UserEmail); // Log para indicar que no se encontró el usuario
-      return res.status(401).send({ error: 'Email incorrecto' });
+      return res.status(401).json({ error: 'Email incorrecto' });
     }
 
-    // Comparar la contraseña
     const isMatch = await bcrypt.compare(UserPass, user.UserPass);
     if (!isMatch) {
-      console.log('Contraseña incorrecta para el usuario:', UserEmail); // Log para indicar que la contraseña es incorrecta
-      return res.status(401).send({ error: 'Contraseña incorrecta' });
+      return res.status(401).json({ error: 'Contraseña incorrecta' });
     }
 
-    // Generar el token JWT
-    const token = jwt.sign({ userId: user._id }, 'SECRET_KEY', { expiresIn: '1h' });
-    console.log('Token generado:', token); // Log del token generado
-    
-    // Enviar el token como respuesta
-    res.send({ token });
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET || 'SECRET_KEY', { expiresIn: '1h' });
+    res.status(200).json({ token });
   } catch (err) {
-    console.error('Error en el servidor durante /login:', err.message); // Log del error del servidor
-    res.status(500).send({ error: 'Error en el servidor' });
+    console.error('Error en el servidor durante /login:', err.message);
+    res.status(500).json({ error: 'Error en el servidor' });
   }
 });
 
