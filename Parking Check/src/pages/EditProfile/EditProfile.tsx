@@ -54,8 +54,9 @@ const EditProfile: React.FC = () => {
       } else {
         await updateUserProfile({ UserName: name, UserEmail: email }); // Actualiza el perfil sin cambiar la imagen
       }
-      alert('Cambios guardados');
-      history.push('/perfil'); // Redirige al perfil después de guardar
+      // Redirige al perfil y actualiza la pagina profile
+      history.push('/profile');
+      window.location.reload();
     } catch (error) {
       console.error(error);
     } finally {

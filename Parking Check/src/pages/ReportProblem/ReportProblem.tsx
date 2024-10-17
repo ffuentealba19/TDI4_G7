@@ -62,7 +62,6 @@ const ReportProblem: React.FC = () => {
         <IonButton expand="block" onClick={handleSubmit} className="ion-margin-top">
           Enviar Reporte
         </IonButton>
-
         {/* Loading spinner */}
         <IonLoading isOpen={loading} message="Enviando reporte..." />
       </IonContent>

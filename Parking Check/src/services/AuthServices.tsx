@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Crear instancia de axios con configuración básica
 const apiClient = axios.create({
-  baseURL: 'http://localhost:3000', // Asegúrate de que esto apunte a tu backend
+  baseURL: 'https://parkingcheck.onrender.com', // Asegúrate de que esto apunte a tu backend
 });
 
 // Función para obtener los estacionamientos

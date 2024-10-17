@@ -1,4 +1,4 @@
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonMenuButton } from '@ionic/react';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonMenuButton, IonCard, IonCardTitle, IonCardSubtitle, IonCardHeader, IonCardContent } from '@ionic/react';
 import { mapOutline } from 'ionicons/icons';
 import './Home.css';
 
@@ -13,11 +13,22 @@ const Home: React.FC = () => {
       </IonHeader>
 
       <IonContent className="ion-padding">
-        <h2>Dirígete a tu estacionamiento asignado</h2>
-        <IonButton expand="full" color="success">
-          <IonIcon icon={mapOutline} slot="start" />
-          Abrir Google Maps
-        </IonButton>
+        <h1>Estacionamientos</h1>
+        <IonCard>
+          <img alt='Campus Norte' src='https://doctoradoeduconsorcio.cl/wp-content/uploads/catolica-temuco.jpg'/>
+          <IonCardHeader>
+            <IonCardTitle>Campus Norte</IonCardTitle>
+          </IonCardHeader>
+          <IonCardContent>Disponible: 90/150</IonCardContent>
+        </IonCard>
+        <IonCard>
+          <img alt='Campus Sur' className="grayscale-img" src='https://www.uct.cl/content/uploads/san-francisco-3.jpg'/>
+          <IonCardHeader>
+            <IonCardTitle>San Francisco</IonCardTitle>
+          </IonCardHeader>
+          <IonCardContent>Proximamente...</IonCardContent>
+        </IonCard>
+
       </IonContent>
     </IonPage>
   );

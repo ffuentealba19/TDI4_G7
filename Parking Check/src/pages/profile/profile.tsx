@@ -37,13 +37,13 @@ const Perfil: React.FC = () => {
         setLoading(false); // Finaliza la carga
       }
     };
-  
     fetchUserProfile();
   }, []);
 
   const handleLogout = () => {
     logout(); 
-    history.push('/home'); 
+    history.push('/login'); 
+    window.location.reload();
   };
 
   if (loading) {
