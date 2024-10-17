@@ -38,8 +38,10 @@ const LoginRegister: React.FC = () => {
     try {
       await registerUser(username, email, password);
       setToastMessage('Registro exitoso');
+      const data = await loginUser(email, password);
+      setAuthToken(data.token);
       setShowToast(true);
-      history.push('/home');
+      history.push('/agregar-vehiculo');
     } catch (error: any) {
       setToastMessage(error.message || 'Error en el registro');
       setShowToast(true);

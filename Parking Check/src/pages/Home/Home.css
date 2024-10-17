@@ -12,6 +12,10 @@ ion-menu {
     font-size: 20px; /* Tamaño del título */
     font-weight: bold;
   }
+
+  .grayscale-img {
+    filter: grayscale(100%);
+  }
   
   /* Estilo para los ítems del menú */
   ion-list {
