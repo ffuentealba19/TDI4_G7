@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { returnUpForward } from 'ionicons/icons';
 
 // Crear instancia de axios con configuración básica
 const apiClient = axios.create({
-  baseURL: 'https://parkingcheck.onrender.com', // Asegúrate de que esto apunte a tu backend
+  baseURL: 'http://localhost:3000', // Asegúrate de que esto apunte a tu backend
 });
 
 // Función para obtener los estacionamientos
@@ -43,6 +44,10 @@ export const getUserProfile = async () => {
   return response.data; // Retorna los datos del usuario
 };
 
+export const getVehiculos = async () => {
+  const response = await apiClient.get('/vehiculos'); // Cambia la ruta si es necesario
+  return response.data;
+};
 // Función para registrar usuario
 export const registerUser = async (username: string, email: string, password: string) => {
   const response = await apiClient.post('/register', { 

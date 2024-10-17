@@ -41,7 +41,7 @@ const LoginRegister: React.FC = () => {
       const data = await loginUser(email, password);
       setAuthToken(data.token);
       setShowToast(true);
-      history.push('/vehiculo');
+      history.push('/agregar-vehiculo');
     } catch (error: any) {
       setToastMessage(error.message || 'Error en el registro');
       setShowToast(true);
