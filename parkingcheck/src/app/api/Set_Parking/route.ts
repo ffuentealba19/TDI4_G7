@@ -14,8 +14,18 @@ export async function POST(req : NextRequest) {
     const park = data.get("Park")
     const Section = park.split("-",1)[0]
     const numero = park.split("-",2)[1]
-
+    const ocupado = {
+        status : 'disabled',
+        occupiedBy: id,
+    }
     await run()
+    const est = await Parking.findOne({
+        section: Section,
+        number: numero,
+    })
+    const id_park = est._id
+    const new_park = await Parking.findByIdAndUpdate(id_park, ocupado, {new: true});
+    console.log(new_park)
     return NextResponse.json({message: "Estacionamiento reservado"})
 
 
