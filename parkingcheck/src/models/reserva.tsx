@@ -2,20 +2,26 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 // Interfaz para la reserva
 export interface IReserva extends Document {
-  parkingSpot: mongoose.Schema.Types.ObjectId;      // Referencia al estacionamiento
-  user: string;                                     // Usuario que hizo la reserva
-  fechaReserva: Date;                               // Fecha y hora de la reserva
-  fechaExpiracion: Date;                            // Fecha y hora de expiración
-  status: string;                                   // Estado de la reserva (active, expired, cancelled)
+  seccion: string;                                  // Sección del estacionamiento
+  numero: string;                                   // Número de estacionamiento
+  id_usuario: string;                               // ID del usuario que reservó
+  fechaReserva: Date;                               // Fecha en la que debería llegar
+  fechaExpiracion: Date;                            // Fecha y hora de vencimiento
+  status: 'active' | 'expired' | 'cancelled';       // Estado de la reserva
 }
 
 // Definir el esquema de la reserva
 const reservaSchema = new Schema<IReserva>({
-  parkingSpot: { type: mongoose.Schema.Types.ObjectId, ref: 'Parking', required: true }, // Relacionada con Parking
-  user: { type: String, required: true },                                                // Usuario que reservó
-  fechaReserva: { type: Date, required: true },                                          // Fecha y hora de la reserva
-  fechaExpiracion: { type: Date, required: true },                                       // Fecha de expiración
-  status: { type: String, default: 'active' }                                            // Estado inicial: activo
+  seccion: { type: String, required: true },                                        // Sección del estacionamiento
+  numero: { type: String, required: true },                                         // Número de estacionamiento
+  id_usuario: { type: String, required: true },                                     // ID del usuario que reservó
+  fechaReserva: { type: Date, required: true },                                     // Fecha y hora en la que debe llegar
+  fechaExpiracion: { type: Date, required: true },                                  // Fecha de expiración (media hora después de no llegar)
+  status: { 
+    type: String, 
+    enum: ['active', 'expired', 'cancelled'], 
+    default: 'active' 
+  },                                                                                // Estado inicial
 }, {
   collection: 'reservas', 
   timestamps: true,
