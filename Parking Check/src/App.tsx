@@ -33,6 +33,7 @@ import EditProfile from './pages/EditProfile/EditProfile';
 import UpgradeSubscription from './pages/Subscriptions/UpgradeSubscription';
 import Vehiculos from './pages/vehiculo/vehiculo';
 import AgregarVehiculo from './pages/vehiculo/agregarvehiculo';
+import EditarVehiculo from './pages/vehiculo/editarvehiculo'; // Asegúrate de importar el componente correcto
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -148,6 +149,9 @@ const App: React.FC = () => (
               </PrivateRoute>
               <PrivateRoute>
                 <AgregarVehiculo />
+              </PrivateRoute>
+              <PrivateRoute path="/editarvehiculo/:id">
+                <EditarVehiculo />
               </PrivateRoute>
             </IonRouterOutlet>
             <IonTabBar slot="bottom">

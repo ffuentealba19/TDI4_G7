@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { trash, create } from 'ionicons/icons';
 import './vehiculo.css';
-import { getUserVehicles, deleteVehicle } from '../../services/AuthServices';
+import { getUserVehicles, deleteVehicle, updateVehicle } from '../../services/AuthServices';
 
 const Vehiculos: React.FC = () => {
   const history = useHistory();
@@ -39,8 +39,9 @@ const Vehiculos: React.FC = () => {
     }
   }
   
+  
   const handleUpdateVehiculo = (id: string) => {
-    history.push(`/actualizarvehiculo/${id}`);
+    history.push(`/editarvehiculo/${id}`);
   };
 
   return (
@@ -67,7 +68,7 @@ const Vehiculos: React.FC = () => {
                     <p>{vehiculo.Marca} {vehiculo.Modelo}</p>
                   </IonLabel>
                   <IonIcon icon={trash} slot="end" onClick={() => confirmDeleteVehiculo(vehiculo._id)} />
-                  <IonIcon icon={create} slot="end" onClick={alert} />
+                  <IonIcon icon={create} slot="end" onClick={ () => handleUpdateVehiculo(vehiculo._id) } />  
                 </IonItem>
               ))}
             </IonList>

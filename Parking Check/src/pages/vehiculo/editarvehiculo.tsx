@@ -1,130 +1,132 @@
-import React, { useEffect, useState } from 'react';
-import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonItem,
-  IonLabel,
-  IonInput,
-  IonButton,
-  IonAvatar,
-  IonButtons,
-  IonBackButton,
-  IonLoading,
-} from '@ionic/react';
-import { useHistory } from 'react-router-dom';
-import { getUserProfile, updateUserProfile, uploadImage } from '../../services/AuthServices'; // Asegúrate de que las funciones estén importadas
-import './EditProfile.css';
+import React, { useState, useEffect } from 'react';
+import { useHistory, useParams } from 'react-router-dom'; // Para manejar la navegación y obtener los parámetros de la URL
+import { IonPage, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent, IonInput, IonLabel, IonItem, IonButton, IonLoading, IonToast } from '@ionic/react';
+import { updateVehicle, getUserVehicles } from "../../services/AuthServices" // Importa las funciones de la API
 
-const EditVehiculo: React.FC = () => {
+const EditarVehiculo: React.FC = () => {
+  const { id } = useParams<{ id: string }>(); // Obtener el id del vehículo desde los parámetros
   const history = useHistory();
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [profileImage, setProfileImage] = useState('/assets/profile-placeholder.png'); // Ruta de la imagen por defecto
-  const [loading, setLoading] = useState(true);
-  const [updating, setUpdating] = useState(false);
-  const [newImage, setNewImage] = useState<File | null>(null); // Almacena la nueva imagen
 
+  // Estado para manejar los datos del vehículo
+  const [vehicle, setVehicle] = useState({
+    Placa: '',
+    Marca: '',
+    Modelo: '',
+    Color: '',
+  });
+  const [loading, setLoading] = useState(false); // Estado para manejar el cargando
+  const [showToast, setShowToast] = useState(false); // Estado para manejar el Toast
+
+  // Función para obtener los datos del vehículo al cargar la página
   useEffect(() => {
-    const fetchUserProfile = async () => {
+    const fetchVehicle = async () => {
       try {
-        const response = await getUserProfile(); // Obtiene los datos del perfil
-        setName(response.UserName);
-        setEmail(response.UserEmail);
-        setProfileImage(response.profileImage || '/assets/profile-placeholder.png'); // Establece la imagen de perfil
+        setLoading(true);
+        const vehicles = await getUserVehicles(); // Obtiene todos los vehículos del usuario
+        const selectedVehicle = vehicles.find((v: any) => v._id === id); // Busca el vehículo por su ID
+        if (selectedVehicle) {
+          setVehicle(selectedVehicle); // Actualiza el estado con los datos del vehículo
+        } else {
+          throw new Error('Vehículo no encontrado');
+        }
+        setLoading(false);
       } catch (error) {
-        console.error(error);
-      } finally {
+        console.error('Error al obtener el vehículo:', error);
         setLoading(false);
       }
     };
+    fetchVehicle();
+  }, [id]);
 
-    fetchUserProfile();
-  }, []);
+  // Función para manejar el cambio en los campos del formulario
+  const handleInputChange = (e: any) => {
+    const { name, value } = e.target;
+    setVehicle({ ...vehicle, [name]: value });
+  };
 
-  const handleSave = async () => {
-    setUpdating(true);
+  // Función para manejar la actualización del vehículo
+  const handleSubmit = async () => {
     try {
-      // Si hay una nueva imagen, la sube primero
-      if (newImage) {
-        const imageUrl = await uploadImage(newImage); // Sube la imagen y obtiene la URL
-        await updateUserProfile({ UserName: name, UserEmail: email, profileImage: imageUrl }); // Actualiza el perfil con la URL de la imagen
-      } else {
-        await updateUserProfile({ UserName: name, UserEmail: email }); // Actualiza el perfil sin cambiar la imagen
-      }
-      // Redirige al perfil y actualiza la pagina profile
-      history.push('/profile');
+      setLoading(true);
+      await updateVehicle(id, vehicle); // Llama a la función de actualización
+      setShowToast(true); // Muestra un Toast al completar
+
+      
+      setLoading(false);
+      history.push('/autos'); // Redirige a la página de vehículos
       window.location.reload();
     } catch (error) {
-      console.error(error);
-    } finally {
-      setUpdating(false);
+      console.error('Error al actualizar el vehículo:', error);
+      setLoading(false);
     }
   };
-
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files![0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setProfileImage(reader.result as string);
-        setNewImage(file); // Guarda el archivo de la nueva imagen
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  if (loading) {
-    return <IonLoading isOpen={loading} message="Cargando..." />;
-  }
 
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar color="primary">
+        <IonToolbar>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/profile" />
+            <IonBackButton defaultHref="/vehiculos" />
           </IonButtons>
-          <IonTitle>Editar Perfil</IonTitle>
+          <IonTitle>Editar Vehículo</IonTitle>
         </IonToolbar>
       </IonHeader>
 
       <IonContent className="ion-padding">
-        <div className="profile-header">
-          <IonAvatar className="profile-avatar">
-            <img src={profileImage} alt="Profile" />
-          </IonAvatar>
-
-          <IonButton color="medium" expand="block" onClick={() => document.getElementById('profileImageInput')?.click()}>
-            Cambiar Foto de Perfil
-          </IonButton>
-          <input
-            type="file"
-            id="profileImageInput"
-            accept="image/*"
-            hidden
-            onChange={handleImageChange}
+        <IonItem>
+          <IonLabel position="stacked">Placa</IonLabel>
+          <IonInput
+            name="Placa"
+            value={vehicle.Placa}
+            onIonChange={handleInputChange}
+            placeholder="Ingrese la placa del vehículo"
           />
-        </div>
-
-        <IonItem>
-          <IonLabel position="floating">Nombre</IonLabel>
-          <IonInput value={name} onIonChange={(e) => setName(e.detail.value!)} />
         </IonItem>
 
         <IonItem>
-          <IonLabel position="floating">Correo Electrónico</IonLabel>
-          <IonInput type="email" value={email} onIonChange={(e) => setEmail(e.detail.value!)} />
+          <IonLabel position="stacked">Marca</IonLabel>
+          <IonInput
+            name="Marca"
+            value={vehicle.Marca}
+            onIonChange={handleInputChange}
+            placeholder="Ingrese la marca del vehículo"
+          />
         </IonItem>
 
-        <IonButton expand="block" className="ion-margin-top" onClick={handleSave} disabled={updating}>
-          {updating ? 'Guardando...' : 'Guardar Cambios'}
+        <IonItem>
+          <IonLabel position="stacked">Modelo</IonLabel>
+          <IonInput
+            name="Modelo"
+            value={vehicle.Modelo}
+            onIonChange={handleInputChange}
+            placeholder="Ingrese el modelo del vehículo"
+          />
+        </IonItem>
+
+        <IonItem>
+          <IonLabel position="stacked">Color</IonLabel>
+          <IonInput
+            name="Color"
+            value={vehicle.Color}
+            onIonChange={handleInputChange}
+            placeholder="Ingrese el color del vehículo"
+          />
+        </IonItem>
+
+        <IonButton expand="block" onClick={handleSubmit}>
+          Guardar Cambios
         </IonButton>
+
+        <IonLoading isOpen={loading} message={'Actualizando vehículo...'} />
+        <IonToast
+          isOpen={showToast}
+          message="Vehículo actualizado con éxito"
+          duration={2000}
+          onDidDismiss={() => setShowToast(false)}
+        />
       </IonContent>
     </IonPage>
   );
 };
 
-export default EditVehiculo;
+export default EditarVehiculo;
