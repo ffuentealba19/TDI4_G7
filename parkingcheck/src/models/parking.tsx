@@ -2,20 +2,20 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 // Interfaz de Parking
 export interface IParking extends Document {
-  number: number;
-  section: number;
+  number: String;
+  section: String;
   status: string;             // 'enabled', 'reservado', etc.
   occupiedBy?: string | null; // ID del usuario si está ocupado
 }
 
 // Esquema de Parking
 const parkingSchema = new Schema<IParking>({
-  number: { type: Number, required: true },
-  section: { type: Number, required: true },
+  number: { type: String, required: true },
+  section: { type: String, required: true },
   status: { type: String, required: true, default: 'enabled' }, // Por defecto estará 'enabled'
   occupiedBy: { type: String, default: null }
 }, {
-  collection: 'parking',
+  collection: 'Estacionamientos',
   timestamps: true,
 });
 

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
+import { POST } from '../api/Upload/route';
 
 const ParkingMap = () => {
   const [selectedSpot, setSelectedSpot] = useState<string | null>(null);
@@ -8,6 +9,7 @@ const ParkingMap = () => {
 
   useEffect(() => {
     const storedSpot = localStorage.getItem('selectedSpot');
+    
     if (storedSpot) {
       setSelectedSpot(storedSpot);
     }
@@ -36,9 +38,20 @@ const ParkingMap = () => {
     </div>
   );
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async() => {
     if (selectedSpot) {
       console.log(`Estacionamiento seleccionado: ${selectedSpot}`);
+      try{
+        const formData = new FormData()
+        formData.append("Park", selectedSpot)
+        const response = await fetch('/api/Set_Parking', {
+          method: 'POST',
+          body: formData,
+        })
+      }
+      catch(err){
+        console.log("error ")
+      }
     }
   };
 
