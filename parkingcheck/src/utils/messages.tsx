@@ -9,6 +9,7 @@ export const messages = {
         EmailNotExits : "El email no ha sido registrado",
         IncorectPass : "La contraseña ingresada no es correcta",
         LoginError : "No se ha podido iniciar sesion",
+        LogoutError: 'Error durante el cierre de sesión',
         NotAuthorised : "No tiene acceso",
         InternalServerError : "Error del servidor",
         InvalidToken : "Token no valido",
