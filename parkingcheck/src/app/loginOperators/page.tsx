@@ -62,7 +62,7 @@ export default function LoginOperators() {
         };
 
         try {
-            const response = await fetch('/api/auth/LoginOperator', {
+            const response = await fetch('/api/auth/LoginOperators', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
