@@ -2,10 +2,10 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import '../../styles/style1.css';
-import { Navbar } from '../components/Navbar';
+import '../../styles/style1.css'; 
+import { Navbar } from '../components/Navbar'; 
 
-export default function Login() {
+export default function LoginOperators() {
     const [showRegisterElements, setShowRegisterElements] = useState(false);
     const router = useRouter();
     
@@ -17,52 +17,19 @@ export default function Login() {
         setShowRegisterElements(false);
     };
 
-    const registerData = async (event: React.FormEvent<HTMLFormElement>) => {
+    const registerOperator = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget);
         const data = {
-            UserEmail: formData.get('UserEmail'),
-            UserName: formData.get('UserName'),
-            UserPass: formData.get('UserPass'),
+            OperatorEmail: formData.get('OperatorEmail'),
+            OperatorName: formData.get('OperatorName'),
+            OperatorPass: formData.get('OperatorPass'),
             ConfirmPass: formData.get('ConfirmPass'),
         };
 
         try {
-            const response = await fetch('/api/auth/Register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data),
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                console.log('Éxito:', result);
-                router.push(result.redirectUrl);
-            } else {
-                console.log(`Error: ${result.message || 'Algo ha salido mal'}`);
-                alert(result.message || 'Algo ha salido mal'); 
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Error al registrar');
-        }
-    };
-
-    const loginData = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        const formData = new FormData(event.currentTarget);
-        const data = {
-            UserEmail: formData.get('RegistedEmail'),
-            UserPass: formData.get('RegistedPass'),
-        };
-
-        try {
-            const response = await fetch('/api/auth/Login', {
+            const response = await fetch('/api/auth/RegisterOperator', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -79,7 +46,39 @@ export default function Login() {
                 console.log(`Error: ${result.message || 'Algo ha salido mal'}`);
                 alert(result.message || 'Algo ha salido mal');
             }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error al registrar');
+        }
+    };
 
+    const loginOperator = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        const formData = new FormData(event.currentTarget);
+        const data = {
+            OperatorEmail: formData.get('OperatorEmail'),
+            OperatorPass: formData.get('OperatorPass'),
+        };
+
+        try {
+            const response = await fetch('/api/auth/LoginOperator', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                console.log('Éxito:', result);
+                router.push(result.redirectUrl);
+            } else {
+                console.log(`Error: ${result.message || 'Algo ha salido mal'}`);
+                alert(result.message || 'Algo ha salido mal');
+            }
         } catch (error) {
             console.error('Error:', error);
             alert('Error al iniciar sesión');
@@ -88,7 +87,7 @@ export default function Login() {
 
     return (
         <div>
-            <Navbar/>
+            <Navbar /> {}
             <main className="main">
                 <div className="logo-container">
                     <Image 
@@ -108,25 +107,24 @@ export default function Login() {
 
                     {showRegisterElements ? (
                         <div id="RegisterForm" className="form">
-                            <h2 className="title">Registro de Usuarios</h2>
-                            <form onSubmit={registerData}>
-                                <input id="UserEmail" name="UserEmail" type="text" placeholder="Ingrese su email" className="input" required />
-                                <input id="UserName" name="UserName" type="text" placeholder="Nombre Completo" className="input" required />
-                                <input id="UserPass" name="UserPass" type="password" placeholder="Contraseña" className="input" required />
+                            <h2 className="title">Registro de Operario</h2>
+                            <form onSubmit={registerOperator}>
+                                <input id="OperatorEmail" name="OperatorEmail" type="email" placeholder="Ingrese su email" className="input" required />
+                                <input id="OperatorName" name="OperatorName" type="text" placeholder="Nombre Completo" className="input" required />
+                                <input id="OperatorPass" name="OperatorPass" type="password" placeholder="Contraseña" className="input" required />
                                 <input id="ConfirmPass" name="ConfirmPass" type="password" placeholder="Repetir Contraseña" className="input" required />
                                 <button className="button" type="submit">REGISTRARSE</button>
                             </form>
                         </div>
                     ) : (
                         <div id="LoginForm" className="form">
-                            <h2 className="title">Inicio de sesión de Usuarios</h2>
-                            <form onSubmit={loginData}>
-                                <input id="RegistedEmail" name="RegistedEmail" type="text" placeholder="Ingrese su email" className="input" />
-                                <input id="RegistedPass" name="RegistedPass" type="password" placeholder="Contraseña" className="input" />
+                            <h2 className="title">Inicio Sesión de Operario</h2>
+                            <form onSubmit={loginOperator}>
+                                <input id="OperatorEmail" name="OperatorEmail" type="email" placeholder="Ingrese su email" className="input" />
+                                <input id="OperatorPass" name="OperatorPass" type="password" placeholder="Contraseña" className="input" />
                                 <a href='/LostmyPassword' className="link">¿Olvidó su contraseña?</a>
                                 <button type='submit' className="button">INICIAR SESIÓN</button>
                             </form>
-                            <p>¿No tienes una cuenta? <a href="/Guest" className="link">Sesión de invitado</a></p>
                         </div>
                     )}
                 </div>
