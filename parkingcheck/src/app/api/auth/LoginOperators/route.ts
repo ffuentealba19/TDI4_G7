@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({
             message: 'Inicio de sesión exitoso',
             token,
-            redirectUrl: '/dashboardOperator',
+            redirectUrl: '/HomeOperators',
         }, { status: 200 });
 
     } catch (error) {
