@@ -11,47 +11,52 @@ import {
   IonButton,
   IonCard,
   IonCardContent,
-  IonGrid,
-  IonRow,
-  IonCol,
   IonText,
+  IonCardHeader,
 } from '@ionic/react';
+import './profile.css';
 import { useHistory } from 'react-router-dom';
-import { logout, getUserProfile } from '../../services/AuthServices'; // Asegúrate de que la función esté importada
+import { logout, getUserProfile, getUserVehicles } from '../../services/AuthServices'; // Importa las funciones
 
 const Perfil: React.FC = () => {
-  const history = useHistory(); 
+  const history = useHistory();
   const [userData, setUserData] = useState<any>(null); // Estado para almacenar los datos del usuario
   const [loading, setLoading] = useState(true); // Estado para manejar la carga
-  const [profileImage, setProfileImage] = useState('/assets/profile-placeholder.png'); // Ruta de la imagen por defecto
+  const [profileImage, setProfileImage] = useState('/assets/profile-placeholder.png'); // Imagen por defecto del perfil
+  const [vehiculos, setVehiculos] = useState<any[]>([]); // Estado para almacenar los vehículos
 
   useEffect(() => {
-    const fetchUserProfile = async () => {
+    const fetchData = async () => {
       try {
-        const response = await getUserProfile(); // Llama a la función para obtener el perfil
-        setUserData(response); // Guarda los datos del usuario
-        setProfileImage(response.profileImage); // Guarda la URL de la imagen de perfil
+        // Obtener el perfil del usuario
+        const profileResponse = await getUserProfile();
+        setUserData(profileResponse); // Guardar los datos del perfil
+        setProfileImage(profileResponse.profileImage); // Guardar la imagen de perfil
+
+        // Obtener los vehículos del usuario
+        const vehiculosResponse = await getUserVehicles();
+        setVehiculos(vehiculosResponse); // Guardar los vehículos
       } catch (error) {
-        console.error('Error al cargar el perfil:', error);
+        console.error('Error al cargar los datos:', error);
       } finally {
         setLoading(false); // Finaliza la carga
       }
     };
-    fetchUserProfile();
+    fetchData();
   }, []);
 
   const handleLogout = () => {
-    logout(); 
-    history.push('/login'); 
+    logout();
+    history.push('/login');
     window.location.reload();
   };
 
   if (loading) {
-    return <IonContent>Cargando...</IonContent>; // Puedes personalizar el loading
+    return <IonContent>Cargando...</IonContent>; // Pantalla de carga personalizada
   }
 
   if (!userData) {
-    return <IonContent>Error al cargar los datos del perfil</IonContent>; // Maneja el error
+    return <IonContent>Error al cargar los datos del perfil</IonContent>; // Manejo del error
   }
 
   return (
@@ -91,22 +96,26 @@ const Perfil: React.FC = () => {
             Cerrar sesión
           </IonButton>
 
-          <IonGrid>
-            <IonRow>
-              <IonCol size="6">
-                <IonCard>
-                  <img src="https://img.yapo.cl/images/72/7299715193.jpg" alt="Car 1" />
-                  <IonCardContent className="ion-text-center">BZ JS 66</IonCardContent>
-                </IonCard>
-              </IonCol>
-              <IonCol size="6">
-                <IonCard>
-                  <img src="https://img.yapo.cl/images/72/7299715193.jpg" alt="Car 2" />
-                  <IonCardContent className="ion-text-center">DK JS 32</IonCardContent>
-                </IonCard>
-              </IonCol>
-            </IonRow>
-          </IonGrid>
+          <IonText className="ion-text-center">
+            <h4>Mis Vehículos</h4>
+          </IonText>
+
+          {vehiculos.length > 0 ? (
+            vehiculos.map((vehiculo) => (
+              <IonCard key={vehiculo._id} className="ion-margin">
+                <IonCardHeader>
+                  <IonText>
+                    <h5>Placa: {vehiculo.Placa}</h5>
+                    <p>Marca: {vehiculo.Marca}</p>
+                    <p>Modelo: {vehiculo.Modelo}</p>
+                    <p>Color: {vehiculo.Color}</p>
+                  </IonText>
+                </IonCardHeader>
+              </IonCard>
+            ))
+          ) : (
+            <IonText>No tienes vehículos registrados.</IonText>
+          )}
         </IonCard>
       </IonContent>
     </IonPage>

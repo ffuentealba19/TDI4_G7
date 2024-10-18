@@ -8,6 +8,56 @@ const multer = require('multer'); // Para manejar archivos
 const { v2: cloudinary } = require('cloudinary'); // Cloudinary
 const bcrypt = require('bcrypt');
 
+//Ruta para obtener los vehículos de un usuario autenticado
+router.get('/getautos', middleware, async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const usuario = await User.findById
+    (userId);
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    res.status(200).json(usuario.Vehiculos);
+  } catch (err) {
+    console.error('Error al obtener los vehículos:', err);
+    res.status(500).json({ error: 'Error al obtener los vehículos' });
+  }
+});
+
+// Ruta para agregar un vehículo a un usuario autenticado
+router.post('/addauto', middleware, async (req, res) => {
+  const { Placa, Marca, Modelo, Color } = req.body;
+
+  // Verificar que todos los campos del vehículo estén presentes
+  if (!Placa || !Marca || !Modelo || !Color) {
+    return res.status(400).json({ error: 'Todos los campos del vehículo son obligatorios' });
+  }
+
+  try {
+    // Obtener el usuario autenticado mediante el token
+    const userId = req.user.userId;
+
+    // Buscar al usuario por su ID
+    const usuario = await User.findById(userId);
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+
+    // Agregar el nuevo vehículo al array de vehículos del usuario
+    usuario.Vehiculos.push({ Placa, Marca, Modelo, Color });
+
+    // Guardar los cambios en la base de datos
+    await usuario.save();
+
+    res.status(201).json({ message: 'Vehículo agregado exitosamente', vehiculos: usuario.Vehiculos });
+  } catch (err) {
+    console.error('Error al agregar vehículo:', err);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+
+
 // Ruta para obtener todos los estacionamientos
 router.get('/parkings', async (req, res) => {
   try {

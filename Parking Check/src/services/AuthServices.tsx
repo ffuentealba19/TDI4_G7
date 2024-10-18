@@ -1,10 +1,30 @@
 import axios from 'axios';
-import { returnUpForward } from 'ionicons/icons';
 
 // Crear instancia de axios con configuración básica
 const apiClient = axios.create({
   baseURL: 'http://localhost:3000', // Asegúrate de que esto apunte a tu backend
 });
+
+// Función para obtener los vehículos del usuario
+export const getUserVehicles = async () => {
+  try {
+    const response = await apiClient.get('/getautos'); // Asegúrate de que esta ruta coincida con tu backend
+    console.log(response.data);
+    return response.data; // Retorna los vehículos del usuario
+  } catch (error) {
+    throw new Error('Error al obtener los vehículos');
+  }
+};
+
+// Función para agregar un vehículo
+export const agregarVehiculo = async (vehiculo: { Placa: string; Marca: string; Modelo: string; Color: string }) => {
+  try {
+    const response = await apiClient.post('/addauto', vehiculo);
+    return response.data; // Retorna la respuesta del backend (lista de vehículos actualizada)
+  } catch (error) {
+    throw new Error('Error al agregar el vehículo');
+  }
+};
 
 // Función para obtener los estacionamientos
 export const getParkings = async () => {
@@ -44,10 +64,6 @@ export const getUserProfile = async () => {
   return response.data; // Retorna los datos del usuario
 };
 
-export const getVehiculos = async () => {
-  const response = await apiClient.get('/vehiculos'); // Cambia la ruta si es necesario
-  return response.data;
-};
 // Función para registrar usuario
 export const registerUser = async (username: string, email: string, password: string) => {
   const response = await apiClient.post('/register', { 
