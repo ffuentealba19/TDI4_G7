@@ -1,72 +1,75 @@
-/* General Styling */
-ion-menu {
-  --background: #f4f4f9; /* Fondo claro */
-}
-
-ion-toolbar {
-  --background: #007bff; /* Fondo azul para el toolbar */
-  --color: #fff; /* Texto blanco en el toolbar */
-}
-
-
-.grayscale-img {
-  filter: grayscale(100%);
-}
-
-/* Estilo para los ítems del menú */
-ion-list {
-  padding: 0;
-}
-
-ion-item {
-  --border-color: transparent; /* Sin bordes para los ítems */
-  font-size: 18px; /* Tamaño de la fuente */
-  --min-height: 50px; /* Altura mínima para los ítems */
-  --background: #fff; /* Fondo blanco para los ítems */
-  color: #333; /* Color de texto */
-}
-
-ion-item:hover {
-  --background: #e0e0e0; /* Color de fondo al pasar el cursor por encima */
-}
-
-/* Estilo cuando un ítem está activo */
-ion-item.activated {
-  --background: #007bff; /* Fondo azul cuando el ítem está seleccionado */
-  color: white; /* Texto blanco cuando está seleccionado */
-}
-
-ion-item.activated ion-icon {
-  color: white; /* Ícono blanco cuando el ítem está seleccionado */
-}
-
-/* Botones personalizados dentro del contenido */
-ion-button {
-  --border-radius: 10px; /* Botones con bordes redondeados */
-  margin: 10px auto; /* Margen interno y externo */
-
-}
-
-ion-button[color="success"] {
-  --background: #28a745; /* Verde para abrir Google Maps */
-}
-
-ion-button[color="danger"] {
-  --background: #b13f4b; /* Rojo para cerrar sesión */
-}
-
-ion-button[color="secondary"] {
-  --background: #6c757d; /* Gris para editar perfil */
-}
-
-ion-button:hover {
-  --opacity: 0.9; /* Ligero efecto de hover en botones */
-}
-
-/* Estilo del contenido del menú */
+/* Estilo general */
 ion-content {
-  --padding-start: 16px; /* Espacio inicial en el contenido */
-  --padding-end: 16px; /* Espacio final en el contenido */
-  --padding-top: 16px; /* Espacio superior */
-  --padding-bottom: 16px; /* Espacio inferior */
+  --background: #f0f4f7;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Encabezado */
+ion-header {
+  --background: #0056b3;
+  --color: white;
+  text-align: center;
+}
+
+ion-title {
+  font-size: 1.5em;
+  font-weight: bold;
+}
+
+/* Cards de estacionamiento */
+.card {
+  margin: 20px auto;
+  width: 90%;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.card:hover {
+  transform: scale(1.02);
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+  border-bottom: 2px solid #ddd;
+}
+
+.card h3 {
+  padding: 15px;
+  margin: 0;
+  font-size: 1.3em;
+  color: #333;
+}
+
+.card p {
+  padding: 0 15px 15px;
+  margin: 0;
+  color: #666;
+  font-size: 1em;
+}
+
+/* Footer de navegación */
+ion-tab-bar {
+  --background: white;
+  --color-selected: #ff6f00;
+  box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+}
+
+ion-tab-button {
+  --color: #0056b3;
+}
+
+ion-tab-button.tab-selected {
+  --color: #ff6f00;
+}
+
+/* Botones */
+ion-button {
+  --background: #0056b3;
+  --background-hover: #004494;
+  --border-radius: 5px;
+  --color: white;
 }
