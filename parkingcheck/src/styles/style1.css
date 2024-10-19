@@ -319,7 +319,7 @@ form a:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* Asegúrate de que el popup esté por encima de otros elementos */
+  z-index: 1000; 
 }
 
 .popup-content {
@@ -346,4 +346,58 @@ form a:hover {
   to {
     transform: translateY(0);
   }
+}
+
+.main-car {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top:30px;
+}
+
+.main-car h1 {
+  font-weight: bold;
+}
+
+.main-addcar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  box-shadow: 1px 3px 4px black;
+  max-width: 500px;
+  width: 100%;
+  max-height: 600px;
+  height: 100%;
+  border-radius: 5%;
+}
+
+.main-addcar form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+
+.main-addcar input {
+  padding: 12px;
+  margin: 12px 0;
+  width: 100%;
+  font-size: 18px;
+  border-radius: 10px;
+  border: 1px solid #007bff;
+}
+
+
+.main-addcar button {
+  color: #f0f0f0;
+  background-color: #007bff;
+  width: 250px;
+  height: 50px;
+  margin: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 25px;
 }
