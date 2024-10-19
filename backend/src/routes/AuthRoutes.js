@@ -8,6 +8,58 @@ const multer = require('multer'); // Para manejar archivos
 const { v2: cloudinary } = require('cloudinary'); // Cloudinary
 const bcrypt = require('bcrypt');
 
+//Ruta para modificar un vehículo de un usuario autenticado
+router.put('/updateauto/:id', middleware, async (req, res) => {
+  const userId = req.user.userId;
+  const { Placa, Marca, Modelo, Color } = req.body;
+  const vehiculoId = req.params.id;
+  try {
+    const usuario = await User.findById
+    (userId);
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    const vehiculo = usuario.Vehiculos.id(vehiculoId);
+    if (!vehiculo) {
+      return res.status(404).json({ error: 'Vehículo no encontrado' });
+    }
+    vehiculo.Placa = Placa;
+    vehiculo.Marca = Marca;
+    vehiculo.Modelo = Modelo;
+    vehiculo.Color = Color;
+    await usuario.save();
+    res.status(200).json({ message: 'Vehículo actualizado exitosamente', vehiculos: usuario.Vehiculos });
+  } catch (err) {
+    console.error('Error al actualizar el vehículo:', err);
+    res.status(500).json({ error: 'Error al actualizar el vehículo' });
+  }
+});
+
+//Ruta para eliminar un vehículo de un usuario autenticado
+router.delete('/deleteauto/:id', middleware, async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const usuario = await User.findById
+    (userId);
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    const vehiculoId = req.params.id;
+    const vehiculo = usuario.Vehiculos.id(vehiculoId);
+    if (!vehiculo) {
+      return res.status(404).json({ error: 'Vehículo no encontrado' });
+    }
+    console.log(vehiculo);
+    usuario.Vehiculos.pull(vehiculo);
+    await usuario.save();
+    res.status(200).json({ message: 'Vehículo eliminado exitosamente', vehiculos: usuario.Vehiculos });
+  } catch (err) {
+    console.error('Error al eliminar el vehículo:', err);
+    res.status(500).json({ error: 'Error al eliminar el vehículo' });
+  }
+});
+
+
 //Ruta para obtener los vehículos de un usuario autenticado
 router.get('/getautos', middleware, async (req, res) => {
   try {

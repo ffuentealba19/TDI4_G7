@@ -88,7 +88,7 @@ const Perfil: React.FC = () => {
           <IonButton expand="block" color="danger" onClick={handleLogout}>
             Cerrar sesión
           </IonButton>
-          <IonButton expand="block" color="primary" routerLink="/agregarvehiculo">
+          <IonButton expand="block" color="primary" routerLink='/autos'>
             Gestionar Vehículos
           </IonButton>
           <IonText className="ion-text-center">

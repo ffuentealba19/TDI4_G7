@@ -17,6 +17,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true // Agrega `createdAt` y `updatedAt` automáticamente
 });
 
+
 // Hash de la contraseña antes de guardar el usuario
 userSchema.pre('save', async function (next) {
   if (this.isModified('UserPass')) {

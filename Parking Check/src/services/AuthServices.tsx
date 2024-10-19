@@ -2,8 +2,28 @@ import axios from 'axios';
 
 // Crear instancia de axios con configuración básica
 const apiClient = axios.create({
-  baseURL: 'https://parkingcheck.onrender.com', // Asegúrate de que esto apunte a tu backend
+  baseURL: 'http://localhost:3000', // localhost3000
 });
+
+//Funcion para actualizar un vehiculo
+export const updateVehicle = async (id: string, vehicle: { Placa: string; Marca: string; Modelo: string; Color: string }) => {
+  try {
+    const response = await apiClient.put(`/updateauto/${id}`, vehicle);
+    return response.data;
+  } catch (error) {
+    throw new Error('Error al actualizar el vehículo');
+  }
+};
+
+//funcion para borrar un vehiculo
+export const deleteVehicle = async (id: string) => {
+  try {
+    const response = await apiClient.delete(`/deleteauto/${id}`);
+    return response.data;
+  } catch (error) {
+    throw new Error('Error al borrar el vehículo');
+  }
+};
 
 // Función para obtener los vehículos del usuario
 export const getUserVehicles = async () => {
