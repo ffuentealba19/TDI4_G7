@@ -130,7 +130,7 @@ export default function Upload() {
                         </form>
                     )}
                     <button className="w-[90%] font-bold p-3 text-lg mt-5 border-0 rounded-full cursor-pointer bg-[#D9D9D9] text-black">
-                        Editar Perfil
+                        <a href="/EditProfile">Editar Perfil</a>
                     </button>
                     <form onSubmit={Logout} className="flex justify-center w-[90%] font-bold text-lg mt-5 border-0 rounded-full cursor-pointer bg-[#5785A4] text-blacks">
                         <button type="submit" className="w-[90%] font-bold p-3 text-lg bg-[#5785A4] text-black">

@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 export interface INotificacion extends Document {
   user: mongoose.Schema.Types.ObjectId;
-  tipo: string; // Por ejemplo, 'alerta' o 'expiracion'
+  tipo: string; 
   mensaje: string;
   fechaEnvio: Date;
 }

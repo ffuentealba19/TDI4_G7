@@ -16,7 +16,9 @@ export const messages = {
         userNotFound : "Usuario no encontrado",
         tokenExpired : "Token expirado",
         somethingWentWrong : "Error algo ha ocurrido",
-        tokenNotFound : "Token no encontrado"       
+        tokenNotFound : "Token no encontrado",
+        UserNotFound : "Usuario no encontrado",
+        UpdateError : "Error para actualizar"      
     },
     success : {
         UserCreated : "Se ha podido registrar con exito",

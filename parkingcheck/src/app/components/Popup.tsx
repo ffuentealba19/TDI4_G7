@@ -1,4 +1,4 @@
-// Popup.tsx
+
 import React from 'react';
 
 interface PopupProps {

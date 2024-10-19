@@ -131,7 +131,6 @@ const EditInfo = () => {
                 throw new Error('Error al eliminar la cuenta');
             }
     
-            // Redirigir al usuario o cerrar sesión después de eliminar la cuenta
             closePopup(); 
         } catch (err) {
             setError(err.message); 

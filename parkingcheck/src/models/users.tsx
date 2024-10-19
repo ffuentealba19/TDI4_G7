@@ -1,14 +1,11 @@
 import mongoose, { Schema, Document } from 'mongoose';
-
+import { vehicleSchema, IVehicle } from './vehicle';
 
 export interface IUser extends Document {
   UserName: string;
   UserEmail: string;
   UserPass: string;
-  Vehiculos?: {
-    Placa: string;
-    Modelo: string;
-  }[];
+  Vehiculos?: IVehicle[]; 
   url: string;
   vip: boolean;
 }
@@ -18,10 +15,7 @@ const userSchema = new Schema<IUser>({
   UserName: { type: String, required: true },
   UserEmail: { type: String, required: true, unique: true },
   UserPass: { type: String, required: true },
-  Vehiculos: [{
-    Placa: String,
-    Modelo: String,
-  }],
+  Vehiculos: [vehicleSchema],
   url: {type: String, required: false},
   vip: {type: Boolean, required: false, default: false},
 }, {
