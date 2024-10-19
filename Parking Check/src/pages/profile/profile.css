@@ -1,0 +1,19 @@
+.vehiculos-container {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto; /* Permite desplazamiento horizontal */
+    -webkit-overflow-scrolling: touch; /* Mejora el desplazamiento en dispositivos móviles */
+    gap: 0px;
+  }
+  
+  .vehiculos-container::-webkit-scrollbar {
+    display: none; /* Opcional: Oculta la barra de desplazamiento en navegadores WebKit */
+  }
+  
+  .vehiculo-card {
+    min-width: 250px; /* Establece el ancho mínimo de cada tarjeta */
+    flex: 0 0 auto; /* Evita que las tarjetas se ajusten automáticamente */
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+

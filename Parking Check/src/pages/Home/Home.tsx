@@ -1,5 +1,4 @@
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonIcon, IonMenuButton, IonCard, IonCardTitle, IonCardSubtitle, IonCardHeader, IonCardContent } from '@ionic/react';
-import { mapOutline } from 'ionicons/icons';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonMenuButton, IonCard, IonCardTitle, IonCardSubtitle, IonCardHeader, IonCardContent, IonText} from '@ionic/react';
 import './Home.css';
 
 const Home: React.FC = () => {
@@ -12,8 +11,8 @@ const Home: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="ion-padding">
-        <h1>Estacionamientos</h1>
+      <IonContent fullscreen={true}>
+        <IonText><h1>Estacionamientos Disponibles</h1></IonText>
         <IonCard>
           <img alt='Campus Norte' src='https://doctoradoeduconsorcio.cl/wp-content/uploads/catolica-temuco.jpg'/>
           <IonCardHeader>
@@ -28,7 +27,7 @@ const Home: React.FC = () => {
           </IonCardHeader>
           <IonCardContent>Proximamente...</IonCardContent>
         </IonCard>
-
+        
       </IonContent>
     </IonPage>
   );

@@ -64,14 +64,11 @@ const Perfil: React.FC = () => {
       <IonHeader>
         <IonToolbar color="primary">
           <IonTitle color="light">PARKING CHECK</IonTitle>
-          <IonButtons slot="end">
-            <IonMenuButton></IonMenuButton>
-          </IonButtons>
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="ion-padding">
-        <IonCard className="ion-padding">
+      <IonContent fullscreen>
+        <IonCard>
           <IonText className="ion-text-center">
             <h2>MI PERFIL</h2>
           </IonText>
@@ -82,40 +79,38 @@ const Perfil: React.FC = () => {
             <h3>{userData.UserName}</h3>
             <p>{userData.UserEmail}</p>
             <p>
-              Usuario estándar <a href="#">Mejorar suscripción!</a>
-            </p>
+              Usuario estándar <a href="/upgrade-subscription">Mejorar suscripción!</a>
+            </p>  
           </IonText>
-          <IonButton expand="full" color="secondary" routerLink="/upgrade-subscription">
-            Mejorar suscripción
-          </IonButton>
-
           <IonButton expand="block" color="medium" routerLink="/edit-profile">
             Editar Perfil
           </IonButton>
           <IonButton expand="block" color="danger" onClick={handleLogout}>
             Cerrar sesión
           </IonButton>
-
+          <IonButton expand="block" color="primary" routerLink="/agregarvehiculo">
+            Gestionar Vehículos
+          </IonButton>
           <IonText className="ion-text-center">
             <h4>Mis Vehículos</h4>
           </IonText>
+          <div className="vehiculos-container">
+            {vehiculos.length > 0 ? (
+              vehiculos.map((vehiculo) => (
+                <IonCard key={vehiculo._id} className="vehiculo-card">
+                  <IonCardHeader>
+                    <IonText className='ion-text-center'>
+                      <img className='imagen' width={"200px"} src="https://img.yapo.cl/images/72/7299715193.jpg" alt="car1" />
+                      <h5>{vehiculo.Placa}</h5>
+                    </IonText>
+                  </IonCardHeader>
+                </IonCard>
+              ))
+            ) : (
+              <IonText>No tienes vehículos registrados.</IonText>
+            )}
+          </div>
 
-          {vehiculos.length > 0 ? (
-            vehiculos.map((vehiculo) => (
-              <IonCard key={vehiculo._id} className="ion-margin">
-                <IonCardHeader>
-                  <IonText>
-                    <h5>Placa: {vehiculo.Placa}</h5>
-                    <p>Marca: {vehiculo.Marca}</p>
-                    <p>Modelo: {vehiculo.Modelo}</p>
-                    <p>Color: {vehiculo.Color}</p>
-                  </IonText>
-                </IonCardHeader>
-              </IonCard>
-            ))
-          ) : (
-            <IonText>No tienes vehículos registrados.</IonText>
-          )}
         </IonCard>
       </IonContent>
     </IonPage>

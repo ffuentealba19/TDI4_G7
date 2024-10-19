@@ -147,7 +147,6 @@ const App: React.FC = () => (
                 <AgregarVehiculo />
               </PrivateRoute>
             </IonRouterOutlet>
-
             <IonTabBar slot="bottom">
               <IonTabButton tab="home" href="/home">
                 <IonIcon aria-hidden="true" icon={triangle} />

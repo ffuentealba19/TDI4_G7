@@ -47,12 +47,10 @@ import {
           Modelo: vehiculo.modelo,
           Color: vehiculo.color
         });
-  
-        setAlertMessage('Vehículo guardado exitosamente');
-        setShowAlert(true);
         
-        // Redirigir a la lista de vehículos después de guardar
-        history.push('/vehiculos');
+        // Redirigir al perfil
+        history.push('/perfil');
+        window.location.reload();
         
       } catch (error) {
         // Mostrar error si el guardado falla
@@ -68,7 +66,7 @@ import {
             <IonTitle>Agregar Vehículo</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent fullscreen className="ion-padding vehiculos-content">
+        <IonContent fullscreen className="vehiculos-content">
           <IonCard className="vehiculos-card">
             <IonCardHeader>
               <IonCardTitle>Ingrese los Datos del Vehículo</IonCardTitle>

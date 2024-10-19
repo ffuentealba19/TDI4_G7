@@ -2,14 +2,13 @@ import axios from 'axios';
 
 // Crear instancia de axios con configuración básica
 const apiClient = axios.create({
-  baseURL: 'http://localhost:3000', // Asegúrate de que esto apunte a tu backend
+  baseURL: 'https://parkingcheck.onrender.com', // Asegúrate de que esto apunte a tu backend
 });
 
 // Función para obtener los vehículos del usuario
 export const getUserVehicles = async () => {
   try {
     const response = await apiClient.get('/getautos'); // Asegúrate de que esta ruta coincida con tu backend
-    console.log(response.data);
     return response.data; // Retorna los vehículos del usuario
   } catch (error) {
     throw new Error('Error al obtener los vehículos');
