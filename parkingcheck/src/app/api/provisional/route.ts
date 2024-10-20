@@ -6,19 +6,41 @@ import { cookies } from "next/headers";
 import { verify } from "jsonwebtoken";
 
 export async function POST(req: NextRequest) {
+    const galleta = cookies();
+    const token = galleta.get("token")?.value;
 
-    const id = "66f639647e3091d2cb0c4a5b"
+    if (!token) {
+        return NextResponse.json({ message: "No token provided" }, { status: 401 });
+    }
+
+    const secret = process.env.JWT_SECRET;
+    if (!secret) {
+        throw new Error("JWT_SECRET not set in environment variables");
+    }
+
+
+    const user = verify(token, secret) as { userId: string };
+
+    const id = user.userId;
     await run()
     const nuevo_vehiculo= new Vehicule2(await req.json())
-
     const usuario = await User2.findById(id)
     const array= []
+   
+    if (usuario.Vehiculos.length > 0){
+         let i;
+         for (i = 0; i < usuario.Vehiculos.length; i++ ){
+            
+            array.push(usuario.Vehiculos[i])
+         }
+    }
     array.push(nuevo_vehiculo)
+    console.log(array)
     const data_vehiculo = {
         Vehiculos : array,
     }
     const n_usuario = await User2.findByIdAndUpdate(id, data_vehiculo, {new: true})
-    console.log(n_usuario.Vehiculos[0])
+
 
     
     return NextResponse.json({
