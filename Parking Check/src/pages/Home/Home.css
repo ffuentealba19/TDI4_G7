@@ -1,42 +1,66 @@
-/* Estilo general */
+/* Modo claro por defecto */
 ion-content {
-  --background: #f0f4f7;
+  --background: #e9edf3;
   font-family: 'Roboto', sans-serif;
   padding: 20px;
 }
 
-/* Título principal */
-.page-title {
-  text-align: center;
-  font-size: 1.8em;
-  font-weight: bold;
-  color: #333;
+.greeting {
+  text-align: center; /* Centramos el saludo */
+  font-size: 1.2em;
+  color: #2c3e50;
   margin-bottom: 20px;
 }
 
-/* Cards */
+.page-title {
+  text-align: center;
+  font-size: 2em;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 25px;
+}
+
 .card {
-  margin: 20px auto;
+  margin: 15px auto;
   width: 90%;
   background-color: white;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card:hover {
-  transform: scale(1.02);
+  transform: scale(1.03);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .card-image {
   width: 100%;
   height: auto;
-  border-bottom: 2px solid #ddd;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
 }
 
 .bw-image {
   filter: grayscale(100%);
-  opacity: 0.8;
+  opacity: 0.7;
+}
+
+.availability-bar {
+  margin: 10px 0;
+  --progress-background: #d4e157;
+}
+
+.reserve-button {
+  margin-top: 15px;
+  --background: #007bff;
+  --background-hover: #0069d9;
+  --border-radius: 5px;
+  --color: white;
+}
+.reserve-button:disabled {
+  --background: #b0bec5;
+  --color: #666;
 }
 
 .upcoming:hover .bw-image {
@@ -45,15 +69,75 @@ ion-content {
   transition: 0.5s ease;
 }
 
-/* Botones de Reservar */
-.reserve-button {
-  margin-top: 15px;
-  --background: #0056b3;
-  --background-hover: #004494;
-  --border-radius: 5px;
-  --color: white;
+/* Modo oscuro */
+body.dark {
+  --background: #2c3e50;
 }
-.reserve-button:disabled {
-  --background: #ccc;
-  --color: #666;
+
+body.dark ion-content {
+  --background: #2c3e50;
+}
+
+body.dark .greeting, 
+body.dark .page-title,
+body.dark .card-title {
+  color: #ecf0f1;
+}
+
+body.dark .card {
+  background-color: #34495e;
+  box-shadow: 0 6px 12px rgba(255, 255, 255, 0.15);
+}
+
+body.dark .availability-bar {
+  --progress-background: #f39c12;
+}
+
+body.dark .reserve-button {
+  --background: #16a085;
+  --background-hover: #1abc9c;
+}
+
+body.dark .bw-image {
+  filter: grayscale(100%);
+  opacity: 0.6;
+}
+
+/* Estilo para la barra inferior en modo oscuro */
+body.dark ion-tab-bar {
+  --background: #1a252f;
+  --color: #ecf0f1;
+  --color-selected: #1abc9c; /* Color del ícono seleccionado */
+}
+
+/* Botón de modo oscuro estilo burbuja */
+.bubble-darkmode {
+  position: fixed;
+  top: 90px;
+  left: 20px;
+  z-index: 1000;
+  background-color: #007bff;
+  padding: 10px;
+  border-radius: 50%;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.bubble-darkmode ion-icon {
+  color: white;
+  font-size: 24px;
+}
+
+body.dark .bubble-darkmode {
+  background-color: #16a085;
+}
+
+.bubble-darkmode:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
 }
