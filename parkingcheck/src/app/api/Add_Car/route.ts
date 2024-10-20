@@ -41,8 +41,6 @@ export async function POST(req: NextRequest) {
     }
     const n_usuario = await User2.findByIdAndUpdate(id, data_vehiculo, {new: true})
 
-
-    
     return NextResponse.json({
         message: "Hola"
     })
