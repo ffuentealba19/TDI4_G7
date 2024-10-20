@@ -90,6 +90,29 @@ const EditInfo = () => {
         }
     };
 
+    const handleChangeProfilePicture = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        
+        try {
+            const response = await fetch('/api/Upload', {
+                method: 'POST',
+                body: formData,
+            });
+    
+            if (!response.ok) {
+                throw new Error('Error al subir la imagen');
+            }
+    
+            const data = await response.json();
+            setUserInfo(data.user); // Actualiza la información del usuario
+            closePopup();
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+
     const handleChangePassword = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const newPass = event.currentTarget.NewPass.value;
@@ -190,13 +213,15 @@ const EditInfo = () => {
                             </div>
 
                     )} className="font-bold p-3 text-lg bg-sky-500 text-white rounded-xl">Cambiar mi contraseña</button>
-                    <button onClick={() => openPopup(
+                        <button onClick={() => openPopup(
                             'Cambiar foto', 
                             <div>
-                                STANDBY
+                                <form onSubmit={handleChangeProfilePicture}>
+                                    <input type="file" name="file" id="file" accept="image/*" required/>
+                                    <button type="submit" >Subir nueva foto</button>
+                                </form>
                             </div>
-
-                    )} className="font-bold p-3 text-lg bg-[#e18432] text-white rounded-xl">Cambiar foto de perfil</button>
+                        )} className="font-bold p-3 text-lg bg-[#e18432] text-white rounded-xl">Cambiar foto de perfil</button>
                         <button onClick={() => openPopup(
                             'Eliminar cuenta', 
                             <div>
