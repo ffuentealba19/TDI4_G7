@@ -18,7 +18,7 @@ import {
   setupIonicReact
 } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-import { ellipse, square, triangle, person, homeOutline, alertCircleOutline } from 'ionicons/icons';
+import { logOut,home, person, homeOutline, alertCircleOutline } from 'ionicons/icons';
 
 /* Paginas */
 import Tab1 from './pages/Tab1';
@@ -34,6 +34,11 @@ import UpgradeSubscription from './pages/Subscriptions/UpgradeSubscription';
 import Vehiculos from './pages/vehiculo/vehiculo';
 import AgregarVehiculo from './pages/vehiculo/agregarvehiculo';
 import EditarVehiculo from './pages/vehiculo/editarvehiculo'; // Asegúrate de importar el componente correcto
+import Solicitud from './pages/solicitud/solicitud';
+import CodigoQr from './pages/solicitud/codigoqr';
+import PaymentPage from './pages/Pagos/pagos';
+import ReservasPage from './pages/Reserva/reservas';
+
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -51,7 +56,7 @@ import '@ionic/react/css/display.css';
 import './theme/variables.css';
 import { getToken } from './services/AuthServices';
 import { AuthProvider } from './context/authcontext'; // Importar el AuthProvider
-
+import { logout } from './services/AuthServices'
 setupIonicReact();
 
 const PrivateRoute: React.FC<any> = ({ children, ...rest }) => {
@@ -78,12 +83,10 @@ const App: React.FC = () => (
   <AuthProvider>
     <IonApp>
       <IonReactRouter>
-        {/* Menú lateral condicional basado en autenticación */}
-        {getToken() && (
           <IonMenu side="end" contentId="main">
             <IonHeader>
               <IonToolbar color="primary">
-                <IonTitle>Parking Check</IonTitle>
+                <IonTitle>Menu</IonTitle>
               </IonToolbar>
             </IonHeader>
             <IonContent>
@@ -101,9 +104,13 @@ const App: React.FC = () => (
                   <IonLabel>Reportar un problema</IonLabel>
                 </IonItem>
               </IonList>
+              {/* Botón de cerrar sesión al final*/}
+              <IonItem button onClick={logout}>
+                <IonIcon icon={logOut} slot="start" />
+                <IonLabel>Cerrar sesión</IonLabel>
+              </IonItem>
             </IonContent>
           </IonMenu>
-        )}
 
         {/* Rutas y tabs */}
         <IonRouterOutlet id="main">
@@ -129,11 +136,23 @@ const App: React.FC = () => (
               <PrivateRoute exact path="/tab1">
                 <Tab1 />
               </PrivateRoute>
+              <PrivateRoute exact path="/solicitud">
+                <Solicitud />
+              </PrivateRoute>
               <PrivateRoute exact path="/tab2">
                 <Tab2 />
               </PrivateRoute>
+              <PrivateRoute exact path="/reserva">
+                <ReservasPage />
+              </PrivateRoute>
               <PrivateRoute path="/profile">
                 <Profile />
+              </PrivateRoute>
+              <PrivateRoute path="/codigoqr">
+                <CodigoQr />
+              </PrivateRoute>
+              <PrivateRoute path="/pagos">
+                <PaymentPage />
               </PrivateRoute>
               <PrivateRoute path="/agregarvehiculo">
                 <AgregarVehiculo />
@@ -156,10 +175,9 @@ const App: React.FC = () => (
             </IonRouterOutlet>
             <IonTabBar slot="bottom">
               <IonTabButton tab="home" href="/home">
-                <IonIcon aria-hidden="true" icon={triangle} />
+                <IonIcon aria-hidden="true" icon={home} />
                 <IonLabel>Home</IonLabel>
               </IonTabButton>
-
               <IonTabButton tab="Profile" href="/profile">
                 <IonIcon aria-hidden="true" icon={person} />
                 <IonLabel>Perfil</IonLabel>

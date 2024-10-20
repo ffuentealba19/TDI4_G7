@@ -10,6 +10,9 @@ import {
   IonCardTitle,
   IonCardSubtitle,
   IonCardContent,
+  IonButtons,
+  IonIcon,
+  IonBackButton,
 } from '@ionic/react';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -23,10 +26,13 @@ const UpgradeSubscription: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar color="primary">
-          <IonTitle>Mejorar Suscripción</IonTitle>
+          <IonButtons slot='start'>
+            <IonIcon/>
+            <IonBackButton defaultHref="/profile" />
+          </IonButtons>
+          <IonTitle>Parking Check</IonTitle>
         </IonToolbar>
       </IonHeader>
-
       <IonContent className="ion-padding">
         <Swiper spaceBetween={50} slidesPerView={1} pagination={{ clickable: true }}>
           {/* Plan Normal */}
@@ -80,7 +86,7 @@ const UpgradeSubscription: React.FC = () => {
                     <li><del>Servicios Adicionales</del></li>
                     <li>Acceso básico a la plataforma</li>
                 </ul>
-                <IonButton expand="full" color="success">Seleccionar</IonButton>
+                <IonButton expand="full" color="success" routerLink='/pagos'>Seleccionar</IonButton>
               </IonCardContent>
             </IonCard>
           </SwiperSlide>
@@ -101,7 +107,7 @@ const UpgradeSubscription: React.FC = () => {
                   <li>Servicios Adicionales</li>
                   <li>Acceso básico a la plataforma</li>
                 </ul>
-                <IonButton expand="full" color="tertiary">Seleccionar</IonButton>
+                <IonButton expand="full" color="tertiary" routerLink='/pagos'>Seleccionar</IonButton>
               </IonCardContent>
             </IonCard>
           </SwiperSlide>

@@ -12,7 +12,10 @@ import {
     IonLabel, 
     IonItem, 
     IonButton, 
-    IonAlert
+    IonButtons,
+    IonAlert,
+    IonBackButton,
+    IonIcon
   } from '@ionic/react';
   import { useState } from 'react';
   import { useHistory } from 'react-router-dom';
@@ -62,12 +65,16 @@ import {
     return (
       <IonPage>
         <IonHeader>
-          <IonToolbar>
-            <IonTitle>Agregar Vehículo</IonTitle>
+          <IonToolbar color='primary'>
+          <IonButtons slot="start">
+            <IonIcon/>
+            <IonBackButton defaultHref="/profile" />
+          </IonButtons>
+            <IonTitle>Parking Check</IonTitle>
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen className="vehiculos-content">
-          <IonCard className="vehiculos-card">
+          <IonCard>
             <IonCardHeader>
               <IonCardTitle>Ingrese los Datos del Vehículo</IonCardTitle>
             </IonCardHeader>

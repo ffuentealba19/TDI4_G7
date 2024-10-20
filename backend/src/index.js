@@ -16,14 +16,9 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .catch(err => console.error('Error connecting to MongoDB', err));
 
 // Configurar rate limiter
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutos
-  max: 100, // Limita cada IP a 100 solicitudes por 'windowMs'
-  message: 'Demasiadas solicitudes desde esta IP, por favor intente nuevamente después de 15 minutos.',
-});
 
 // Aplicar el rate limiter globalmente
-app.use(limiter);
+
 
 // Middleware
 app.use(cors()); // Asegúrate de que CORS está configurado

@@ -108,6 +108,24 @@ router.post('/addauto', middleware, async (req, res) => {
   }
 });
 
+//Ruta para actualizar el plan de un usuario autenticado
+router.put('/updateplan', middleware, async (req, res) => {
+  const userId = req.user.userId; // El middleware extrae el userId desde el token
+  const { Plan } = req.body; // El plan seleccionado se pasa en el body
+  try {
+    const usuario = await User.findById(userId);
+    if (!usuario) {
+      return res.status(404).json({ error: 'Usuario no encontrado' });
+    }
+    usuario.Plan = Plan; // Actualiza el plan del usuario
+    await usuario.save();
+    res.status(200).json({ message: 'Plan actualizado exitosamente', plan: usuario.Plan });
+  } catch (err) {
+    console.error('Error al actualizar el plan:', err);
+    res.status(500).json({ error: 'Error al actualizar el plan' });
+  }
+});
+
 
 
 // Ruta para obtener todos los estacionamientos

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom'; // Para manejar la navegación y obtener los parámetros de la URL
-import { IonPage, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent, IonInput, IonLabel, IonItem, IonButton, IonLoading, IonToast } from '@ionic/react';
+import { IonPage, IonHeader, IonToolbar, IonButtons, IonBackButton, IonTitle, IonContent, IonInput, IonLabel, IonItem, IonButton, IonLoading, IonToast, IonCard, IonIcon } from '@ionic/react';
 import { updateVehicle, getUserVehicles } from "../../services/AuthServices" // Importa las funciones de la API
 
 const EditarVehiculo: React.FC = () => {
@@ -64,15 +64,16 @@ const EditarVehiculo: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color='primary'>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/vehiculos" />
-          </IonButtons>
-          <IonTitle>Editar Vehículo</IonTitle>
+              <IonIcon/>
+              <IonBackButton defaultHref="/autos" />
+            </IonButtons>
+          <IonTitle>Parking Check</IonTitle>
         </IonToolbar>
       </IonHeader>
-
-      <IonContent className="ion-padding">
+      <IonContent>
+        <IonCard>
         <IonItem>
           <IonLabel position="stacked">Placa</IonLabel>
           <IonInput
@@ -124,6 +125,7 @@ const EditarVehiculo: React.FC = () => {
           duration={2000}
           onDidDismiss={() => setShowToast(false)}
         />
+        </IonCard>
       </IonContent>
     </IonPage>
   );

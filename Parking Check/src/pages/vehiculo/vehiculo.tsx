@@ -1,9 +1,9 @@
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonList, IonItem, IonLabel, IonIcon, IonAlert } from '@ionic/react';
+import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar, IonCard, IonCardHeader, IonCardTitle, IonCardContent, IonButton, IonList, IonItem, IonLabel, IonIcon, IonAlert, IonButtons, IonBackButton } from '@ionic/react';
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { trash, create } from 'ionicons/icons';
 import './vehiculo.css';
-import { getUserVehicles, deleteVehicle, updateVehicle } from '../../services/AuthServices';
+import { getUserVehicles, deleteVehicle } from '../../services/AuthServices';
 
 const Vehiculos: React.FC = () => {
   const history = useHistory();
@@ -47,12 +47,16 @@ const Vehiculos: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
-          <IonTitle>Gestionar Vehículos</IonTitle>
+        <IonToolbar color='primary'>
+          <IonButtons slot="start">
+              <IonIcon/>
+              <IonBackButton defaultHref="/profile" />
+            </IonButtons>
+          <IonTitle>Parking Check</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen className="vehiculos-content">
-        <IonCard className="vehiculos-card">
+        <IonCard>
           <IonCardHeader>
             <IonCardTitle>Lista de Vehículos</IonCardTitle>
           </IonCardHeader>

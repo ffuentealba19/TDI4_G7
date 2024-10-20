@@ -65,14 +65,14 @@ const LoginRegister: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar>
+        <IonToolbar color='primary'>
           <IonTitle>Parking Check</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen className="ion-padding login-content">
         <IonCard className="login-card">
           <IonCardHeader>
-            <IonCardTitle className="card-title">PARKING CHECK</IonCardTitle>
+            <IonCardTitle className="card-title">Bienvenido</IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
             <IonSegment

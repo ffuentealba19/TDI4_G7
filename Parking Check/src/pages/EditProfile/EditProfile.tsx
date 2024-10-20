@@ -13,10 +13,12 @@ import {
   IonButtons,
   IonBackButton,
   IonLoading,
+  IonIcon,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import { getUserProfile, updateUserProfile, uploadImage } from '../../services/AuthServices'; // Asegúrate de que las funciones estén importadas
 import './EditProfile.css';
+import { arrowBack } from 'ionicons/icons';
 
 const EditProfile: React.FC = () => {
   const history = useHistory();
@@ -85,6 +87,7 @@ const EditProfile: React.FC = () => {
       <IonHeader>
         <IonToolbar color="primary">
           <IonButtons slot="start">
+            <IonIcon/>
             <IonBackButton defaultHref="/profile" />
           </IonButtons>
           <IonTitle>Editar Perfil</IonTitle>
@@ -100,6 +103,7 @@ const EditProfile: React.FC = () => {
           <IonButton color="medium" expand="block" onClick={() => document.getElementById('profileImageInput')?.click()}>
             Cambiar Foto de Perfil
           </IonButton>
+
           <input
             type="file"
             id="profileImageInput"

@@ -12,6 +12,8 @@ const userSchema = new mongoose.Schema({
     Color: { type: String, required: false },
   }],
   profileImage: { type: String, required: false }, // Cambio del nombre del campo a algo más descriptivo
+  //Todos los usuarios nuevos empezaran con el plan basico
+  Plan: { type: String, default: 'Basico' },
 }, { 
   collection: 'usuarios',
   timestamps: true // Agrega `createdAt` y `updatedAt` automáticamente

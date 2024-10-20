@@ -5,7 +5,7 @@
     -webkit-overflow-scrolling: touch; /* Mejora el desplazamiento en dispositivos móviles */
     gap: 0px;
   }
-  
+
   .vehiculos-container::-webkit-scrollbar {
     display: none; /* Opcional: Oculta la barra de desplazamiento en navegadores WebKit */
   }
@@ -15,5 +15,12 @@
     flex: 0 0 auto; /* Evita que las tarjetas se ajusten automáticamente */
     border: 1px solid #ccc;
     padding: 10px;
+  }
+  .button-card{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: auto;
+    margin-bottom: auto;
   }
 
