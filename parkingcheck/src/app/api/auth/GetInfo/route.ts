@@ -10,12 +10,12 @@ export async function GET() {
     const galleta = cookies();
     const token = galleta.get('token')?.value; 
 
-    // Si no hay token, devolvemos un error
+
     if (!token) {
       return NextResponse.json({ error: messages.error.tokenNotFound || 'Token no encontrado' }, { status: 401 });
     }
 
-    // Verificar el token
+
     const decoded = jwt.verify(token, process.env.JWT_SECRET || 'default_secret');
 
     

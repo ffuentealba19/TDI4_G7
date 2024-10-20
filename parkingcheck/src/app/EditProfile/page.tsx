@@ -6,7 +6,7 @@ export default function EditProfile() {
   return (
     <div>
       <Navbar />
-      <div className="Profile-box" >
+      <div className="Profile-box">
        <EditInfo/>  
       </div>
     </div>
