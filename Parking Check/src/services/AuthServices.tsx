@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Crear instancia de axios con configuración básica
 const apiClient = axios.create({
-  baseURL: 'https://parkingcheck.onrender.com', // Cambiar si usas un entorno en producción
+  baseURL: 'http://localhost:3000', // Cambiar si usas un entorno en producción https://parkingcheck.onrender.com'
 });
 
 // Añadir un interceptor para agregar el token en cada request

@@ -12,24 +12,23 @@ import {
   IonCardContent, 
   IonText, 
   IonButton, 
-  IonButtons
-  IonProgressBar, 
+  IonButtons,
+  IonProgressBar,
   IonAlert, 
   IonSelect, 
   IonSelectOption,
-  IonIcon
+  IonIcon,
+  IonAvatar
 } from '@ionic/react';
 import { moon } from 'ionicons/icons'; // Icono para el botón de modo oscuro
 import { useHistory } from 'react-router-dom';
 import './Home.css';
-import { useState } from 'react';
 import { getUserProfile } from '../../services/AuthServices';
 
 const Home: React.FC = () => {
-  const [showAlert, setShowAlert] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
   const [userData, setUserData] = useState<any>(null); // Estado para almacenar los datos del usuario
-  const history = useHistory();
+  const [profileImage, setProfileImage] = useState('/assets/profile-placeholder.png'); // Imagen por defecto del perfil
   const availableSpots = 90;
 
   const toggleDarkMode = () => {
@@ -40,6 +39,7 @@ const Home: React.FC = () => {
   const fetchData = async () => {
     try {
       const profileResponse = await getUserProfile();
+      setProfileImage(profileResponse.profileImage);
       setUserData(profileResponse.UserName);
     } catch (error) {
       console.error('Error al cargar los datos:', error);
@@ -51,11 +51,12 @@ const Home: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar color="primary">
-          <IonMenuButton slot="end" /> 
+          <IonMenuButton slot="end">
+            <IonAvatar>
+              <img src={profileImage} alt="profile" />
+            </IonAvatar>
+          </IonMenuButton>
           <IonTitle>Parking Check</IonTitle>
-          <IonButtons slot="end">
-            <IonMenuButton />
-          </IonButtons>
         </IonToolbar>
       </IonHeader>
 
@@ -91,33 +92,8 @@ const Home: React.FC = () => {
           </IonCardHeader>
           <IonCardContent>
             Próximamente...
-            {/* Botón deshabilitado para indicar que no está disponible */}
-            <IonButton expand="block" color="medium" disabled className="reserve-button">
-              No Disponible
-            </IonButton>
           </IonCardContent>
         </IonCard>
-
-        {/* Alert de confirmación */}
-        <IonAlert
-          isOpen={showAlert}
-          onDidDismiss={() => setShowAlert(false)}
-          header={'Confirmar Reserva'}
-          message={`¿Está seguro que quiere reservar con el vehículo ${selectedCar}? Quedan ${availableSpots} plazas disponibles.`}
-          buttons={[
-            {
-              text: 'Cancelar',
-              role: 'cancel',
-              handler: () => {
-                console.log('Reserva cancelada');
-              }
-            },
-            {
-              text: 'Confirmar',
-              handler: handleConfirmReservation
-            }
-          ]}
-        />
       </IonContent>
     </IonPage>
   );
