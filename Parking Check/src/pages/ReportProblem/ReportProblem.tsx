@@ -62,8 +62,10 @@ const ReportProblem: React.FC = () => {
   const handleGeolocation = () => {
     // Simular obtención de geolocalización
     navigator.geolocation.getCurrentPosition((position) => {
+
       const location = `Lat: ${position.coords.latitude}, Lng: ${position.coords.longitude}`;
       setGeolocation(location);
+      console.log(location)
     });
   };
 
@@ -75,7 +77,7 @@ const ReportProblem: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="ion-padding">
+      <IonContent>
         {/* Campos adicionales */}
         <IonItem className="custom-input">
           <IonLabel position="floating">Correo Electrónico</IonLabel>
