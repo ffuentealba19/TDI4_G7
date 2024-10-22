@@ -12,21 +12,26 @@ const ParkingMap = ({ isVip }: { isVip: boolean }) => {
     ...Array.from({ length: 11 }, (_, i) => `E-${i + 1}`),
     ...Array.from({ length: 13 }, (_, i) => `F-${i + 1}`),
     ...Array.from({ length: 13 }, (_, i) => `G-${i + 1}`),
-    ...Array.from({ length: 12 }, (_, i) => `H-${i + 1}`)
+    ...Array.from({ length: 12 }, (_, i) => `H-${i + 1}`),
   ];
 
   useEffect(() => {
     const storedSpot = localStorage.getItem('selectedSpot');
-    
+
     if (storedSpot) {
       setSelectedSpot(storedSpot);
     } else if (!isVip) {
       // Si el usuario no es VIP, asigna un lugar aleatorio
-      const randomSpot = allSpots[Math.floor(Math.random() * allSpots.length)];
+      const randomSpot = getRandomSpot();
       setSelectedSpot(randomSpot);
       localStorage.setItem('selectedSpot', randomSpot);
+      reserveParkingSpot(randomSpot);
     }
   }, [isVip]);
+
+  const getRandomSpot = () => {
+    return allSpots[Math.floor(Math.random() * allSpots.length)];
+  };
 
   const handleSpotClick = (spotId: string) => {
     if (isVip) {
@@ -50,6 +55,46 @@ const ParkingMap = ({ isVip }: { isVip: boolean }) => {
       {id}
     </div>
   );
+
+  const reserveParkingSpot = async (spot: string) => {  // Acepta el spot como argumento
+    if (!spot) return;
+
+    try {
+      const response = await fetch('/api/Set_Parking', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ Park: spot }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log("Estacionamiento reservado:", data.park);
+      } else {
+        if (data.status === "occupied") {
+          if (!isVip) {
+            alert("Estacionamiento ocupado");
+            const randomSpot = getRandomSpot();
+            setSelectedSpot(randomSpot);
+            localStorage.setItem('selectedSpot', randomSpot);
+          }
+          else{
+            alert("Estacionamiento ocupado");
+          }
+        } else {
+          console.error("Error reservando estacionamiento:", data.message);
+          if (!isVip) {
+            const newRandomSpot = getRandomSpot();
+            setSelectedSpot(newRandomSpot);
+            localStorage.setItem('selectedSpot', newRandomSpot);
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error al conectar con la API:", error);
+    }
+  };
 
   return (
     <div className='centralReserve'>
@@ -103,7 +148,7 @@ const ParkingMap = ({ isVip }: { isVip: boolean }) => {
       </div>
       {selectedSpot && (
         <div className="reserveButton bg-sky-500">
-          <button onClick={() => console.log(`Estacionamiento seleccionado: ${selectedSpot}`)}>
+          <button onClick={() => reserveParkingSpot(selectedSpot)}>
             Confirmar Selección
           </button>
         </div>
