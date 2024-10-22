@@ -65,7 +65,7 @@ export async function POST(req: Request) {
 
     // Enviar el correo de confirmación al usuario
     const subjectUser = 'Confirmación de Reserva de Estacionamiento';
-    const messageUser = `Estimado usuario ${user.UserName},\n\nTu reserva para el estacionamiento en la sección ${seccion}, número ${numero}, ha sido confirmada para la fecha ${fechaReservaUsuario.toLocaleString()}.\n\nLa reserva vencerá a las ${fechaVencimiento.toLocaleString()} si no llegas al lugar.\n\nSaludos,\nEquipo de Estacionamientos.`;
+    const messageUser = `Estimado usuario ${user.UserName},\n\nTu reserva para el estacionamiento en la sección ${seccion}, número ${numero}, ha sido confirmada para la fecha ${fechaReservaUsuario}.\n\nLa reserva vencerá a las ${fechaVencimiento.toLocaleString()} si no llegas al lugar.\n\nSaludos,\nEquipo de Estacionamientos.`;
 
     try {
       await transporter.sendMail({
@@ -101,7 +101,7 @@ export async function POST(req: Request) {
     const operarios = await Operario.find(); // Suponiendo que se quiere notificar a todos los operarios abierto a cambios :)
     if (operarios && operarios.length > 0) {
       const subjectOperario = 'Nueva Reserva Creada';
-      const messageOperario = `Estimado Operario,\n\nEl usuario ${user.UserName} ha creado una reserva en la sección ${seccion}, número ${numero}, a la hora ${fechaReservaUsuario.toLocaleString()}.\n\nSaludos,\nSistema de Estacionamientos.`;
+      const messageOperario = `Estimado Operario,\n\nEl usuario ${user.UserName} ha creado una reserva en la sección ${seccion}, número ${numero}, a la hora ${fechaReservaUsuario}.\n\nSaludos,\nSistema de Estacionamientos.`;
 
       for (const operario of operarios) {
         try {

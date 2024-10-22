@@ -7,24 +7,20 @@ import { verify } from "jsonwebtoken"
 
 
 
-export async function POST(req:NextRequest ) {
+export async function GET() {
+    const galleta = cookies()
+    const token = galleta.get("token")?.value
+    const secret = process.env.JWT_Secret
+    const usuario = verify(token, secret)
     const id =  "66f077a9ab5ea5a1b85f9a5f"
-    const request = await req.json()
+
     await run()
     const usuario = await User2.findById(id)
     const vehiculos = usuario.Vehiculos
-    let i;
-    for (i = 0; i < vehiculos.length; i++){
-        if (vehiculos[i].Placa == request.placa){
-            const response = vehiculos[i]
-            return NextResponse.json({
-                message: "Vehiculo encontrado",
-                vehicle: response,
-        })
-        }
-    }
+
     return NextResponse.json({
-        message: "Vehiculo no encontrado"
+        message: "Vehiculo no encontrado",
+        vehicle: vehiculos
     })
 
 }

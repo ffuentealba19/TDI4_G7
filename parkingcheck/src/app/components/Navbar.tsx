@@ -30,7 +30,7 @@ export const Navbar = () => {
                 {showMenu && (
                     <div className="menu-dropdown">
                         <a href="/Perfil" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Mi Perfil</a>
-                        <a href="/Report" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Reporte</a>
+                        <a href="/report" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Reporte</a>
                         <a href="/Home" className="block px-4 py-2 text-gray-800 hover:bg-gray-200">Home</a>
                     </div>
                 )}
