@@ -2,7 +2,7 @@
 
 import { Navbar } from '../components/Navbar';
 import ParkingMap from '../components/ParkingMap';
-import Popup from '../components/Popup'; // Asegúrate de importar el componente Popup
+import Popup from '../components/Popup'; 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import jwt from 'jsonwebtoken';
@@ -10,7 +10,7 @@ import Image from 'next/image';
 
 export default function Home() {
     const [isVip, setIsVip] = useState<boolean | null>(null);
-    const [showPopup, setShowPopup] = useState<boolean>(false); // Nuevo estado para controlar el popup
+    const [showPopup, setShowPopup] = useState<boolean>(false); 
     const router = useRouter();
 
     useEffect(() => {
@@ -26,7 +26,7 @@ export default function Home() {
             console.log(decodedToken);
             if (decodedToken && decodedToken.vip !== undefined) {
                 setIsVip(decodedToken.vip);
-                setShowPopup(true); // Mostrar el popup para ambos tipos de usuarios
+                setShowPopup(true); 
             }
         } catch (error) {
             console.error("Error al decodificar el token:", error);
@@ -34,7 +34,7 @@ export default function Home() {
     }, [router]);
 
     const handleClosePopup = () => {
-        setShowPopup(false); // Cierra el popup
+        setShowPopup(false); 
     };
 
     return ( 
@@ -42,6 +42,7 @@ export default function Home() {
             <Navbar></Navbar>
             {isVip ? (
                 <div>
+<<<<<<< HEAD
                     vip
                     <ParkingMap isVip={true}/>
                 </div>
@@ -49,6 +50,14 @@ export default function Home() {
                 <div>
                     no vip
                     <ParkingMap isVip={false}/>
+=======
+                    VIP
+                    <ParkingMap />
+                </div>
+            ) : (
+                <div>
+                    <ParkingMap />
+>>>>>>> 849a9b9bb400e2f5c90066a4efcec4b99b6a9935
                 </div>
             )}
 
