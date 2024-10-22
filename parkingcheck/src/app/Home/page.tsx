@@ -2,7 +2,7 @@
 
 import { Navbar } from '../components/Navbar';
 import ParkingMap from '../components/ParkingMap';
-import Popup from '../components/Popup'; // Asegúrate de importar el componente Popup
+import Popup from '../components/Popup'; 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import jwt from 'jsonwebtoken';
