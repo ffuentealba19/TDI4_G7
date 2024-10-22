@@ -10,7 +10,7 @@ import Image from 'next/image';
 
 export default function Home() {
     const [isVip, setIsVip] = useState<boolean | null>(null);
-    const [showPopup, setShowPopup] = useState<boolean>(false); // Nuevo estado para controlar el popup
+    const [showPopup, setShowPopup] = useState<boolean>(false); 
     const router = useRouter();
 
     useEffect(() => {
@@ -26,7 +26,7 @@ export default function Home() {
             console.log(decodedToken);
             if (decodedToken && decodedToken.vip !== undefined) {
                 setIsVip(decodedToken.vip);
-                setShowPopup(true); // Mostrar el popup para ambos tipos de usuarios
+                setShowPopup(true); 
             }
         } catch (error) {
             console.error("Error al decodificar el token:", error);
@@ -34,7 +34,7 @@ export default function Home() {
     }, [router]);
 
     const handleClosePopup = () => {
-        setShowPopup(false); // Cierra el popup
+        setShowPopup(false); 
     };
 
     return ( 
@@ -42,7 +42,6 @@ export default function Home() {
             <Navbar></Navbar>
             {isVip ? (
                 <div>
-                    VIP
                     <ParkingMap />
                 </div>
             ) : (
