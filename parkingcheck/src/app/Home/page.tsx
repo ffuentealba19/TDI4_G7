@@ -35,12 +35,12 @@ export default function Home() {
             {isVip ? (
                 <div>
                     vip
-                    <ParkingMap/>
+                    <ParkingMap isVip={true}/>
                 </div>
             ) : (
                 <div>
                     no vip
-                    <ParkingMap/>
+                    <ParkingMap isVip={false}/>
                 </div>
             )}
 
