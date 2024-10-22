@@ -18,7 +18,7 @@
 
 body {
   background: white;
-  background: url('/ruta/al/logo-uct.png') no-repeat center center fixed;
+  background: no-repeat center center fixed;
   background-size: cover;
 }
 
@@ -400,4 +400,16 @@ form a:hover {
   align-items: center;
   justify-content: center;
   border-radius: 25px;
+}
+
+.square-box {
+  position: relative;
+  width: 90px; 
+  height: 90px;
+  background-color: #f0f0f0; 
+  border-radius: 20px; 
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
 }

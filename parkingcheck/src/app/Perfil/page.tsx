@@ -4,12 +4,42 @@ import { useRouter } from 'next/navigation';
 import jwt from 'jsonwebtoken';
 import React from 'react';
 import { Navbar } from '../components/Navbar';
+import Image from 'next/image';
 
-export default function Upload() {
+export default function Perfil() {
     const [UserName, setUserName] = useState('');
     const [UserId, setUserId] = useState('');
     const [isVip, setIsVip] = useState<boolean | null>(null);
+    const [userInfo, setUserInfo] = useState(null); 
+    const [error, setError] = useState<string | null>(null);
     const router = useRouter();
+
+    const redirectToVehiculo = () => {
+        router.push('/Vehiculo');
+    };
+
+    const fetchUserInfo = async () => {
+        try {
+            const response = await fetch('/api/auth/GetInfo', {
+                method: 'GET',
+                credentials: 'include' 
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al obtener la información del usuario');
+            }
+
+            const data = await response.json();
+            console.log(data); 
+            setUserInfo(data.user); 
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    useEffect(() => {
+        fetchUserInfo();
+    }, []);
 
     useEffect(() => {
         const token = document.cookie.split('; ').find(row => row.startsWith('token='));
@@ -48,14 +78,6 @@ export default function Upload() {
     const changeVip = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault(); 
         try {
-            const token = document.cookie.split('; ').find(row => row.startsWith('token='));
-            const tokenValue = token ? token.split('=')[1] : null;
-    
-            if (!tokenValue) {
-                console.error("No se encontró el token");
-                return;
-            }
-    
             const response = await fetch('/api/auth/changerange', {
                 method: 'POST',
                 headers: {
@@ -91,11 +113,7 @@ export default function Upload() {
             
             if (response.ok) {
                 console.log('Sesión cerrada:', data);
-    
-                // Elimina la cookie del token
-                document.cookie = 'token=; Max-Age=0; path=/';  // Añadí 'path=/'
-    
-                // Redirige a la URL proporcionada o a la raíz
+                document.cookie = 'token=; Max-Age=0; path=/';  
                 router.push(data.redirectUrl || '/');
             } else {
                 console.error('Error al cerrar sesión:', data.message);
@@ -104,15 +122,20 @@ export default function Upload() {
             console.error('Error en la solicitud de cierre de sesión:', error);
         }
     };
-    
 
     return (
         <div>
-            <Navbar></Navbar>
+            <Navbar />
             <div className="main">
-                
                 <div className="container">
                     <h1 className="title">MI PERFIL</h1>
+                    <div className='Rounded-img'>
+                        {userInfo ? (
+                            <img src={userInfo.url} alt="Foto de perfil" className="rounded-full w-full h-full object-cover" />
+                        ) : (
+                            <p>Cargando imagen de perfil...</p>
+                        )}
+                    </div>
                     <h2 className='font-bold'>Bienvenido, {UserName}!</h2>
                     {isVip ? (
                         <div className="w-[100%] flex justify-center items-center">
@@ -120,18 +143,38 @@ export default function Upload() {
                                 <p className="text-center">Usuario VIP+</p>
                             </button>
                         </div>
-
                     ) : (
                         <form onSubmit={changeVip} className="w-[100%] flex justify-center">
-                        <button type="submit" className="w-[90%] font-bold p-3 text-lg mt-5 border-0 rounded-full cursor-pointer bg-[#D9D9D9] text-black flex justify-between items-center">
-                            <p>Usuario estándar</p>
-                            <span className="text-[#008EBB]">Mejorar subscripción!</span>
-                        </button>
+                            <button type="submit" className="w-[90%] font-bold p-3 text-lg mt-5 border-0 rounded-full cursor-pointer bg-[#D9D9D9] text-black flex justify-between items-center">
+                                <p>Usuario estándar</p>
+                                <span className="text-[#008EBB]">Mejorar subscripción!</span>
+                            </button>
                         </form>
                     )}
                     <button className="w-[90%] font-bold p-3 text-lg mt-5 border-0 rounded-full cursor-pointer bg-[#D9D9D9] text-black">
                         <a href="/EditProfile">Editar Perfil</a>
                     </button>
+                    <div className="relative w-[90%] mt-5 flex items-center">  
+                        <button className="absolute top-[-20px] left-1/2 transform -translate-x-1/2 bg-red-600 rounded-full p-2" name="DelVehiculos" id="DelVehiculos">
+                            <Image 
+                                src="/trash-bin.png" 
+                                alt="Papelera" 
+                                width={20} 
+                                height={20} 
+                            />
+                        </button>
+                        <div className="square-box w-full h-[100px] rounded-lg bg-gray-200 flex items-center justify-center mb-2.5" id='Vehiculo'>
+                            <p>Contenido del cuadrado 1</p>
+                        </div>
+                        <button type="button" onClick={redirectToVehiculo} className='square-box w-full h-[100px] rounded-lg bg-gray-200 flex items-center justify-center mb-2.5'>
+                        <Image 
+                                src="/plus-circle.png" 
+                                alt="Papelera" 
+                                width={50} 
+                                height={50}
+                            />
+                        </button>
+                    </div>
                     <form onSubmit={Logout} className="flex justify-center w-[90%] font-bold text-lg mt-5 border-0 rounded-full cursor-pointer bg-[#5785A4] text-blacks">
                         <button type="submit" className="w-[90%] font-bold p-3 text-lg bg-[#5785A4] text-black">
                             <span className="text-[#D9D9D9]">Cerrar sesión</span>
