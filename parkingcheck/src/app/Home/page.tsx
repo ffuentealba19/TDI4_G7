@@ -42,7 +42,6 @@ export default function Home() {
             <Navbar></Navbar>
             {isVip ? (
                 <div>
-<<<<<<< HEAD
                     vip
                     <ParkingMap isVip={true}/>
                 </div>
@@ -50,14 +49,6 @@ export default function Home() {
                 <div>
                     no vip
                     <ParkingMap isVip={false}/>
-=======
-                    VIP
-                    <ParkingMap />
-                </div>
-            ) : (
-                <div>
-                    <ParkingMap />
->>>>>>> b90645c6c071d2758363900c3caa34c0a6f22860
                 </div>
             )}
 
