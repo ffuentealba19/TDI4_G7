@@ -42,6 +42,7 @@ export default function Home() {
             <Navbar></Navbar>
             {isVip ? (
                 <div>
+                    VIP
                     <ParkingMap />
                 </div>
             ) : (
