@@ -36,7 +36,7 @@ const Solicitud: React.FC = () => {
       </IonHeader>
       <IonContent>
         <IonCard className='card'>
-          <IonButton routerLink='/codigoqr' className='card-button'>
+          <IonButton expand='block' routerLink='/codigoqr' className='card-button'>
             <IonIcon icon={qrCode} slot='start' />
             <IonText>
               <h1 className='card-title'>QR</h1>
@@ -47,7 +47,7 @@ const Solicitud: React.FC = () => {
         <IonCard className='card'>
           {/* Botón de reserva habilitado si el usuario es VIP o VIP+ */}
           {userPlan === 'VIP' || userPlan === 'VIP+' ? (
-            <IonButton routerLink='/reserva' className='card-button'>
+            <IonButton expand='block' routerLink='/reserva' className='card-button'>
               <IonIcon icon={checkmarkCircleOutline} slot='start' />
               <IonText>
                 <h1 className='card-title'>Reservar</h1>
@@ -56,7 +56,7 @@ const Solicitud: React.FC = () => {
           ) : (
             <>
               {/* Botón deshabilitado y con alerta si el usuario no tiene un plan VIP */}
-              <IonButton id='reserva' className='card-button' color='medium'>
+              <IonButton expand='block' id='reserva' className='card-button' color='medium'>
                 <IonIcon icon={checkmarkCircleOutline} slot='start' />
                 <IonText>
                   <h1 className='card-title'>Reservar</h1>

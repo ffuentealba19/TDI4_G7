@@ -16,6 +16,8 @@ import {
   IonIcon,
   IonBackButton,
   IonAlert,
+  IonCard,
+  IonCardContent,
 } from '@ionic/react';
 
 import { updatePlan } from '../../services/AuthServices';
@@ -81,7 +83,9 @@ const PaymentPage: React.FC = () => {
           <IonTitle>Editar Perfil</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent className="ion-padding">
+      <IonContent>
+        <IonCard>
+        <IonCardContent>
         <IonList>
           <IonRadioGroup
             value={selectedPlan}
@@ -102,13 +106,18 @@ const PaymentPage: React.FC = () => {
             ))}
           </IonRadioGroup>
         </IonList>
-
-        <div className="ion-padding">
-          <h2>Total a pagar: ${totalPrice}</h2>
-          <IonButton expand="block" onClick={handlePayment}>
-            {selectedPlan === 'Básico' ? 'Volver al plan básico' : 'Realizar pago'}
-          </IonButton>
-        </div>
+        </IonCardContent>
+        </IonCard>
+        <IonCard>
+          <IonCardContent>
+            <IonText>
+              <h1>Total a pagar: ${totalPrice}</h1>
+            </IonText>
+            <IonButton expand="block" onClick={handlePayment}>
+              {selectedPlan === 'Básico' ? 'Volver al plan básico' : 'Realizar pago'}
+            </IonButton>
+          </IonCardContent>
+        </IonCard>
 
         {/* Alertas de éxito y error */}
         <IonAlert

@@ -3,7 +3,7 @@
     flex-wrap: nowrap;
     overflow-x: auto; /* Permite desplazamiento horizontal */
     -webkit-overflow-scrolling: touch; /* Mejora el desplazamiento en dispositivos móviles */
-    gap: 0px;
+    gap: 1px;
   }
 
   .vehiculos-container::-webkit-scrollbar {
@@ -15,6 +15,7 @@
     flex: 0 0 auto; /* Evita que las tarjetas se ajusten automáticamente */
     border: 1px solid #ccc;
     padding: 10px;
+    
   }
   .button-card{
     display: flex;
@@ -23,4 +24,3 @@
     margin-top: auto;
     margin-bottom: auto;
   }
-

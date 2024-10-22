@@ -13,10 +13,20 @@ import {
   IonCardContent,
   IonText,
   IonCardHeader,
+  IonIcon,
 } from '@ionic/react';
 import './profile.css';
+import { warning } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import { logout, getUserProfile, getUserVehicles } from '../../services/AuthServices'; // Importa las funciones
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+
+import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
 
 const Perfil: React.FC = () => {
   const history = useHistory();
@@ -111,29 +121,62 @@ const Perfil: React.FC = () => {
             Gestionar Vehículos
           </IonButton>
         </IonCard>
-        <IonCard>
-          <div className="vehiculos-container">
+        <div className="vehiculos-container">
             {vehiculos.length > 0 ? (
-              vehiculos.map((vehiculo) => (
-                <IonCard key={vehiculo._id} className="vehiculo-card">
-                  <img
-                    className="imagen"
-                    width={'240px'}
-                    src="https://img.yapo.cl/images/72/7299715193.jpg"
-                    alt="car1"
-                  />
-                  <IonCardHeader>
-                    <IonText className="ion-text-center">
-                      <h1>{vehiculo.Placa}</h1>
-                    </IonText>
-                  </IonCardHeader>
-                </IonCard>
-              ))
+              <Swiper
+                effect={'coverflow'}
+                grabCursor={true}
+                centeredSlides={true}
+                loop={false}
+                slidesPerView={'auto'}
+                coverflowEffect={
+                  {
+                    rotate: 50,
+                    stretch: 0,
+                    depth: 100,
+                    modifier: 1
+                  }
+                }
+                navigation={true}
+                pagination={{ clickable: true }}
+                modules={[EffectCoverflow, Pagination, Navigation]}
+
+                className='swiper-container'
+              >
+                {vehiculos.map((vehiculo, index) => (
+                  <SwiperSlide key={vehiculo._id}>
+                    <IonCard
+                      className={`vehiculo-card ${index !== 0 ? 'opacity-card' : ''}`}
+                    >
+                      <img
+                        className="imagen"
+                        width={'400px'}
+                        src="https://img.yapo.cl/images/72/7299715193.jpg"
+                        alt="car1"
+                      />
+                      <IonCardHeader>
+                        <IonText className="ion-text-center">
+                          <h1>{vehiculo.Placa}</h1>
+                        </IonText>
+                      </IonCardHeader>
+                    </IonCard>
+                  </SwiperSlide>
+                ))}
+                <div className="slider-controler">
+                  <div className="swiper-pagination"></div>
+                </div>
+              </Swiper>
             ) : (
-              <IonText>No tienes vehículos registrados.</IonText>
+              <IonCard className="vehiculo-card">
+                <IonText className="ion-text-center">
+                  <IonIcon icon={warning} style={{ padding: 'auto', fontSize: '100px' }} />
+                  <h2>No tienes vehículos registrados</h2>
+                </IonText>
+              </IonCard>
             )}
           </div>
-        </IonCard>
+
+          
       </IonContent>
     </IonPage>
   );

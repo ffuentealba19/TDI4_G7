@@ -15,6 +15,9 @@ import {
   IonDatetime,
   IonSelect,
   IonSelectOption,
+  IonButtons,
+  IonIcon,
+  IonBackButton,
 } from '@ionic/react';
 import './reservas.css'; // Estilos personalizados para la página
 
@@ -36,6 +39,10 @@ const ReservasPage: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar color="primary">
+          <IonButtons slot='start'>
+            <IonIcon/>
+            <IonBackButton defaultHref="/profile" />
+          </IonButtons>
           <IonTitle color="light">Parking Check</IonTitle>
         </IonToolbar>
       </IonHeader>

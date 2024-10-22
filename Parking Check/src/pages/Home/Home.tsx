@@ -20,8 +20,7 @@ import {
   IonIcon,
   IonAvatar
 } from '@ionic/react';
-import { moon } from 'ionicons/icons'; // Icono para el botón de modo oscuro
-import { useHistory } from 'react-router-dom';
+import { menu, moon } from 'ionicons/icons'; // Icono para el botón de modo oscuro
 import './Home.css';
 import { getUserProfile } from '../../services/AuthServices';
 
@@ -52,9 +51,7 @@ const Home: React.FC = () => {
       <IonHeader>
         <IonToolbar color="primary">
           <IonMenuButton slot="end">
-            <IonAvatar>
-              <img src={profileImage} alt="profile" />
-            </IonAvatar>
+            <IonIcon icon={menu} />
           </IonMenuButton>
           <IonTitle>Parking Check</IonTitle>
         </IonToolbar>

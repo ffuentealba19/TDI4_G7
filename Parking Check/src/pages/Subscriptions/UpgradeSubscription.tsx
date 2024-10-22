@@ -20,6 +20,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 import './UpgradeSubscription.css';
+import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
 
 const UpgradeSubscription: React.FC = () => {
   return (
@@ -34,7 +35,24 @@ const UpgradeSubscription: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">
-        <Swiper spaceBetween={50} slidesPerView={1} pagination={{ clickable: true }}>
+        <Swiper 
+          modules={[EffectCoverflow, Pagination, Navigation]}
+          effect={'coverflow'}
+          grabCursor={true}
+          centeredSlides={true}
+          slidesPerView={'auto'}
+          loop={true}
+          coverflowEffect={{
+            rotate: 50,
+            stretch: 0,
+            depth: 100,
+            modifier: 1,
+            slideShadows: true,
+          }}
+          navigation={true}
+          pagination={{ clickable: true }}
+          className='swiper-container'
+        >
           {/* Plan Normal */}
           <SwiperSlide>
             <IonCard className="plan-card normal-plan">
@@ -111,8 +129,10 @@ const UpgradeSubscription: React.FC = () => {
               </IonCardContent>
             </IonCard>
           </SwiperSlide>
+          <div className="slider-controler">
+            <div className="swiper-pagination"></div>
+          </div>
 
-          
         </Swiper>
       </IonContent>
     </IonPage>

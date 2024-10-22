@@ -54,6 +54,8 @@ import '@ionic/react/css/display.css';
 
 /* Theme variables */
 import './theme/variables.css';
+
+/* Importar el AuthProvider */
 import { getToken } from './services/AuthServices';
 import { AuthProvider } from './context/authcontext'; // Importar el AuthProvider
 import { logout } from './services/AuthServices'

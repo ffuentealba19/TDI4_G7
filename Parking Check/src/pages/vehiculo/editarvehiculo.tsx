@@ -30,6 +30,7 @@ const EditarVehiculo: React.FC = () => {
           throw new Error('Vehículo no encontrado');
         }
         setLoading(false);
+        history.push('/autos');
       } catch (error) {
         console.error('Error al obtener el vehículo:', error);
         setLoading(false);
@@ -50,11 +51,8 @@ const EditarVehiculo: React.FC = () => {
       setLoading(true);
       await updateVehicle(id, vehicle); // Llama a la función de actualización
       setShowToast(true); // Muestra un Toast al completar
-
-      
       setLoading(false);
-      history.push('/autos'); // Redirige a la página de vehículos
-      window.location.reload();
+      
     } catch (error) {
       console.error('Error al actualizar el vehículo:', error);
       setLoading(false);
