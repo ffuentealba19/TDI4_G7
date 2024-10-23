@@ -1,6 +1,5 @@
 import Parking from "@/models/parking";
 import { run } from "@/libs/mongodb";
-import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function GET() {
