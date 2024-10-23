@@ -6,7 +6,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
     await run()
     const All_park = await Parking.find({
-        section: "A"
+        status: "enabled"
     })
     const tamano = All_park.length
     let i: number;
@@ -17,8 +17,8 @@ export async function GET() {
     }
     console.log(estacionamiento)
     const estacionamientos= {
-        A: estacionamiento
+        Park: estacionamiento
     }
     console.log(estacionamientos)
-    return NextResponse.json({message: "Hola"})
+    return NextResponse.json({estacionamientos})
 }
