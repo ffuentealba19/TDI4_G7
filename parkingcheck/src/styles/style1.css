@@ -413,3 +413,14 @@ form a:hover {
   align-items: center; 
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); 
 }
+
+
+
+.occupied {
+  background-color: red; /* Color para los estacionamientos ocupados */
+  color: white;
+}
+.reserved {
+  background-color: red;
+  color: white;
+}
