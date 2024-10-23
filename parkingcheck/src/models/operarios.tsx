@@ -22,6 +22,6 @@ const operarioSchema = new Schema<IOperario>(
   }
 );
 
-const Operario = mongoose.models.Operario || mongoose.model<IOperario>('Operarios', operarioSchema);
+const Operario = mongoose.models.Operarios || mongoose.model<IOperario>('Operarios', operarioSchema);
 
 export default Operario;
