@@ -16,5 +16,5 @@ export async function GET() {
     const consulta = await Reserva.find({
         id_usuario : id
     })
-    
+    return NextResponse.json({consulta})
 }
