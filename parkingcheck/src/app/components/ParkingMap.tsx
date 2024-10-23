@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 
 const ParkingMap = ({ isVip }: { isVip: boolean }) => {
   const [selectedSpot, setSelectedSpot] = useState<string | null>(null);
+  const [occupiedSpots, setOccupiedSpots] = useState<string[]>([]);
+
   const allSpots = [
     ...Array.from({ length: 13 }, (_, i) => `A-${i + 1}`),
     ...Array.from({ length: 13 }, (_, i) => `B-${i + 1}`),
@@ -21,13 +23,29 @@ const ParkingMap = ({ isVip }: { isVip: boolean }) => {
     if (storedSpot) {
       setSelectedSpot(storedSpot);
     } else if (!isVip) {
-      // Si el usuario no es VIP, asigna un lugar aleatorio
       const randomSpot = getRandomSpot();
       setSelectedSpot(randomSpot);
       localStorage.setItem('selectedSpot', randomSpot);
       reserveParkingSpot(randomSpot);
     }
   }, [isVip]);
+
+  // Fetch occupied spots from the database
+  useEffect(() => {
+    const fetchOccupiedSpots = async () => {
+      try {
+        const response = await fetch('/api/parking');
+        const data = await response.json();
+        if (response.ok) {
+          setOccupiedSpots(data.estacionamientos.Park);
+        }
+      } catch (error) {
+        console.error('Error fetching occupied spots:', error);
+      }
+    };
+
+    fetchOccupiedSpots();
+  }, []);
 
   const getRandomSpot = () => {
     return allSpots[Math.floor(Math.random() * allSpots.length)];
@@ -48,15 +66,15 @@ const ParkingMap = ({ isVip }: { isVip: boolean }) => {
 
   const ParkingSpot = ({ id, specialHeight }: { id: string; specialHeight?: string }) => (
     <div
-      className={`parking-spot ${selectedSpot === id ? 'selected' : ''}`}
+      className={`parking-spot ${selectedSpot === id ? 'selected' : ''} ${occupiedSpots.includes(id) ? 'used' : ''}`}
       onClick={() => handleSpotClick(id)}
-      style={{ height: specialHeight || 'auto', border: '1px solid #ccc', margin: '5px', textAlign: 'center' }} // Estilos básicos en línea
+      style={{ height: specialHeight || 'auto', border: '1px solid #ccc', margin: '5px', textAlign: 'center' }}
     >
       {id}
     </div>
   );
 
-  const reserveParkingSpot = async (spot: string) => {  // Acepta el spot como argumento
+  const reserveParkingSpot = async (spot: string) => {
     if (!spot) return;
 
     try {
@@ -78,8 +96,7 @@ const ParkingMap = ({ isVip }: { isVip: boolean }) => {
             const randomSpot = getRandomSpot();
             setSelectedSpot(randomSpot);
             localStorage.setItem('selectedSpot', randomSpot);
-          }
-          else{
+          } else {
             alert("Estacionamiento ocupado");
           }
         } else {

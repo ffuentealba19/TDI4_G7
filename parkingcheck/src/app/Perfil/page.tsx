@@ -5,13 +5,16 @@ import jwt from 'jsonwebtoken';
 import React from 'react';
 import { Navbar } from '../components/Navbar';
 import Image from 'next/image';
+import Popup from '../components/Popup'; 
 
 export default function Perfil() {
     const [UserName, setUserName] = useState('');
     const [UserId, setUserId] = useState('');
     const [isVip, setIsVip] = useState<boolean | null>(null);
-    const [userInfo, setUserInfo] = useState(null); 
+    const [userInfo, setUserInfo] = useState(null);
     const [error, setError] = useState<string | null>(null);
+    const [showPopup, setShowPopup] = useState(false);
+    const [vehiculos, setVehiculos] = useState([]);    
     const router = useRouter();
 
     const redirectToVehiculo = () => {
@@ -22,7 +25,7 @@ export default function Perfil() {
         try {
             const response = await fetch('/api/auth/GetInfo', {
                 method: 'GET',
-                credentials: 'include' 
+                credentials: 'include'
             });
 
             if (!response.ok) {
@@ -30,10 +33,52 @@ export default function Perfil() {
             }
 
             const data = await response.json();
-            console.log(data); 
-            setUserInfo(data.user); 
+            console.log(data);
+            setUserInfo(data.user);
         } catch (err) {
             setError(err.message);
+        }
+    };
+
+    const fetchVehiculos = async () => {
+        try {
+            const response = await fetch('/api/Get_Car', { 
+                method: 'GET',
+                credentials: 'include',
+            });
+    
+            if (!response.ok) {
+                throw new Error('Error al obtener vehículos');
+            }
+    
+            const data = await response.json();
+            setVehiculos(data.vehicle);
+            setShowPopup(true); // Muestra el popup
+        } catch (error) {
+            console.error('Error al obtener vehículos:', error);
+        }
+    };
+    
+    const eliminarVehiculo = async (placa: string) => {
+        try {
+            const response = await fetch('/api/Delete_Car', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ placa }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Error al eliminar vehículo');
+            }
+
+            const data = await response.json();
+            console.log(data.message);
+
+            setVehiculos(vehiculos.filter((vehiculo: any) => vehiculo.Placa !== placa));
+        } catch (error) {
+            console.error('Error al eliminar vehículo:', error);
         }
     };
 
@@ -47,13 +92,13 @@ export default function Perfil() {
             router.push('/');
             return;
         }
-        
+
         const tokenValue = token.split('=')[1];
 
         try {
             const decodedToken = jwt.decode(tokenValue);
-            console.log("Token Decodificado:", decodedToken); 
-            
+            console.log("Token Decodificado:", decodedToken);
+
             if (decodedToken && typeof decodedToken === 'object') {
                 if (decodedToken.username) {
                     setUserName(decodedToken.username);
@@ -63,7 +108,7 @@ export default function Perfil() {
                 if (decodedToken.vip !== undefined) {
                     setIsVip(decodedToken.vip);
                 }
-                if (decodedToken.userId){
+                if (decodedToken.userId) {
                     setUserId(decodedToken.userId);
                 }
             } else {
@@ -74,9 +119,9 @@ export default function Perfil() {
             router.push('/');
         }
     }, [router]);
-    
+
     const changeVip = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault(); 
+        e.preventDefault();
         try {
             const response = await fetch('/api/auth/changerange', {
                 method: 'POST',
@@ -85,7 +130,7 @@ export default function Perfil() {
                 },
                 body: JSON.stringify({ userId: UserId, changeToVip: true })
             });
-    
+
             const data = await response.json();
             if (response.ok) {
                 console.log('Estado VIP cambiado:', data);
@@ -97,7 +142,7 @@ export default function Perfil() {
             console.error('Error en la solicitud de cambio de VIP:', error);
         }
     };
-    
+
     const Logout = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -108,12 +153,12 @@ export default function Perfil() {
                     'Content-Type': 'application/json',
                 },
             });
-    
+
             const data = await response.json();
-            
+
             if (response.ok) {
                 console.log('Sesión cerrada:', data);
-                document.cookie = 'token=; Max-Age=0; path=/';  
+                document.cookie = 'token=; Max-Age=0; path=/';
                 router.push(data.redirectUrl || '/');
             } else {
                 console.error('Error al cerrar sesión:', data.message);
@@ -154,32 +199,50 @@ export default function Perfil() {
                     <button className="w-[90%] font-bold p-3 text-lg mt-5 border-0 rounded-full cursor-pointer bg-[#D9D9D9] text-black">
                         <a href="/EditProfile">Editar Perfil</a>
                     </button>
-                    <div className="relative w-[90%] mt-5 flex items-center">  
-                        <button className="absolute top-[-20px] left-1/2 transform -translate-x-1/2 bg-red-600 rounded-full p-2" name="DelVehiculos" id="DelVehiculos">
-                            <Image 
-                                src="/trash-bin.png" 
-                                alt="Papelera" 
-                                width={20} 
-                                height={20} 
-                            />
-                        </button>
-                        <div className="square-box w-full h-[100px] rounded-lg bg-gray-200 flex items-center justify-center mb-2.5" id='Vehiculo'>
-                            <p>Contenido del cuadrado 1</p>
-                        </div>
-                        <button type="button" onClick={redirectToVehiculo} className='square-box w-full h-[100px] rounded-lg bg-gray-200 flex items-center justify-center mb-2.5'>
-                        <Image 
-                                src="/plus-circle.png" 
-                                alt="Papelera" 
-                                width={50} 
-                                height={50}
-                            />
-                        </button>
+                    
+                    <div className="w-[90%] font-bold p-3 text-lg mt-5 border-0 rounded-full cursor-pointer bg-[#D9D9D9] text-black">
+                        <button 
+                            type="button" 
+                            onClick={redirectToVehiculo} 
+                            className='relative w-full flex justify-center items-center' 
+                        >
+                            Agregar vehículo
+                        </button>  
                     </div>
-                    <form onSubmit={Logout} className="flex justify-center w-[90%] font-bold text-lg mt-5 border-0 rounded-full cursor-pointer bg-[#5785A4] text-blacks">
-                        <button type="submit" className="w-[90%] font-bold p-3 text-lg bg-[#5785A4] text-black">
-                            <span className="text-[#D9D9D9]">Cerrar sesión</span>
+
+                    <button className="w-[90%] font-bold p-3 text-lg mt-5 border-0 rounded-full cursor-pointer bg-[#D9D9D9] text-black" onClick={fetchVehiculos}>
+                        Mostrar Vehículos
+                    </button>
+
+                    {showPopup && (
+                        <Popup onClose={() => setShowPopup(false)} title="Mis Vehículos">
+                            {vehiculos.length > 0 ? (
+                                <ul>
+                                    {vehiculos.map((vehiculo: any) => (
+                                        <li key={vehiculo._id}>
+                                            <p>Placa: {vehiculo.Placa}</p>
+                                            <p>Modelo: {vehiculo.Modelo}</p>
+                                            <img src={vehiculo.urlCar} alt={`Vehículo ${vehiculo.Modelo}`} width={100} height={60} />
+                                            <button
+                                                className="bg-red-500 text-white p-2 rounded mt-2"
+                                                onClick={() => eliminarVehiculo(vehiculo.Placa)}
+                                            >
+                                                Eliminar
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p>No hay vehículos asociados.</p>
+                            )}
+                        </Popup>
+                    )}
+
+                    <form onSubmit={Logout} className="flex justify-center w-[90%] font-bold text-lg mt-5 border-0 rounded-full cursor-pointer bg-[#5785A4] text-black">
+                        <button type="submit" className="w-[90%] flex justify-center items-center">
+                            Cerrar sesión
                         </button>
-                    </form> 
+                    </form>
                 </div>
             </div>
         </div>
