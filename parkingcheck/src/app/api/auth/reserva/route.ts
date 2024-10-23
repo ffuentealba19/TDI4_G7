@@ -8,11 +8,12 @@ import transporter from '@/utils/GmailRes';
 import { run } from "@/libs/mongodb";
 
 export async function POST(req: Request) {
-
+  
+  const { parkingId, userId, fechaReserva, seccion, numero } = await req.json();
   // Establecer conexión con la base de datos
   await run();
 
-  const { parkingId, userId, fechaReserva, seccion, numero } = await req.json();
+  
 
   if (!parkingId || !userId || !fechaReserva || !seccion || !numero) {
     return new Response(JSON.stringify({ success: false, message: 'Parámetros faltantes' }), {
