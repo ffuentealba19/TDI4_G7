@@ -424,3 +424,22 @@ form a:hover {
   background-color: red;
   color: white;
 }
+
+
+table {
+  max-width: 1280px;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  align-items: center;
+  justify-content: center;
+  background-color: #f2f2f2;
+}
