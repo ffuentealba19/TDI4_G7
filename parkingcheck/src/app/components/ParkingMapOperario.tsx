@@ -1,4 +1,3 @@
-// ParkingMapOperario.tsx
 "use client";
 
 import React, { useEffect, useState } from 'react';
@@ -6,33 +5,30 @@ import React, { useEffect, useState } from 'react';
 interface ParkingSpot {
   section: string;
   number: string;
-  status: string;
-  occupiedBy?: string | null;
+  id: string;
 }
 
 const ParkingMapOperario = () => {
-  const [reservas, setReservas] = useState<ParkingSpot[]>([]);
+  const [ocupados, setOcupados] = useState<string[]>([]);
 
   useEffect(() => {
-    const fetchReservas = async () => {
-        try {
-            const response = await fetch('/api/Get_All_Reservations', {
-                method: 'GET',
-            });
-            if (!response.ok) {
-                throw new Error(`Error HTTP: ${response.status}`);
-            }
-            const data = await response.json();
-            setReservas(data.reservas || []);
-        } catch (error) {
-            console.error("Error al obtener las reservas:", error);
+    const fetchEstacionamientos = async () => {
+      try {
+        const response = await fetch('/api/Get_Parking', {
+          method: 'GET',
+        });
+        if (!response.ok) {
+          throw new Error(`Error HTTP: ${response.status}`);
         }
+        const data = await response.json();
+        setOcupados(data.estacionamientos.Park || []);
+      } catch (error) {
+        console.error("Error al obtener los estacionamientos ocupados:", error);
+      }
     };
 
-    fetchReservas();
-}, []);
-
-
+    fetchEstacionamientos();
+  }, []);
 
   const allSpots = [
     ...Array.from({ length: 13 }, (_, i) => `A-${i + 1}`),
@@ -45,14 +41,19 @@ const ParkingMapOperario = () => {
     ...Array.from({ length: 12 }, (_, i) => `H-${i + 1}`),
   ];
 
-  const isReserved = (spotId: string) => {
-    return reservas.some(spot => `${spot.seccion}-${spot.numero}` === spotId && spot.status === 'active');
-  };
-  
+  const isReserved = (spotId: string) => ocupados.includes(spotId);
+
   const ParkingSpot = ({ id, specialHeight }: { id: string; specialHeight?: string }) => (
     <div
-      className={`parking-spot ${isReserved(id) ? 'reserved' : ''}`}  
-      style={{ height: specialHeight || 'auto', border: '1px solid #ccc', margin: '5px', textAlign: 'center' }}
+      className={`parking-spot ${isReserved(id) ? 'reserved' : ''}`}
+      style={{ 
+        height: specialHeight || 'auto', 
+        border: '1px solid #ccc', 
+        margin: '5px', 
+        textAlign: 'center', 
+        backgroundColor: isReserved(id) ? 'red' : 'green',  // Rojo si está ocupado, verde si está libre
+        color: 'white'
+      }}
     >
       {id}
     </div>
