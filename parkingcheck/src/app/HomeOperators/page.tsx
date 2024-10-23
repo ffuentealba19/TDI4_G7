@@ -1,6 +1,6 @@
 "use client";
 
-import { Navbar } from '../components/Navbar';
+import { NavbarOperario } from '../components/NavBarOperario';
 import ParkingMap from '../components/ParkingMap';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -30,7 +30,7 @@ export default function HomeOperarios() {
 
     return (
         <div>
-            <Navbar />
+            <NavbarOperario />
             <div>
                 <h2>Estacionamientos Ocupados</h2>
                 <ParkingMap occupiedSpots={occupiedSpots} />
