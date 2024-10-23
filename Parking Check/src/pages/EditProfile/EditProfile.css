@@ -49,7 +49,6 @@
   font-weight: bold;
   padding: 10px 20px;
   box-shadow: 0 4px 10px rgba(74, 144, 226, 0.4);
-  transition: background 0.3s ease;
 }
 
 .profile-header ion-button:hover {

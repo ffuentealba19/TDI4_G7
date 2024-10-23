@@ -20,38 +20,74 @@ import {
   IonIcon,
   IonAvatar
 } from '@ionic/react';
+import { useEffect } from 'react';
 import { menu, moon } from 'ionicons/icons'; // Icono para el botón de modo oscuro
 import './Home.css';
-import { getUserProfile } from '../../services/AuthServices';
+import { getUserProfile, getAvailableSpots } from '../../services/AuthServices';
+import { initiateSocketConnection, subscribeToParkingUpdates, disconnectSocket} from '../../services/SocketServices';
 
 const Home: React.FC = () => {
   const [darkMode, setDarkMode] = useState(false);
-  const [userData, setUserData] = useState<any>(null); // Estado para almacenar los datos del usuario
-  const [profileImage, setProfileImage] = useState('/assets/profile-placeholder.png'); // Imagen por defecto del perfil
-  const availableSpots = 90;
+  const [userData, setUserData] = useState<any>(null);
+  const [profileImage, setProfileImage] = useState('/assets/profile-placeholder.png');
+  const [availableSpots, setAvailableSpots] = useState(90); // Estado inicial de espacios disponibles
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
     document.body.classList.toggle('dark', !darkMode); // Activamos el modo oscuro
   };
 
-  const fetchData = async () => {
-    try {
-      const profileResponse = await getUserProfile();
-      setProfileImage(profileResponse.profileImage);
-      setUserData(profileResponse.UserName);
-    } catch (error) {
-      console.error('Error al cargar los datos:', error);
-    }
-  };
-  fetchData();
+    // Función para obtener el perfil del usuario
+    const fetchData = async () => {
+      try {
+        const profileResponse = await getUserProfile();
+        setProfileImage(profileResponse.profileImage);
+        setUserData(profileResponse.UserName);
+      } catch (error) {
+        console.error('Error al cargar los datos:', error);
+      }
+    };
+  
+    // Obtener los espacios disponibles y conectarse a Socket.io
+    useEffect(() => {
+      fetchData();
+  
+      // Obtener los espacios disponibles inicialmente desde la API
+      const fetchAvailableSpots = async () => {
+        try {
+          const spots = await getAvailableSpots();
+          setAvailableSpots(spots); // Establecer el valor inicial de espacios disponibles
+        } catch (error) {
+          console.error('Error al obtener los espacios disponibles:', error);
+        }
+      };
+  
+      fetchAvailableSpots(); // Llamar a la función para obtener los espacios disponibles
+  
+      // Iniciar conexión a Socket.io
+      initiateSocketConnection();
+  
+      // Suscribirse a actualizaciones en tiempo real de espacios disponibles
+      subscribeToParkingUpdates((newAvailableSpots: number) => {
+        setAvailableSpots(newAvailableSpots); // Actualiza el estado cuando recibes nuevos datos
+      });
+  
+      // Desconectar el socket cuando se desmonte el componente
+      return () => {
+        disconnectSocket();
+      };
+    }, []);
 
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar color="primary">
           <IonMenuButton slot="end">
-            <IonIcon icon={menu} />
+            <IonAvatar>
+              <img src={profileImage
+                ? profileImage
+                : '/assets/profile-placeholder.png'} alt="profile" />
+            </IonAvatar>
           </IonMenuButton>
           <IonTitle>Parking Check</IonTitle>
         </IonToolbar>
@@ -68,16 +104,15 @@ const Home: React.FC = () => {
           <h1 className="page-title">¡Bienvenido, {userData}! </h1>
         </IonText>
 
-        {/* Card para Campus Norte */}
-        <IonCard className="card" routerLink='/solicitud'>
-          <img alt='Campus Norte' src='https://doctoradoeduconsorcio.cl/wp-content/uploads/catolica-temuco.jpg' className="card-image" />
+         {/* Card de Campus Norte */}
+         <IonCard className="card" routerLink='/solicitud'>
+          <img alt="Campus Norte" src="https://doctoradoeduconsorcio.cl/wp-content/uploads/catolica-temuco.jpg" className="card-image" />
           <IonCardHeader>
             <IonCardTitle>Campus Norte</IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
             Disponible: {availableSpots}/150
             <IonProgressBar value={availableSpots / 150} color="success" className="availability-bar" />
-
           </IonCardContent>
         </IonCard>
 

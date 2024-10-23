@@ -1,14 +1,53 @@
 const mongoose = require('mongoose');
 
-const reservaSchema = new mongoose.Schema({
-    idReserva: { type: Number, required: true, unique: true }, // identificador de la reserva
-    idUsuario: { type: mongoose.Schema.Types.ObjectId, ref: 'usuarios', required: true }, // relación con usuario
-    HoraInicio: { type: Date, required: true }, // Fecha y hora de inicio
-    HoraFin: { type: Date, required: true }, // Fecha y hora de fin
-    Estado: { type: String, enum: ['Activa', 'Finalizada', 'Cancelada'], default: 'Activa' }, // Estado de la reserva
-}, { 
-    collection: 'reservas',
-    timestamps: true // Agrega `createdAt` y `updatedAt`
+const parkingReservationSchema = new mongoose.Schema({
+  seccion: {
+    type: String,
+    required: true
+  },
+  numero: {
+    type: String,
+    required: true
+  },
+  id_usuario: {
+    type: String, // Cambiado a String en lugar de ObjectId
+    required: true
+  },
+  fechaReserva: {
+    type: Date,
+    required: true
+  },
+  fechaExpiracion: {
+    type: Date,
+    required: true,
+    validate: {
+      validator: function(value) {
+        // Validar que fechaExpiracion no sea más de un día mayor que fechaReserva
+        return (value.getTime() - this.fechaReserva.getTime()) <= 24 * 60 * 60 * 1000; // 24 horas en milisegundos
+      },
+      message: 'La reserva no puede ser mayor a un día.'
+    }
+  },
+  status: {
+    type: String,
+    enum: ['active', 'inactive', 'expired'], // Enum para los posibles valores de estado
+    default: 'inactive',
+    required: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+    immutable: true // Este campo no puede ser modificado
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now
+  }
+}, {
+  collection: 'reservas',
+  timestamps: true // Esto añade automáticamente los campos `createdAt` y `updatedAt`
 });
 
-module.exports = mongoose.model('Reserva', reservaSchema);
+const ParkingReservation = mongoose.model('ParkingReservation', parkingReservationSchema);
+
+module.exports = ParkingReservation;

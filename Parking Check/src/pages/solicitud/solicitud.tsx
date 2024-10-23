@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { 
   IonPage, IonHeader, IonToolbar, IonTitle, IonContent, 
   IonMenuButton, IonButtons, IonButton, IonCard, IonText, 
-  IonToast, IonAlert, IonIcon 
+  IonToast, IonAlert, IonIcon, 
+  IonMenu,
+  IonBackButton
 } from '@ionic/react';
 import { qrCode, checkmarkCircleOutline } from 'ionicons/icons';
 import { getUserProfile } from '../../services/AuthServices';
@@ -30,6 +32,9 @@ const Solicitud: React.FC = () => {
         <IonToolbar color="primary">
           <IonButtons slot='end'>
             <IonMenuButton />
+          </IonButtons>
+          <IonButtons slot='start'>
+            <IonBackButton text='Volver' />
           </IonButtons>
           <IonTitle>Parking Check</IonTitle>
         </IonToolbar>

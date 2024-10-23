@@ -1,108 +1,126 @@
-import React, { useState } from 'react';
-import {
-  IonPage,
-  IonHeader,
-  IonToolbar,
-  IonTitle,
-  IonContent,
-  IonButton,
-  IonCard,
-  IonCardContent,
-  IonText,
-  IonLabel,
-  IonItem,
-  IonInput,
-  IonDatetime,
-  IonSelect,
-  IonSelectOption,
-  IonButtons,
-  IonIcon,
-  IonBackButton,
-} from '@ionic/react';
-import './reservas.css'; // Estilos personalizados para la página
+import React, { useState, useEffect } from 'react';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonLabel, IonButton, IonInput, IonDatetime, IonAlert, IonLoading, IonBackButton, IonButtons, IonCard, IonCardContent, IonSelect, IonSelectOption, IonText } from '@ionic/react';
+import { createReservation, getUserProfile } from '../../services/AuthServices'; // Importa las funciones de servicios
+import { useHistory } from 'react-router-dom';
 
 const ReservasPage: React.FC = () => {
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
-  const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  const [selectedParking, setSelectedParking] = useState<string | undefined>();
-  const [vehicle, setVehicle] = useState<string | undefined>();
-  
-  const handleReserva = () => {
-    if (selectedDate && selectedTime && selectedParking && vehicle) {
-      alert(`Reserva realizada para el ${selectedDate} a las ${selectedTime} en ${selectedParking} con el vehículo ${vehicle}.`);
-    } else {
-      alert('Por favor, completa todos los campos para realizar la reserva.');
+  const [seccion, setSeccion] = useState('');
+  const [numero, setNumero] = useState('');
+  const [fechaReserva, setFechaReserva] = useState('');
+  const [fechaExpiracion, setFechaExpiracion] = useState('');
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
+
+  // Obtener el perfil del usuario para extraer el ID
+  const fetchData = async () => {
+    try {
+      const profileResponse = await getUserProfile();
+      setUserId(profileResponse._id);
+    } catch (error) {
+      console.error('Error al cargar los datos:', error);
+    }
+  };  
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  // Función para crear una nueva reserva
+  const handleCreateReservation = async () => {
+    if (!seccion || !numero || !fechaReserva || !fechaExpiracion || !userId) {
+      setAlertMessage('Todos los campos son obligatorios');
+      setShowAlert(true);
+      return;
+    }
+
+    const startDate = new Date(fechaReserva);
+    const endDate = new Date(fechaExpiracion);
+
+    // Validación para asegurar que la reserva no sea mayor a un día
+    if ((endDate.getTime() - startDate.getTime()) > 24 * 60 * 60 * 1000) {
+      setAlertMessage('La reserva no puede ser mayor a un día.');
+      setShowAlert(true);
+      return;
+    }
+
+    const newReservation = {
+      seccion,
+      numero,
+      fechaReserva: startDate,
+      fechaExpiracion: endDate,
+      id_usuario: userId // Añadir el id del usuario autenticado
+    };
+
+    try {
+      setLoading(true);
+      
+      setAlertMessage('Reserva creada correctamente');
+      setShowAlert(true);
+      // Limpiar los campos
+      setSeccion('');
+      setNumero('');
+      setFechaReserva('');
+      setFechaExpiracion('');
+    } catch (error) {
+      setAlertMessage('Error al crear la reserva');
+      setShowAlert(true);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <IonPage>
       <IonHeader>
-        <IonToolbar color="primary">
+        <IonToolbar color='primary'>
           <IonButtons slot='start'>
-            <IonIcon/>
-            <IonBackButton defaultHref="/profile" />
+            <IonBackButton defaultHref='/home' />
           </IonButtons>
-          <IonTitle color="light">Parking Check</IonTitle>
+          <IonTitle>Parking Check</IonTitle>
         </IonToolbar>
       </IonHeader>
-
       <IonContent>
-        <IonCard className="reserva-card">
+        <IonCard>
           <IonCardContent>
-            <IonText color="primary">
-              <h2 className="ion-text-center">Realiza tu Reserva</h2>
-            </IonText>
-
-            {/* Fecha */}
+          <IonList>
             <IonItem>
-              <IonLabel position="stacked" color="primary">Selecciona la Fecha</IonLabel>
-              <IonDatetime
-                presentation="date" // Utilizar presentación "date"
-                value={selectedDate || undefined}
-              />
-            </IonItem>
-
-            {/* Hora */}
-            <IonItem>
-              <IonLabel position="stacked" color="primary">Selecciona la Hora</IonLabel>
-              <IonDatetime
-                presentation="time" // Utilizar presentación "time"
-                value={selectedTime || undefined}
-              />
-            </IonItem>
-
-            {/* Estacionamiento */}
-            <IonItem>
-              <IonLabel position="stacked" color="primary">Selecciona el Estacionamiento</IonLabel>
-              <IonSelect
-                placeholder="Selecciona una opción"
-                value={selectedParking}
-                onIonChange={e => setSelectedParking(e.detail.value)}
-              >
-                <IonSelectOption value="Estacionamiento A">Campus Norte</IonSelectOption>
-                <IonSelectOption value="Estacionamiento B">Campus San Francisco</IonSelectOption>
+              <IonLabel>Sección</IonLabel>
+              <IonSelect value={seccion} placeholder="Seleccione una sección" onIonChange={(e) => setSeccion(e.detail.value)}>
+                <IonSelectOption value="A">A</IonSelectOption>
+                <IonSelectOption value="B">B</IonSelectOption>
+                <IonSelectOption value="C">C</IonSelectOption>
+                <IonSelectOption value="D">D</IonSelectOption>
               </IonSelect>
             </IonItem>
-
-            {/* Vehículo */}
             <IonItem>
-              <IonLabel position="stacked" color="primary">Selecciona tu Vehículo</IonLabel>
-              <IonInput
-                placeholder="Introduce la placa del vehículo"
-                value={vehicle}
-                onIonChange={e => setVehicle(e.detail.value!)}
-              />
+              <IonLabel position="floating">Número</IonLabel>
+              <IonInput value={numero} onIonChange={(e) => setNumero(e.detail.value!)} />
             </IonItem>
-
-            {/* Botón de realizar reserva */}
-
-              <IonButton expand="block" color="primary" onClick={handleReserva}>
-                Realizar Reserva
-              </IonButton>
-
+            <IonItem>
+              <IonLabel>Fecha Reserva</IonLabel>
+              <IonDatetime value={fechaReserva} onIonChange={(e) => setFechaReserva(e.detail.value as string)} />
+            </IonItem>
+            <IonItem>
+              <IonLabel>Fecha Expiración</IonLabel>
+              <IonDatetime value={fechaExpiracion} onIonChange={(e) => setFechaExpiracion(e.detail.value as string)} />
+            </IonItem>
+          </IonList>
+        <IonButton expand="block" onClick={handleCreateReservation}>Crear Reserva</IonButton>
           </IonCardContent>
         </IonCard>
+        <IonAlert
+          isOpen={showAlert}
+          onDidDismiss={() => setShowAlert(false)}
+          header="Atención"
+          message={alertMessage}
+          buttons={['OK']}
+        />
+        <IonLoading
+          isOpen={loading}
+          message={'Cargando...'}
+        />
       </IonContent>
     </IonPage>
   );

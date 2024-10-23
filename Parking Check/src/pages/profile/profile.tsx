@@ -14,9 +14,11 @@ import {
   IonText,
   IonCardHeader,
   IonIcon,
+  IonCardTitle,
+  IonBackButton,
 } from '@ionic/react';
 import './profile.css';
-import { warning } from 'ionicons/icons';
+import { warning, settingsOutline } from 'ionicons/icons';
 import { useHistory } from 'react-router-dom';
 import { logout, getUserProfile, getUserVehicles } from '../../services/AuthServices'; // Importa las funciones
 
@@ -55,12 +57,6 @@ const Perfil: React.FC = () => {
     fetchData();
   }, []);
 
-  const handleLogout = () => {
-    logout();
-    history.push('/login');
-    window.location.reload();
-  };
-
   if (loading) {
     return <IonContent>Cargando...</IonContent>; // Pantalla de carga personalizada
   }
@@ -69,7 +65,7 @@ const Perfil: React.FC = () => {
     return <IonContent>Error al cargar los datos del perfil</IonContent>; // Manejo del error
   }
 
-  // Mostrar diferentes mensajes dependiendo del plan del usuario
+  // Mostrar diferentes mensajes dependiendo del plan del usuario de color blanco
   const subscriptionMessage = () => {
     if (userData.Plan === 'VIP' || userData.Plan === 'VIP+') {
       return (
@@ -89,39 +85,35 @@ const Perfil: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar color="primary">
-          <IonTitle color="light">Parking Check</IonTitle>
-          <IonButtons slot="end">
-            <IonMenuButton />
+          <IonButtons slot='end'>
+            <IonButton routerLink='/edit-profile'>
+              <IonIcon icon={settingsOutline} />
+            </IonButton>
           </IonButtons>
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/home"/>
+          </IonButtons>
+          <IonTitle>Mi perfil</IonTitle>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonCard>
-          <IonText className="ion-text-center">
-            <h2>MI PERFIL</h2>
-          </IonText>
-          <IonAvatar style={{ width: '100px', height: '100px', margin: 'auto' }}>
-            <img src={profileImage} alt="Profile" />
-          </IonAvatar>
-          <IonText className="ion-text-center">
-            <h3>{userData.UserName}</h3>
-            <p>{userData.UserEmail}</p>
-            {/* Mostrar mensaje dependiendo del plan del usuario */}
-            {subscriptionMessage()}
-          </IonText>
-        </IonCard>
-        <IonCard className="button-card">
-          <IonButton expand="block" color="medium" routerLink="/edit-profile">
-            Editar Perfil
-          </IonButton>
-          <IonButton expand="block" color="danger" onClick={handleLogout}>
-            Cerrar sesión
-          </IonButton>
+        <IonCard color='primary'>
+            <IonCardContent className='profile-card-content'>
+              <IonAvatar className='profile-icon' style={{ width: '100px', height: '100px', margin: 'auto' }}>
+                <img src={profileImage} alt="Profile" />
+              </IonAvatar>
+              <IonText className=" ion-text-center">
+                <h3>{userData.UserName}</h3>
+                <p>{userData.UserEmail}</p>
+              </IonText>
+              <IonButton expand='block' routerLink="/upgrade-subscription" color="light">
+                  {subscriptionMessage()}
+                </IonButton>
+            </IonCardContent>
+          </IonCard>
           <IonButton expand="block" color="primary" routerLink="/autos">
             Gestionar Vehículos
           </IonButton>
-        </IonCard>
-        <div className="vehiculos-container">
             {vehiculos.length > 0 ? (
               <Swiper
                 effect={'coverflow'}
@@ -146,12 +138,12 @@ const Perfil: React.FC = () => {
                 {vehiculos.map((vehiculo, index) => (
                   <SwiperSlide key={vehiculo._id}>
                     <IonCard
-                      className={`vehiculo-card ${index !== 0 ? 'opacity-card' : ''}`}
+                      className={` ${index !== 0 ? 'opacity-card' : ''}`}
                     >
                       <img
                         className="imagen"
                         width={'400px'}
-                        src="https://img.yapo.cl/images/72/7299715193.jpg"
+                        src={vehiculo.Imagen}
                         alt="car1"
                       />
                       <IonCardHeader>
@@ -173,10 +165,7 @@ const Perfil: React.FC = () => {
                   <h2>No tienes vehículos registrados</h2>
                 </IonText>
               </IonCard>
-            )}
-          </div>
-
-          
+            )}  
       </IonContent>
     </IonPage>
   );

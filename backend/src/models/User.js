@@ -6,19 +6,18 @@ const userSchema = new mongoose.Schema({
   UserEmail: { type: String, required: true, unique: true },
   UserPass: { type: String, required: true },
   Vehiculos: [{
-    Placa: { type: String, required: false },
-    Marca: { type: String, required: false },
-    Modelo: { type: String, required: false },
-    Color: { type: String, required: false },
+    Placa: { type: String, required: true },
+    Marca: { type: String, required: true },
+    Modelo: { type: String, required: true },
+    Color: { type: String, required: true },
+    Imagen: { type: String, required: false }, // Nueva propiedad para la URL de la imagen del vehículo
   }],
-  profileImage: { type: String, required: false }, // Cambio del nombre del campo a algo más descriptivo
-  //Todos los usuarios nuevos empezaran con el plan basico
-  Plan: { type: String, default: 'Basico' },
+  profileImage: { type: String, required: false }, // Imagen de perfil del usuario
+  Plan: { type: String, default: 'Basico' }, // Plan básico por defecto
 }, { 
   collection: 'usuarios',
   timestamps: true // Agrega `createdAt` y `updatedAt` automáticamente
 });
-
 
 // Hash de la contraseña antes de guardar el usuario
 userSchema.pre('save', async function (next) {

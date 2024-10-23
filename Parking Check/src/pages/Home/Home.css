@@ -4,7 +4,6 @@ ion-content {
   font-family: 'Roboto', sans-serif;
   padding: 20px;
 }
-
 .greeting {
   text-align: center; /* Centramos el saludo */
   font-size: 1.2em;

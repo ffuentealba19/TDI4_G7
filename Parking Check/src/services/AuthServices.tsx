@@ -5,6 +5,86 @@ const apiClient = axios.create({
   baseURL: 'http://localhost:3000', // Cambiar si usas un entorno en producción https://parkingcheck.onrender.com'
 });
 
+
+// Función para obtener las reservas del usuario
+export const getReservations = async () => {
+  try {
+    const response = await apiClient.get('/parking/reservas');
+    return response.data;
+  } catch (error) {
+    console.error('Error al obtener las reservas:', error);
+    throw error;
+  }
+};
+
+// Función para crear una nueva reserva
+export const createReservation = async (reservationData: { seccion: string, numero: string, fechaReserva: Date, fechaExpiracion: Date, userid: string }) => {
+  try {
+    const response = await apiClient.post('/parking/reservas', reservationData);
+    return response.data;
+  } catch (error) {
+    console.error('Error al crear la reserva:', error);
+    throw error;
+  }
+};
+
+// Función para actualizar una reserva existente
+export const updateReservation = async (reservationId: string, updateData: { fechaExpiracion?: Date, status?: string }) => {
+  try {
+    const response = await apiClient.put(`/parking/reservas/${reservationId}`, updateData);
+    return response.data;
+  } catch (error) {
+    console.error('Error al actualizar la reserva:', error);
+    throw error;
+  }
+};
+
+// Función para eliminar una reserva
+export const deleteReservation = async (reservationId: string) => {
+  try {
+    const response = await apiClient.delete(`/parking/reservas/${reservationId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error al eliminar la reserva:', error);
+    throw error;
+  }
+};
+
+
+// Función para obtener los espacios disponibles desde la API
+export const getAvailableSpots = async () => {
+  try {
+    const response = await apiClient.get('/parking/available-spots'); // Ruta del backend para los espacios disponibles
+    return response.data.availableSpots; // Retorna solo el número de espacios disponibles
+  } catch (error) {
+    console.error('Error al obtener los espacios disponibles:', error);
+    throw new Error('Error al obtener los espacios disponibles');
+  }
+};
+
+// Función para obtener los estacionamientos
+export const getParkings = async () => {
+  try {
+    const response = await apiClient.get('/parking/parkings'); // Cambiar si la ruta es diferente
+    return response.data;
+  } catch (error) {
+    console.error('Error al obtener los estacionamientos:', error);
+    throw error;
+  }
+};
+
+// Función para actualizar un estacionamiento
+export const updateParking = async (parkingId: string) => {
+  try {
+    const response = await apiClient.put(`/parking/update-parking/${parkingId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error al actualizar el estacionamiento:', error);
+    throw error;
+  }
+};
+
+
 // Añadir un interceptor para agregar el token en cada request
 apiClient.interceptors.request.use((config) => {
   const token = getToken();
@@ -19,7 +99,7 @@ apiClient.interceptors.request.use((config) => {
 // Función para actualizar el plan del usuario
 export const updatePlan = async (plan: string) => {
   try {
-    const response = await apiClient.put('/updateplan', { Plan: plan }); // Ya no envías el email en la URL
+    const response = await apiClient.put('/auth/updateplan', { Plan: plan }); // Ya no envías el email en la URL
     return response.data;
   } catch (error) {
     console.error('Error al actualizar el plan:', error);
@@ -27,10 +107,18 @@ export const updatePlan = async (plan: string) => {
   }
 };
 
-// Función para actualizar un vehículo
-export const updateVehicle = async (id: string, vehicle: { Placa: string; Marca: string; Modelo: string; Color: string }) => {
+// Función para actualizar un vehículo sin imagen
+export const updateVehicle = async (id: string, vehicle: { Placa: string; Marca: string; Modelo: string; Color: string }, newImage: File | null) => {
   try {
-    const response = await apiClient.put(`/updateauto/${id}`, vehicle);
+    // Primero, actualizar los datos del vehículo sin la imagen
+    const response = await apiClient.put(`/auth/updateauto/${id}`, vehicle);
+
+    // Si se ha seleccionado una nueva imagen, subirla
+    if (newImage) {
+      const uploadResponse = await uploadImage(newImage, 'vehicle', id); // Usar el ID del vehículo para subir la imagen
+      console.log('Imagen del vehículo actualizada:', uploadResponse);
+    }
+
     return response.data;
   } catch (error) {
     console.error('Error al actualizar el vehículo:', error);
@@ -38,10 +126,11 @@ export const updateVehicle = async (id: string, vehicle: { Placa: string; Marca:
   }
 };
 
+
 // Función para borrar un vehículo
 export const deleteVehicle = async (id: string) => {
   try {
-    const response = await apiClient.delete(`/deleteauto/${id}`);
+    const response = await apiClient.delete(`/auth/deleteauto/${id}`);
     return response.data;
   } catch (error) {
     console.error('Error al borrar el vehículo:', error);
@@ -52,7 +141,7 @@ export const deleteVehicle = async (id: string) => {
 // Función para obtener los vehículos del usuario
 export const getUserVehicles = async () => {
   try {
-    const response = await apiClient.get('/getautos');
+    const response = await apiClient.get('/auth/getautos');
     return response.data;
   } catch (error) {
     console.error('Error al obtener los vehículos:', error);
@@ -60,32 +149,10 @@ export const getUserVehicles = async () => {
   }
 };
 
-// Función para agregar un vehículo
-export const agregarVehiculo = async (vehiculo: { Placa: string; Marca: string; Modelo: string; Color: string }) => {
-  try {
-    const response = await apiClient.post('/addauto', vehiculo);
-    return response.data;
-  } catch (error) {
-    console.error('Error al agregar el vehículo:', error);
-    throw new Error('Error al agregar el vehículo');
-  }
-};
-
-// Función para obtener los estacionamientos
-export const getParkings = async () => {
-  try {
-    const response = await apiClient.get('/parkings');
-    return response.data;
-  } catch (error) {
-    console.error('Error al obtener los estacionamientos:', error);
-    throw new Error('Error al obtener los estacionamientos');
-  }
-};
-
 // Función para obtener la foto de perfil del usuario
 export const getProfileImage = async () => {
   try {
-    const response = await apiClient.get('/profile-image');
+    const response = await apiClient.get('/auth/profile-image');
     return response.data;
   } catch (error) {
     console.error('Error al obtener la imagen de perfil:', error);
@@ -93,24 +160,48 @@ export const getProfileImage = async () => {
   }
 };
 
+
 // Función para subir la imagen a Cloudinary
-export const uploadImage = async (image: File) => {
+export const uploadImage = async (image: File, type: 'profile' | 'vehicle', vehiculoId?: string) => {
   const formData = new FormData();
   formData.append('file', image);
-  formData.append('upload_preset', 'parking-check');
+
+  // Construir la URL dependiendo del tipo de imagen
+  let url = `/auth/upload/${type}`;
+  if (type === 'vehicle' && vehiculoId) {
+    url += `/${vehiculoId}`;
+  }
+
   try {
-    const response = await apiClient.post('/upload', formData);
-    return response.data.secure_url;
+    const response = await apiClient.post(url, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
   } catch (error) {
     console.error('Error al subir la imagen:', error);
     throw new Error('Error al subir la imagen');
   }
 };
 
+
+// Función para agregar un vehículo sin la imagen
+export const agregarVehiculo = async (vehiculo: { Placa: string; Marca: string; Modelo: string; Color: string }) => {
+  try {
+    const response = await apiClient.post('/auth/addauto', vehiculo);
+    return response.data; // Devolver los datos del vehículo creado, incluyendo el _id
+  } catch (error) {
+    console.error('Error al agregar el vehículo:', error);
+    throw new Error('Error al agregar el vehículo');
+  }
+};
+
+
 // Función para actualizar el perfil del usuario
 export const updateUserProfile = async (userData: { UserName: string; UserEmail: string; profileImage?: string }) => {
   try {
-    const response = await apiClient.put('/profile', userData);
+    const response = await apiClient.put('/auth/profile', userData);
     return response.data;
   } catch (error) {
     console.error('Error al actualizar el perfil del usuario:', error);
@@ -121,7 +212,7 @@ export const updateUserProfile = async (userData: { UserName: string; UserEmail:
 // Función para obtener el perfil del usuario
 export const getUserProfile = async () => {
   try {
-    const response = await apiClient.get('/profile');
+    const response = await apiClient.get('/auth/profile');
     return response.data;
   } catch (error) {
     console.error('Error al obtener el perfil del usuario:', error);
@@ -132,7 +223,7 @@ export const getUserProfile = async () => {
 // Función para registrar un usuario
 export const registerUser = async (username: string, email: string, password: string) => {
   try {
-    const response = await apiClient.post('/register', { 
+    const response = await apiClient.post('/auth/register', { 
       UserName: username, 
       UserEmail: email, 
       UserPass: password 
@@ -147,7 +238,7 @@ export const registerUser = async (username: string, email: string, password: st
 // Función para iniciar sesión
 export const loginUser = async (UserEmail: string, UserPass: string) => {
   try {
-    const response = await apiClient.post('/login', { UserEmail, UserPass });
+    const response = await apiClient.post('/auth/login', { UserEmail, UserPass });
     if (response.data.token) {
       localStorage.setItem('token', response.data.token); // Guardar token
     }

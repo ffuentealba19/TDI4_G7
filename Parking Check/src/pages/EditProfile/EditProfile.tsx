@@ -16,7 +16,7 @@ import {
   IonIcon,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
-import { getUserProfile, updateUserProfile, uploadImage } from '../../services/AuthServices'; // Asegúrate de que las funciones estén importadas
+import { getUserProfile, updateUserProfile, uploadImage, logout } from '../../services/AuthServices'; // Asegúrate de que las funciones estén importadas
 import './EditProfile.css';
 import { arrowBack } from 'ionicons/icons';
 
@@ -46,12 +46,19 @@ const EditProfile: React.FC = () => {
     fetchUserProfile();
   }, []);
 
+
+  const handleLogout = () => {
+    logout();
+    history.push('/login');
+    window.location.reload();
+  };
+
   const handleSave = async () => {
     setUpdating(true);
     try {
       // Si hay una nueva imagen, la sube primero
       if (newImage) {
-        const imageUrl = await uploadImage(newImage); // Sube la imagen y obtiene la URL
+        const imageUrl = await uploadImage(newImage, 'profile'); // Aquí especificamos que la imagen es de tipo 'profile'
         await updateUserProfile({ UserName: name, UserEmail: email, profileImage: imageUrl }); // Actualiza el perfil con la URL de la imagen
       } else {
         await updateUserProfile({ UserName: name, UserEmail: email }); // Actualiza el perfil sin cambiar la imagen
@@ -126,6 +133,9 @@ const EditProfile: React.FC = () => {
         <IonButton expand="block" className="ion-margin-top" onClick={handleSave} disabled={updating}>
           {updating ? 'Guardando...' : 'Guardar Cambios'}
         </IonButton>
+        <IonButton expand="block" color="danger" onClick={handleLogout}>
+            Cerrar sesión
+          </IonButton>
       </IonContent>
     </IonPage>
   );

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const parkingSchema = new mongoose.Schema({
   number: { type: Number, required: true },
-  section: { type: Number, required: true },
+  section: { type: String, required: true },
   status: { 
     type: String, 
     enum: ['enabled', 'disabled'], 

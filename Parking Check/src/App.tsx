@@ -38,6 +38,7 @@ import Solicitud from './pages/solicitud/solicitud';
 import CodigoQr from './pages/solicitud/codigoqr';
 import PaymentPage from './pages/Pagos/pagos';
 import ReservasPage from './pages/Reserva/reservas';
+import UpdateParking from './pages/Parking/UpdateParking';
 
 
 /* Core CSS required for Ionic components to work properly */
@@ -149,6 +150,9 @@ const App: React.FC = () => (
               </PrivateRoute>
               <PrivateRoute path="/profile">
                 <Profile />
+              </PrivateRoute>
+              <PrivateRoute path="/update-parking">
+                <UpdateParking />
               </PrivateRoute>
               <PrivateRoute path="/codigoqr">
                 <CodigoQr />

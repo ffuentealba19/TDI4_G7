@@ -24,3 +24,8 @@
     margin-top: auto;
     margin-bottom: auto;
   }
+.profile-icon{
+  /* borde blanco a la foto de perfil */
+  border: 4px solid white;
+  border-style: inset;
+}
