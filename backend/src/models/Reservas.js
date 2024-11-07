@@ -9,6 +9,10 @@ const parkingReservationSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  correo: {
+    type: String,
+    required: true
+  },
   id_usuario: {
     type: String, // Cambiado a String en lugar de ObjectId
     required: true

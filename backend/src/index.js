@@ -5,6 +5,8 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const http = require('http'); // Para manejar Socket.io
 const { Server } = require('socket.io'); // Para Socket.io
+
+// Importar rutas
 const authRoutes = require('./routes/AuthRoutes'); // Importar rutas de autenticación
 const protectedRoutes = require('./routes/ProtectedRoutes'); // Importar rutas protegidas
 const parkingRoutes = require('./routes/ParkingRoutes'); // Importar rutas de estacionamientos
@@ -41,14 +43,13 @@ app.use('/protected', protectedRoutes(io)); // También pasamos `io` a las rutas
 // Socket.io: Manejo de conexiones
 io.on('connection', (socket) => {
   console.log(`Cliente conectado: ${socket.id}`);
-
   socket.on('disconnect', () => {
     console.log(`Cliente desconectado: ${socket.id}`);
   });
 });
 
 // Iniciar el servidor
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4001;
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

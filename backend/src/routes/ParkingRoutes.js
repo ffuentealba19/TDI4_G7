@@ -2,19 +2,49 @@
 const express = require('express');
 const router = express.Router();
 const Parking = require('../models/Parking');
+const authorizeOperario = require('../middleware/authorizeOperario');
 const ParkingReservation = require('../models/Reservas');
 
 module.exports = (io) => {
+  
+
+  // Ruta para obtener todas las reservas
+  router.get('/reservations', authorizeOperario, async (req, res) => {
+    try {
+      const reservas = await ParkingReservation.find();
+      res.status(200).json(reservas);
+    } catch (error) {
+      console.error('Error al obtener las reservas:', error);
+      res.status(500).json({ error: 'Error al obtener las reservas' });
+    }
+  });
+
+  //Ruta para cancelar una reserva desde un operario
+  router.put('/cancel-reservation/:id', authorizeOperario, async (req, res) => {
+    const { id } = req.params;
+    try {
+      const reserva = await ParkingReservation.findById(id);
+      if (!reserva) {
+        return res.status(404).json({ message: 'Reserva no encontrada' });
+      }
+      reserva.status = 'cancelled';
+      await reserva.save();
+      res.status(200).json({ message: 'Reserva cancelada', reserva });
+    } catch (error) {
+      console.error('Error al cancelar la reserva:', error);
+      res.status(500).json({ error: 'Error al cancelar la reserva' });
+    }
+  });
 
   // Crear una nueva reserva
   router.post('/reservas', async (req, res) => {
-    const { seccion, numero, fechaReserva, fechaExpiracion, id_usuario } = req.body;
-    console.log('Datos de la reserva:', req.body);
+    const { seccion, numero, correo, fechaReserva, fechaExpiracion, id_usuario } = req.body;
     
     try {
       const newReservation = new ParkingReservation({
         seccion,
         numero,
+        correo,
         id_usuario, // ID del usuario autenticado
         fechaReserva,
         fechaExpiracion,

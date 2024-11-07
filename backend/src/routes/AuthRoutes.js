@@ -12,9 +12,27 @@ const bcrypt = require('bcrypt');
 module.exports = (io) => {
 
 
+  // Ruta para registrar un nuevo operario
+  router.post('/register-operator', async (req, res) => {
+    const { OperatorName, OperatorEmail, OperatorPass } = req.body;
+    if (!OperatorName || !OperatorEmail || !OperatorPass) {
+      return res.status(400).json({ message: 'Faltan campos' });
+    }
+    try {
+      const existingOperator = await Operario.findOne({ OperatorEmail });
+      if (existingOperator) {
+        return res.status(400).json({ message: 'Operario ya registrado' });
+      }
+      const operario = new Operario({ OperatorName, OperatorEmail, OperatorPass });
+      await operario.save();
+      res.status(201).json({ message: 'Operario registrado exitosamente' });
+    } catch (error) {
+      console.error('Error al registrar operador:', error);
+      res.status(500).json({ message: 'Error al registrar operador' });
+    }
+  });
 
-
-  // Ruta para registrar un nuevo operador
+  // Ruta para logear un nuevo operador
   router.post('/login-operator', async (req, res) => {
     const { OperatorEmail, OperatorPass } = req.body;
   
@@ -38,10 +56,11 @@ module.exports = (io) => {
   
       // Crear el token JWT con un tiempo de expiración de 8 horas
       const token = jwt.sign(
-        { operarioId: operario._id, email: operario.OperatorEmail },
+        { operarioId: operario._id, email: operario.OperatorEmail, role: operario.role },
         process.env.JWT_SECRET || 'default_secret',
         { expiresIn: '8h' }
       );
+      console.log(token)
   
       // Enviar el token y un mensaje de éxito
       res.status(200).json({
@@ -84,7 +103,6 @@ module.exports = (io) => {
       res.status(500).json({ error: 'Error interno del servidor' });
     }
   });
-
 
   // Ruta para cambiar la contraseña del usuario autenticado
   router.put('/change-password', middleware, async (req, res) => {
