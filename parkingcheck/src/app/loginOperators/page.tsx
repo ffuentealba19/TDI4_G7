@@ -3,7 +3,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import '../../styles/style1.css'; 
-import { Navbar } from '../components/Navbar'; 
+import { Navbar } from '../../Components/Navbar'; 
 
 export default function LoginOperators() {
     const [showRegisterElements, setShowRegisterElements] = useState(false);

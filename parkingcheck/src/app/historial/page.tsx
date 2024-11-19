@@ -1,5 +1,5 @@
-import Historial from "../components/Historial";
-import { Navbar } from "../components/Navbar";
+import Historial from "@/Components/Historial";
+import { Navbar } from "@/Components/Navbar";
 
 export default function historial() {
 

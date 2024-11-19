@@ -1,6 +1,5 @@
 "use client"; 
-import '../../styles/style1.css';
-import { Navbar } from '../components/Navbar';
+import { Navbar } from '@/Components/Navbar';
 
 export default function Guest() {
   const redirect =async (event: React.FormEvent<HTMLFormElement>) => {

@@ -1,11 +1,11 @@
-import EditInfo from "../components/EditInfo";
-import { Navbar } from "../components/Navbar";
+import EditInfo from "@/Components/EditInfo";
+import { Navbar } from "@/Components/Navbar";
 
 
 export default function EditProfile() {
   return (
     <div>
-      <Navbar />
+      <Navbar></Navbar>
       <div className="Profile-box">
        <EditInfo/>  
       </div>

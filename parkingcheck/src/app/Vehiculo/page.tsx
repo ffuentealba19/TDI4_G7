@@ -1,5 +1,5 @@
-import AddCar from "../components/addcar";
-import { Navbar } from "../components/Navbar";
+import AddCar from "@/Components/addcar";
+import { Navbar } from "@/Components/Navbar";
 
 export default function Vehicule() {
     return (

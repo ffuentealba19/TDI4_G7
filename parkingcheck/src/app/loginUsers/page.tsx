@@ -2,8 +2,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import '../../styles/style1.css';
-import { Navbar } from '../components/Navbar';
+import { Navbar } from '@/Components/Navbar';
 
 export default function Login() {
     const [showRegisterElements, setShowRegisterElements] = useState(false);
@@ -29,8 +28,8 @@ export default function Login() {
         };
 
         try {
-            const response = await fetch('/api/auth/Register', {
-                method: 'POST',
+            const response = await fetch('http://localhost:4001/auth/register', {
+                method: 'post',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -40,8 +39,7 @@ export default function Login() {
             const result = await response.json();
 
             if (response.ok) {
-                console.log('Éxito:', result);
-                router.push(result.redirectUrl);
+                router.push("/Home");
             } else {
                 console.log(`Error: ${result.message || 'Algo ha salido mal'}`);
                 alert(result.message || 'Algo ha salido mal'); 
@@ -62,7 +60,7 @@ export default function Login() {
         };
 
         try {
-            const response = await fetch('/api/auth/Login', {
+            const response = await fetch('http://localhost:4001/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -73,8 +71,8 @@ export default function Login() {
             const result = await response.json();
 
             if (response.ok) {
-                console.log('Éxito:', result);
-                router.push(result.redirectUrl);
+                localStorage.setItem("token", result.token);               
+                router.push("/Home");
             } else {
                 console.log(`Error: ${result.message || 'Algo ha salido mal'}`);
                 alert(result.message || 'Algo ha salido mal');

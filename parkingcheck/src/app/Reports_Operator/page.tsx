@@ -1,6 +1,6 @@
 "use client";
 
-import { NavbarOperario } from '../components/NavBarOperario';
+import { NavbarOperario } from '@/Components/NavBarOperario';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 

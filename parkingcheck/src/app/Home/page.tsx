@@ -1,8 +1,8 @@
 "use client";
 
-import { Navbar } from '../components/Navbar';
-import ParkingMap from '../components/ParkingMap';
-import Popup from '../components/Popup'; 
+import { Navbar } from '@/Components/Navbar';
+import ParkingMap from '@/Components/ParkingMap';
+import Popup from '@/Components/Popup'; 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import jwt from 'jsonwebtoken';
@@ -14,37 +14,21 @@ export default function Home() {
     const [showPopup, setShowPopup] = useState<boolean>(false); 
     const router = useRouter();
 
+
+
     useEffect(() => {
-        const token = document.cookie.split('; ').find(row => row.startsWith('token='));
+        const token = localStorage.getItem("token");
+        console.log("token Home", token);
         if (!token) {
-            router.push('/');  // Redirige si no hay token
+            router.push('/');  
             return;
         }
 
-        const tokenValue = token.split('=')[1];
-        try {
-            const decodedToken: any = jwt.decode(tokenValue);
-            console.log(decodedToken);
-
-            // Verifica si el token tiene la propiedad "vip"
-            if (decodedToken && decodedToken.vip !== undefined) {
-                setIsVip(decodedToken.vip);
-                setShowPopup(true);  // Muestra el popup basado en VIP
-            }
-        } catch (error) {
-            console.error("Error al decodificar el token:", error);
-            router.push('/');  // Redirige si el token es inválido
-        }
     }, [router]);
 
     const handleClosePopup = () => {
         setShowPopup(false);  // Cierra el popup
     };
-
-    // Espera a que se determine si es VIP antes de mostrar el mapa
-    if (isVip === null) {
-        return <div>Loading...</div>;
-    }
 
 
     return ( 

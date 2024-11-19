@@ -1,7 +1,7 @@
 "use client"; 
 import '../../styles/style1.css';
 import Image from 'next/image';
-import { Navbar } from '../components/Navbar';
+import { Navbar } from '@/Components/Navbar';
 
 export default function LostmyPassword() {
     return ( 
