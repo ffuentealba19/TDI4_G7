@@ -18,16 +18,9 @@ mongoose.connect(uri, {
 }).then(() => console.log('Conectado a la base de datos'))
   .catch(err => console.log('Error al conectar a la base de datos:', err));
 
-// Ruta de prueba
-app.get('/', (req, res) => {
-  res.send('API de Boletas funcionando');
-});
 
 // Configurar puerto del servidor
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Servidor corriendo en el puerto ${PORT}`));
 
-const boletasRoutes = require('./routes/boletas');
 
-// Usar las rutas de boletas
-app.use('/api/boletas', boletasRoutes);

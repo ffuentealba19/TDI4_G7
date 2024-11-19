@@ -4,11 +4,41 @@ const router = express.Router();
 const Parking = require('../models/Parking');
 const authorizeOperario = require('../middleware/authorizeOperario');
 const ParkingReservation = require('../models/Reservas');
+const middleware = require('../middleware/AuthMiddleware');
+const User = require('../models/User'); // Importación añadida
+const Operario = require('../models/Operarios'); // Importación añadida
 
-module.exports = (io) => {
-  
+module.exports = (io, transporter) => {
 
-  // Ruta para obtener todas las reservas
+  // Función para enviar correos electrónicos
+  const sendReservationEmail = (recipientEmail, reservationDetails, recipientName) => {
+    const mailOptions = {
+      from: `"Parking App" <${process.env.GMAIL_USER}>`,
+      to: recipientEmail,
+      subject: 'Confirmación de Reserva',
+      html: `
+        <h1>Reserva Confirmada</h1>
+        <p>Hola ${recipientName}, tu reserva ha sido confirmada con los siguientes detalles:</p>
+        <ul>
+          <li>Sección: ${reservationDetails.seccion}</li>
+          <li>Número: ${reservationDetails.numero}</li>
+          <li>Fecha de Reserva: ${reservationDetails.fechaReserva}</li>
+          <li>Fecha de Expiración: ${reservationDetails.fechaExpiracion}</li>
+        </ul>
+        <p>Gracias por usar nuestro servicio.</p>
+      `,
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error al enviar el correo:', error);
+      } else {
+        console.log('Correo enviado:', info.response);
+      }
+    });
+  };
+
+  // Ruta para obtener todas las reservas (solo para operarios)
   router.get('/reservations', authorizeOperario, async (req, res) => {
     try {
       const reservas = await ParkingReservation.find();
@@ -19,7 +49,7 @@ module.exports = (io) => {
     }
   });
 
-  //Ruta para cancelar una reserva desde un operario
+  // Ruta para cancelar una reserva desde un operario
   router.put('/cancel-reservation/:id', authorizeOperario, async (req, res) => {
     const { id } = req.params;
     try {
@@ -37,21 +67,41 @@ module.exports = (io) => {
   });
 
   // Crear una nueva reserva
-  router.post('/reservas', async (req, res) => {
-    const { seccion, numero, correo, fechaReserva, fechaExpiracion, id_usuario } = req.body;
-    
+  router.post('/reservas', middleware, async (req, res) => {
+    const { seccion, numero, fechaReserva, fechaExpiracion } = req.body;
+    const userId = req.user.userId; // Obtenemos el ID del usuario autenticado desde el middleware
+
     try {
+      // Obtener detalles del usuario
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ error: 'Usuario no encontrado' });
+      }
+
+      // Crear la nueva reserva
       const newReservation = new ParkingReservation({
         seccion,
         numero,
-        correo,
-        id_usuario, // ID del usuario autenticado
+        correo: user.UserEmail,
+        id_usuario: userId,
         fechaReserva,
         fechaExpiracion,
         status: 'active'
       });
 
       await newReservation.save();
+
+      // Enviar correo al usuario
+      sendReservationEmail(user.UserEmail, newReservation, user.UserName);
+
+      // Obtener todos los operarios
+      const operators = await Operario.find();
+
+      // Enviar correo a cada operario
+      operators.forEach((operator) => {
+        sendReservationEmail(operator.OperatorEmail, newReservation, operator.OperatorName);
+      });
+
       res.status(201).json(newReservation);
     } catch (error) {
       console.error('Error al crear la reserva:', error);
@@ -60,7 +110,7 @@ module.exports = (io) => {
   });
 
   // Obtener todas las reservas de un usuario autenticado
-  router.get('/reservas', async (req, res) => {
+  router.get('/reservas', middleware, async (req, res) => {
     try {
       const reservas = await ParkingReservation.find({ id_usuario: req.user.userId });
       res.status(200).json(reservas);
@@ -71,7 +121,7 @@ module.exports = (io) => {
   });
 
   // Actualizar una reserva
-  router.put('/reservas/:id', async (req, res) => {
+  router.put('/reservas/:id', middleware, async (req, res) => {
     const { id } = req.params;
     const { fechaExpiracion, status } = req.body;
 
@@ -98,7 +148,7 @@ module.exports = (io) => {
   });
 
   // Eliminar una reserva
-  router.delete('/reservas/:id', async (req, res) => {
+  router.delete('/reservas/:id', middleware, async (req, res) => {
     const { id } = req.params;
 
     try {
@@ -120,8 +170,8 @@ module.exports = (io) => {
     }
   });
 
-   // Ruta para obtener todos los estacionamientos
-   router.get('/parkings', async (req, res) => {
+  // Ruta para obtener todos los estacionamientos
+  router.get('/parkings', async (req, res) => {
     try {
       const parkings = await Parking.find();
       res.status(200).json(parkings);
@@ -154,26 +204,38 @@ module.exports = (io) => {
     }
   };
 
-  // Ejemplo de ruta donde se actualiza el estado de un estacionamiento
-  router.put('/update-parking/:id', async (req, res) => {
-    const { id } = req.params;
-    try {
-      const parking = await Parking.findById(id);
-      if (!parking) {
-        return res.status(404).json({ message: 'Estacionamiento no encontrado' });
-      }
+  // Ruta para actualizar el estado de un estacionamiento
+  router.put('/update-parking/:id', middleware, async (req, res) => {
+  const { id } = req.params;
+  const userId = req.user.userId;
 
-      parking.occupiedBy = parking.occupiedBy ? null : 'userId'; // Alternar el estado de ocupación
-      await parking.save();
-
-      // Emitir la actualización a los clientes conectados
-      emitirActualizacionEstacionamientos();
-
-      res.status(200).json({ message: 'Estado del estacionamiento actualizado', parking });
-    } catch (err) {
-      console.error('Error al actualizar el estado del estacionamiento:', err);
-      res.status(500).json({ error: 'Error al actualizar el estado del estacionamiento' });
+  try {
+    const parking = await Parking.findById(id);
+    if (!parking) {
+      return res.status(404).json({ message: 'Estacionamiento no encontrado' });
     }
+
+    if (parking.occupiedBy && parking.occupiedBy.toString() === userId) {
+      // Si el usuario ya ocupa este estacionamiento, lo libera
+      parking.occupiedBy = null;
+    } else if (!parking.occupiedBy) {
+      // Si el estacionamiento está libre, el usuario lo ocupa
+      parking.occupiedBy = userId;
+    } else {
+      // Si el estacionamiento está ocupado por otro usuario
+      return res.status(400).json({ message: 'El estacionamiento ya está ocupado por otro usuario' });
+    }
+
+    await parking.save();
+
+    // Emitir la actualización a los clientes conectados
+    emitirActualizacionEstacionamientos();
+
+    res.status(200).json({ message: 'Estado del estacionamiento actualizado', parking });
+  } catch (err) {
+    console.error('Error al actualizar el estado del estacionamiento:', err);
+    res.status(500).json({ error: 'Error al actualizar el estado del estacionamiento' });
+  }
   });
 
   return router;
