@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@next/env": "^14.2.11",
+    "axios": "^1.7.7",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.5.0",
     "dotenv": "^16.4.5",
@@ -19,7 +20,7 @@
     "jwt-decode": "^4.0.0",
     "mongodb": "^6.9.0",
     "mongoose": "^8.6.2",
-    "next": "^14.2.13",
+    "next": "^14.2.18",
     "next-auth": "^4.24.8",
     "next-session": "^4.0.5",
     "nextjs": "^0.0.3",
