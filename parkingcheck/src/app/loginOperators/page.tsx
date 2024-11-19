@@ -29,7 +29,7 @@ export default function LoginOperators() {
         };
 
         try {
-            const response = await fetch('/api/auth/RegisterOperator', {
+            const response = await fetch('http://localhost:4001/auth/register-operator', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ export default function LoginOperators() {
 
             if (response.ok) {
                 console.log('Éxito:', result);
-                router.push(result.redirectUrl);
+                router.push('/HomeOperators');
             } else {
                 console.log(`Error: ${result.message || 'Algo ha salido mal'}`);
                 alert(result.message || 'Algo ha salido mal');
@@ -62,7 +62,7 @@ export default function LoginOperators() {
         };
 
         try {
-            const response = await fetch('/api/auth/LoginOperators', {
+            const response = await fetch('http://localhost:4001/auth/login-operator', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
