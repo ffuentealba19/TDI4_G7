@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 const ParkingMap = ({ isVip }: { isVip: boolean }) => {
   const [selectedSpot, setSelectedSpot] = useState<string | null>(null);
   const [occupiedSpots, setOccupiedSpots] = useState<string[]>([]);
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   const allSpots = [
     ...Array.from({ length: 13 }, (_, i) => `A-${i + 1}`),
@@ -30,22 +31,46 @@ const ParkingMap = ({ isVip }: { isVip: boolean }) => {
     }
   }, [isVip]);
 
-  // Fetch occupied spots from the database
   useEffect(() => {
-    const fetchOccupiedSpots = async () => {
+    const fetchAvailableSpots = async () => {
       try {
-        const response = await fetch('/api/parking');
+        const response = await fetch('http://localhost:4001/parking/parkings', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+  
+        // Verificar si la respuesta es exitosa
+        if (!response.ok) {
+          const errorData = await response.json(); // Si hay un error, obtenemos la respuesta JSON
+          throw new Error(errorData.error || 'Error desconocido');
+        }
+  
         const data = await response.json();
-        if (response.ok) {
-          setOccupiedSpots(data.estacionamientos.Park);
+        console.log('Respuesta de la API:', data);  // Mostrar la respuesta completa
+  
+        if (data && Array.isArray(data.availableSpots)) {
+          // Filtrar los espacios disponibles
+          const availableSpots = data.availableSpots.filter(spot => spot.status === 'available');
+  
+          console.log('Espacios disponibles:', availableSpots);
+  
+        } else {
+          console.error('Respuesta inesperada: No se encontró "availableSpots"');
         }
       } catch (error) {
-        console.error('Error fetching occupied spots:', error);
+        console.error('Error fetching available spots:', error);
       }
     };
-
-    fetchOccupiedSpots();
+  
+    fetchAvailableSpots();
   }, []);
+  
+  
+  
+  
 
   const getRandomSpot = () => {
     return allSpots[Math.floor(Math.random() * allSpots.length)];
@@ -73,48 +98,63 @@ const ParkingMap = ({ isVip }: { isVip: boolean }) => {
       {id}
     </div>
   );
-
   const reserveParkingSpot = async (spot: string) => {
-    if (!spot) return;
-
+    if (!spot || !selectedDate) {
+      alert("Por favor, selecciona un estacionamiento y una hora.");
+      return;
+    }
+  
+    const fechaReservaUsuario = new Date(selectedDate);
+    const fechaVencimiento = new Date(fechaReservaUsuario.getTime() + 60 * 60 * 1000); // +1 hora
+  
     try {
-      const response = await fetch('/api/Set_Parking', {
+      const response = await fetch('http://localhost:4001/parking/reservas', { 
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify({ Park: spot }),
+        body: JSON.stringify({
+          Park: spot,
+          fechaReserva: fechaReservaUsuario.toISOString(),
+          fechaVencimiento: fechaVencimiento.toISOString(),
+        }),
       });
-
+  
       const data = await response.json();
+  
       if (response.ok) {
         console.log("Estacionamiento reservado:", data.park);
       } else {
         if (data.status === "occupied") {
+          alert("El estacionamiento está ocupado.");
           if (!isVip) {
-            alert("Estacionamiento ocupado");
             const randomSpot = getRandomSpot();
             setSelectedSpot(randomSpot);
             localStorage.setItem('selectedSpot', randomSpot);
-          } else {
-            alert("Estacionamiento ocupado");
+            alert(`Se te ha asignado un nuevo estacionamiento: ${randomSpot}`);
           }
         } else {
           console.error("Error reservando estacionamiento:", data.message);
-          if (!isVip) {
-            const newRandomSpot = getRandomSpot();
-            setSelectedSpot(newRandomSpot);
-            localStorage.setItem('selectedSpot', newRandomSpot);
-          }
+          alert("Hubo un problema al reservar el estacionamiento.");
         }
       }
     } catch (error) {
       console.error("Error al conectar con la API:", error);
+      alert("No se pudo conectar al servidor. Inténtalo nuevamente.");
     }
   };
-
+  
   return (
     <div className='centralReserve'>
+        <div className="datePicker">
+          <label htmlFor="reservationDate">Selecciona la fecha y hora:</label>
+          <input
+            type="datetime-local"
+            id="reservationDate"
+            onChange={(e) => setSelectedDate(e.target.value)}
+        />
+      </div>
       <div className="parking-map">
         <div className="row">
           <div className="parking-lane" id="A">
