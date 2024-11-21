@@ -9,7 +9,7 @@ import { verify } from "jsonwebtoken"
 export async function GET() {
     const galleta = cookies()
     const token = galleta.get("token")?.value
-    const secret = process.env.JWT_Secret
+    const secret = process.env.JWT_SECRET
     const user = verify(token, secret) as {userId : string}
     const id =  user.userId
 
