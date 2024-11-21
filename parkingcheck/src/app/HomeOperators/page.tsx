@@ -1,6 +1,8 @@
 // HomeOperario.tsx
 "use client";
 
+import { Navbar } from '../components/Navbar';
+
 import { NavbarOperario } from '../components/NavBarOperario';
 import ParkingMapOperario from '../components/ParkingMapOperario';
 
