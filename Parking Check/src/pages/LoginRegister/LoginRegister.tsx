@@ -52,10 +52,10 @@ const LoginRegister: React.FC = () => {
   const handleLogin = async () => {
     try {
       const data = await loginUser(email, password);
-      setAuthToken(data.token); // Actualizar el token en el contexto
+      setAuthToken(data.token);
       setToastMessage('Inicio de sesión exitoso');
       setShowToast(true);
-      history.push('/home'); // Redirigir al home
+      history.push('/home');
     } catch (error: any) {
       setToastMessage(error.message || 'Error en el inicio de sesión');
       setShowToast(true);
@@ -110,9 +110,9 @@ const LoginRegister: React.FC = () => {
                   INICIAR SESIÓN
                 </IonButton>
                 <div className="guest-session">
-                  <IonLabel>No tienes cuenta? </IonLabel>
+                  <IonLabel>¿Eres operario? </IonLabel>
                   <IonLabel color="primary" className="guest-link">
-                    <IonRouterLink routerLink='/invited'> Sesión de Invitado</IonRouterLink>
+                    <IonRouterLink routerLink='/operario-login'> Ingresa aquí</IonRouterLink>
                   </IonLabel>
                 </div>
               </div>
@@ -143,9 +143,9 @@ const LoginRegister: React.FC = () => {
                   REGISTRARSE
                 </IonButton>
                 <div className="guest-session">
-                  <IonLabel>No tienes cuenta? </IonLabel>
+                  <IonLabel>¿Eres operario? </IonLabel>
                   <IonLabel color="primary" className="guest-link">
-                    <IonRouterLink routerLink='/invited'> Sesión de Invitado</IonRouterLink>
+                    <IonRouterLink routerLink='/operario-login'> Ingresa aquí</IonRouterLink>
                   </IonLabel>
                 </div>
               </div>

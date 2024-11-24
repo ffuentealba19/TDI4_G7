@@ -21,6 +21,7 @@ import {
 } from '@ionic/react';
 
 import { updatePlan } from '../../services/AuthServices';
+import { Router } from 'react-router';
 
 const PaymentPage: React.FC = () => {
   const [selectedPlan, setSelectedPlan] = useState<string | undefined>();
@@ -71,7 +72,8 @@ const PaymentPage: React.FC = () => {
       setShowErrorAlert(true);
     }
   };
-  
+
+
   return (
     <IonPage>
       <IonHeader>

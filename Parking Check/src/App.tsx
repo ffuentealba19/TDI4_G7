@@ -22,7 +22,7 @@ import { logOut,home, person, homeOutline, alertCircleOutline } from 'ionicons/i
 
 /* Paginas */
 import Tab1 from './pages/Tab1';
-import Tab2 from './pages/Tab2';
+import OperatorLogin from './pages/Operario/loginOperario/Operario';
 import Profile from './pages/profile/profile';
 import LoginRegister from './pages/LoginRegister/LoginRegister';
 import Invited from './pages/invited/invited';
@@ -39,6 +39,7 @@ import CodigoQr from './pages/solicitud/codigoqr';
 import PaymentPage from './pages/Pagos/pagos';
 import ReservasPage from './pages/Reserva/reservas';
 import UpdateParking from './pages/Parking/UpdateParking';
+import HomeOperario from './pages/Operario/HomeOperario/HomeOperario';
 
 
 /* Core CSS required for Ionic components to work properly */
@@ -122,6 +123,9 @@ const App: React.FC = () => (
               <Route exact path="/login">
                 <LoginRegister />
               </Route>
+              <Route exact path="/operario-login">
+                <OperatorLogin />
+              </Route>
               <Route exact path="/invited">
                 <Invited />
               </Route>
@@ -139,11 +143,11 @@ const App: React.FC = () => (
               <PrivateRoute exact path="/tab1">
                 <Tab1 />
               </PrivateRoute>
+              <PrivateRoute exact path="/home-operario">
+                <HomeOperario />
+              </PrivateRoute>
               <PrivateRoute exact path="/solicitud">
                 <Solicitud />
-              </PrivateRoute>
-              <PrivateRoute exact path="/tab2">
-                <Tab2 />
               </PrivateRoute>
               <PrivateRoute exact path="/reserva">
                 <ReservasPage />

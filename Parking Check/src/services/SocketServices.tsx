@@ -4,7 +4,7 @@ import { io, Socket } from 'socket.io-client';
 let socket: Socket;
 
 export const initiateSocketConnection = () => {
-  socket = io('http://localhost:3000', { transports: ['websocket'] });
+  socket = io('http://localhost:4001', { transports: ['websocket'] });
   console.log('Conectado a Socket.io');
 };
 

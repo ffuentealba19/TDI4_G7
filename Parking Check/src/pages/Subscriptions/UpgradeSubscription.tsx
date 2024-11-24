@@ -67,7 +67,7 @@ const UpgradeSubscription: React.FC = () => {
                   <li><del>Servicios Adicionales</del></li>
                   <li>Acceso básico a la plataforma</li>
                 </ul>
-                <IonButton expand="full" color="primary">Seleccionar</IonButton>
+                <IonButton routerLink='/pagos' expand="full" color="primary">Seleccionar</IonButton>
               </IonCardContent>
             </IonCard>
           </SwiperSlide>

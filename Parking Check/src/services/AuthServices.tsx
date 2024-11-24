@@ -2,9 +2,40 @@ import axios from 'axios';
 
 // Crear instancia de axios con configuración básica
 const apiClient = axios.create({
-  baseURL: 'http://localhost:3000', // Cambiar si usas un entorno en producción https://parkingcheck.onrender.com'
+  baseURL: 'http://localhost:4001', // Cambiar si usas un entorno en producción https://parkingcheck.onrender.com'
 });
 
+
+//Operarios
+
+// Función para registrar un nuevo operario
+export const registerOperator = async (operatorData: { OperatorName: string; OperatorEmail: string; OperatorPass: string }) => {
+  try {
+    const response = await apiClient.post('/register-operator', operatorData);
+    return response.data;
+  } catch (error) {
+    console.error('Error al registrar el operario:', error);
+    throw new Error('Error al registrar el operario');
+  }
+};
+
+// Función para iniciar sesión como operario
+export const loginOperator = async (OperatorEmail: string, OperatorPass: string) => {
+  try {
+    const response = await apiClient.post('/auth/login-operator', { OperatorEmail, OperatorPass });
+    if (response.data.token) {
+      localStorage.setItem('operatorToken', response.data.token); // Guardar token para operarios
+    }
+    return response.data;
+  } catch (error) {
+    console.error('Error al iniciar sesión como operario:', error);
+    throw new Error('Error al iniciar sesión como operario');
+  }
+};
+//funcion logout operario
+export const logoutOperator = () => {
+  localStorage.removeItem('operatorToken');
+};
 
 // Función para obtener las reservas del usuario
 export const getReservations = async () => {
