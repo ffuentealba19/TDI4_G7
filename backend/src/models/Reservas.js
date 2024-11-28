@@ -6,11 +6,16 @@ const parkingReservationSchema = new mongoose.Schema({
     required: true
   },
   numero: {
+    type: String, // O cambiar a Number si es apropiado
+    required: true
+  },
+  correo: {
     type: String,
     required: true
   },
   id_usuario: {
-    type: String, // Cambiado a String en lugar de ObjectId
+    type: mongoose.Schema.Types.ObjectId, // Cambiado a ObjectId
+    ref: 'User',
     required: true
   },
   fechaReserva: {
@@ -30,22 +35,13 @@ const parkingReservationSchema = new mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['active', 'inactive', 'expired'], // Enum para los posibles valores de estado
-    default: 'inactive',
+    enum: ['active', 'cancelled', 'completed'], // Valores actualizados
+    default: 'active',
     required: true
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-    immutable: true // Este campo no puede ser modificado
-  },
-  updatedAt: {
-    type: Date,
-    default: Date.now
   }
 }, {
   collection: 'reservas',
-  timestamps: true // Esto añade automáticamente los campos `createdAt` y `updatedAt`
+  timestamps: true // Mantener para que Mongoose agregue `createdAt` y `updatedAt` automáticamente
 });
 
 const ParkingReservation = mongoose.model('ParkingReservation', parkingReservationSchema);

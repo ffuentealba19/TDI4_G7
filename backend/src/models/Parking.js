@@ -9,10 +9,11 @@ const parkingSchema = new mongoose.Schema({
     required: true 
   },
   occupiedBy: { 
-    type: String, 
-    default: null // Puede ser el ID de usuario o un string 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User', 
+    default: null 
   }
-}, { collection: 'Estacionamientos' }); // Especifica el nombre de la colección
+}, { collection: 'Estacionamientos' });
 
 const Parking = mongoose.model('Parking', parkingSchema);
 module.exports = Parking;

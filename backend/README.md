@@ -1,6 +1,3 @@
-# TDI4
-Proyecto general Taller de Integración IV
-
 API Endpoints Documentation
 
 # Autenticación y Registro de Operarios (Todos las URL de acá son tipo `auth/login`)

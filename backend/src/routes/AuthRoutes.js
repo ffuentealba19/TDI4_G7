@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const Parking = require('../models/Parking');
+const Operario = require('../models/Operarios');
 const jwt = require('jsonwebtoken');
 const middleware = require('../middleware/AuthMiddleware');
 const multer = require('multer'); // Para manejar archivos
@@ -9,6 +10,159 @@ const { v2: cloudinary } = require('cloudinary'); // Cloudinary
 const bcrypt = require('bcrypt');
   
 module.exports = (io) => {
+
+
+  // Ruta para registrar un nuevo operario
+  router.post('/register-operator', async (req, res) => {
+    const { OperatorName, OperatorEmail, OperatorPass } = req.body;
+    if (!OperatorName || !OperatorEmail || !OperatorPass) {
+      return res.status(400).json({ message: 'Faltan campos' });
+    }
+    try {
+      const existingOperator = await Operario.findOne({ OperatorEmail });
+      if (existingOperator) {
+        return res.status(400).json({ message: 'Operario ya registrado' });
+      }
+      const operario = new Operario({ OperatorName, OperatorEmail, OperatorPass });
+      await operario.save();
+      res.status(201).json({ message: 'Operario registrado exitosamente' });
+    } catch (error) {
+      console.error('Error al registrar operador:', error);
+      res.status(500).json({ message: 'Error al registrar operador' });
+    }
+  });
+
+  // Ruta para logear un nuevo operador
+  router.post('/login-operator', async (req, res) => {
+    const { OperatorEmail, OperatorPass } = req.body;
+  
+    // Validar que se hayan ingresado todos los campos requeridos
+    if (!OperatorEmail || !OperatorPass) {
+      return res.status(400).json({ message: 'Faltan campos' });
+    }
+  
+    try {
+      // Buscar al operador por correo electrónico
+      const operario = await Operario.findOne({ OperatorEmail });
+      if (!operario) {
+        return res.status(400).json({ message: 'Correo no registrado' });
+      }
+  
+      // Verificar la contraseña usando bcrypt
+      const isCorrect = await bcrypt.compare(OperatorPass, operario.OperatorPass);
+      if (!isCorrect) {
+        return res.status(400).json({ message: 'Contraseña incorrecta' });
+      }
+  
+      // Crear el token JWT con un tiempo de expiración de 8 horas
+      const token = jwt.sign(
+        { operarioId: operario._id, email: operario.OperatorEmail, role: operario.role },
+        process.env.JWT_SECRET || 'default_secret',
+        { expiresIn: '8h' }
+      );
+      console.log(token)
+  
+      // Enviar el token y un mensaje de éxito
+      res.status(200).json({
+        message: 'Inicio de sesión exitoso',
+        token,
+        redirectUrl: '/HomeOperators',
+      });
+    } catch (error) {
+      console.error("Error en el login de operador:", error);
+      res.status(500).json({ message: 'Error al iniciar sesión' });
+    }
+  });
+
+
+
+  // Ruta para eliminar la cuenta del usuario autenticado
+  router.delete('/delete-account', middleware, async (req, res) => {
+    const userId = req.user.userId; // Obtenemos el ID del usuario autenticado a través del middleware
+    const { UserPass } = req.body; // La contraseña actual se envía en el body para validación
+
+    try {
+      // Buscar al usuario por ID
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ error: 'Usuario no encontrado' });
+      }
+
+      // Verificar la contraseña actual del usuario
+      const isMatch = await bcrypt.compare(UserPass, user.UserPass);
+      if (!isMatch) {
+        return res.status(401).json({ error: 'La contraseña actual es incorrecta' });
+      }
+
+      // Eliminar la cuenta del usuario
+      await User.deleteOne({ _id: userId });
+
+      res.status(200).json({ message: 'Cuenta eliminada correctamente' });
+    } catch (error) {
+      console.error('Error al eliminar la cuenta:', error);
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  });
+
+  // Ruta para cambiar la contraseña del usuario autenticado
+  router.put('/change-password', middleware, async (req, res) => {
+    const userId = req.user.userId; // Obtener el ID del usuario autenticado
+    const { NewPass } = req.body; // Obtener la nueva contraseña del body
+
+    // Verificar que se haya proporcionado una nueva contraseña
+    if (!NewPass) {
+      return res.status(400).json({ error: 'La nueva contraseña es requerida' });
+    }
+
+    try {
+      // Buscar al usuario por ID
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ error: 'Usuario no encontrado' });
+      }
+
+      // Hashear la nueva contraseña antes de guardarla
+      const hashedPassword = await bcrypt.hash(NewPass, 10);
+      user.UserPass = hashedPassword; // Actualizar la contraseña en el usuario
+      await user.save();
+
+      res.status(200).json({ message: 'Contraseña actualizada correctamente' });
+    } catch (error) {
+      console.error('Error al actualizar la contraseña:', error);
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  });
+
+
+  // Ruta para cambiar el email del usuario autenticado
+  router.put('/change-email', middleware, async (req, res) => {
+    const userId = req.user.userId; // El middleware extrae el userId desde el token
+    const { NewEmail, UserPass } = req.body; // Obtener el nuevo email y contraseña del body
+
+    try {
+      // Buscar al usuario por ID
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ error: 'Usuario no encontrado' });
+      }
+
+      // Verificar la contraseña actual utilizando bcrypt
+      const isPasswordValid = await bcrypt.compare(UserPass, user.UserPass);
+      if (!isPasswordValid) {
+        return res.status(401).json({ error: 'Contraseña incorrecta' });
+      }
+
+      // Actualizar el email del usuario
+      user.UserEmail = NewEmail;
+      await user.save();
+
+      res.status(200).json({ message: 'Email actualizado con éxito' });
+    } catch (error) {
+      console.error('Error en la actualización del email:', error);
+      res.status(500).json({ error: 'Error al actualizar el email' });
+    }
+  });
+
 
    // Ruta para obtener el número de espacios disponibles en tiempo real
    router.get('/available-spots', async (req, res) => {
