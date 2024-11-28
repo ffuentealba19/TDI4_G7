@@ -111,8 +111,8 @@ const Home: React.FC = () => {
             <IonCardTitle>Campus Norte</IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
-            Disponible: {availableSpots}/150
-            <IonProgressBar value={availableSpots / 150} color="success" className="availability-bar" />
+            Disponible: {availableSpots}/198
+            <IonProgressBar value={availableSpots / 198} color="success" className="availability-bar" />
           </IonCardContent>
         </IonCard>
 
