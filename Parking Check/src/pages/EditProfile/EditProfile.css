@@ -1,0 +1,118 @@
+/* Estilos generales */
+.ion-padding {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f0f4f8;
+}
+
+/* Encabezado del perfil */
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.profile-avatar {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.profile-avatar:hover {
+  transform: scale(1.05);
+}
+
+.profile-avatar img:hover {
+  opacity: 0.8;
+}
+
+/* Botón de cambiar foto */
+.profile-header ion-button {
+  margin-top: 15px;
+  --border-radius: 8px;
+  --background: #4a90e2;
+  color: #fff;
+  font-weight: bold;
+  padding: 10px 20px;
+  box-shadow: 0 4px 10px rgba(74, 144, 226, 0.4);
+}
+
+.profile-header ion-button:hover {
+  --background: #3a78c2;
+}
+
+/* Campos de formulario */
+ion-item {
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 15px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  padding: 10px 15px;
+}
+
+ion-label {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #4a4a4a;
+}
+
+ion-input {
+  --padding-start: 10px;
+}
+
+ion-input,
+ion-textarea {
+  --background: transparent;
+  font-size: 1.1rem;
+}
+
+/* Botón de guardar */
+ion-button.save-button {
+  width: 100%;
+  max-width: 400px;
+  height: 50px;
+  --border-radius: 8px;
+  --background: #34c759;
+  font-size: 1.2rem;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  box-shadow: 0 6px 15px rgba(52, 199, 89, 0.4);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+  margin-top: 20px;
+}
+
+ion-button.save-button:hover {
+  --background: #28a745;
+}
+
+ion-button.save-button:active {
+  box-shadow: 0 4px 10px rgba(52, 199, 89, 0.3);
+}
+
+/* Estilos para hacer la página responsive */
+@media (max-width: 600px) {
+  ion-item {
+    max-width: 100%;
+  }
+
+  ion-button.save-button {
+    max-width: 100%;
+  }
+}

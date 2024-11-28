@@ -1,0 +1,18 @@
+/* Estilos personalizados para la página de reservas */
+
+.reserva-card {
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    padding: 20px;
+    margin: 20px 0;
+  }
+  
+  .ion-text-center {
+    text-align: center;
+  }
+  
+  .ion-padding {
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+  
