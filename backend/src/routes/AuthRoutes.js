@@ -165,7 +165,7 @@ module.exports = (io) => {
 
 
    // Ruta para obtener el número de espacios disponibles en tiempo real
-   router.get('/available-spots', async (req, res) => {
+    router.get('/available-spots', async (req, res) => {
     try {
       const parkings = await Parking.find(); // Obtener todos los estacionamientos
       const availableSpots = parkings.filter(p => !p.occupiedBy).length; // Filtrar los no ocupados

@@ -42,6 +42,7 @@ const LoginRegister: React.FC = () => {
       setAuthToken(data.token);
       setShowToast(true);
       history.push('/agregar-vehiculo');
+      window.location.reload();
     } catch (error: any) {
       setToastMessage(error.message || 'Error en el registro');
       setShowToast(true);
@@ -56,6 +57,7 @@ const LoginRegister: React.FC = () => {
       setToastMessage('Inicio de sesión exitoso');
       setShowToast(true);
       history.push('/home');
+      window.location.reload();
     } catch (error: any) {
       setToastMessage(error.message || 'Error en el inicio de sesión');
       setShowToast(true);

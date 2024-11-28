@@ -22,9 +22,11 @@ export const registerOperator = async (operatorData: { OperatorName: string; Ope
 // Función para iniciar sesión como operario
 export const loginOperator = async (OperatorEmail: string, OperatorPass: string) => {
   try {
+    //limpiar token existente
+    localStorage.removeItem('token');
     const response = await apiClient.post('/auth/login-operator', { OperatorEmail, OperatorPass });
     if (response.data.token) {
-      localStorage.setItem('operatorToken', response.data.token); // Guardar token para operarios
+      localStorage.setItem('token', response.data.token); // Guardar token para operarios;
     }
     return response.data;
   } catch (error) {
@@ -34,7 +36,7 @@ export const loginOperator = async (OperatorEmail: string, OperatorPass: string)
 };
 //funcion logout operario
 export const logoutOperator = () => {
-  localStorage.removeItem('operatorToken');
+  localStorage.removeItem('token');
 };
 
 // Función para obtener las reservas del usuario
@@ -288,6 +290,7 @@ export const isAuthenticated = () => {
 
 // Obtener el token del localStorage
 export const getToken = () => {
+  console.log ('Token de getToken',localStorage.getItem('token'));
   return localStorage.getItem('token');
 };
 

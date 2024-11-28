@@ -18,9 +18,7 @@ import {
   IonToast,
   IonSegment,
   IonSegmentButton,
-  IonModal,
-  IonProgressBar,
-  IonCardContent,
+  IonModal
 } from "@ionic/react";
 import { getAvailableSpots, getParkings,logoutOperator } from "../../../services/AuthServices";
 import { useHistory } from "react-router";
@@ -107,7 +105,8 @@ const history = useHistory();
   const logout = async () => {
     try {
       await logoutOperator();
-      history.push('/operario-login');
+      history.push('/login');
+      window.location.reload();
     } catch (error: any) {
       setToastMessage(error.message || 'Error al cerrar sesión');
       setShowToast(true);

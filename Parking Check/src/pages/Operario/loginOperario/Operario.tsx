@@ -30,6 +30,7 @@ const OperatorLogin: React.FC = () => {
       setToastMessage('Inicio de sesión exitoso');
       setShowToast(true);
       history.push('/home-operario'); // Redirige al dashboard de operarios
+      window.location.reload();
     } catch (error: any) {
       setToastMessage(error.message || 'Error al iniciar sesión como operario');
       setShowToast(true);

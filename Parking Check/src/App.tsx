@@ -63,6 +63,12 @@ import { AuthProvider } from './context/authcontext'; // Importar el AuthProvide
 import { logout } from './services/AuthServices'
 setupIonicReact();
 
+const isAuthenticated = (): boolean => {
+  const token = getToken();
+  return !!token;
+}
+
+
 const PrivateRoute: React.FC<any> = ({ children, ...rest }) => {
   return (
     <Route
@@ -87,39 +93,101 @@ const App: React.FC = () => (
   <AuthProvider>
     <IonApp>
       <IonReactRouter>
-          <IonMenu side="end" contentId="main">
-            <IonHeader>
-              <IonToolbar color="primary">
-                <IonTitle>Menu</IonTitle>
-              </IonToolbar>
-            </IonHeader>
-            <IonContent>
-              <IonList>
-                <IonItem routerLink="/tab1">
-                  <IonIcon icon={homeOutline} slot="start" />
-                  <IonLabel>Asignación Estacionamiento</IonLabel>
-                </IonItem>
-                <IonItem routerLink="/profile">
-                  <IonIcon icon={person} slot="start" />
-                  <IonLabel>Mi Perfil</IonLabel>
-                </IonItem>
-                <IonItem routerLink="/report-problem">
-                  <IonIcon icon={alertCircleOutline} slot="start" />
-                  <IonLabel>Reportar un problema</IonLabel>
-                </IonItem>
-              </IonList>
-              {/* Botón de cerrar sesión al final*/}
-              <IonItem button onClick={logout}>
-                <IonIcon icon={logOut} slot="start" />
-                <IonLabel>Cerrar sesión</IonLabel>
+        <IonMenu side="end" contentId="main">
+          <IonHeader>
+            <IonToolbar color="primary">
+              <IonTitle>Menu</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+          <IonContent>
+            <IonList>
+              <IonItem routerLink="/tab1">
+                <IonIcon icon={homeOutline} slot="start" />
+                <IonLabel>Asignación Estacionamiento</IonLabel>
               </IonItem>
-            </IonContent>
-          </IonMenu>
+              <IonItem routerLink="/profile">
+                <IonIcon icon={person} slot="start" />
+                <IonLabel>Mi Perfil</IonLabel>
+              </IonItem>
+              <IonItem routerLink="/report-problem">
+                <IonIcon icon={alertCircleOutline} slot="start" />
+                <IonLabel>Reportar un problema</IonLabel>
+              </IonItem>
+            </IonList>
+            <IonItem button onClick={logout}>
+              <IonIcon icon={logOut} slot="start" />
+              <IonLabel>Cerrar sesión</IonLabel>
+            </IonItem>
+          </IonContent>
+        </IonMenu>
 
-        {/* Rutas y tabs */}
+        {/* Rutas principales */}
         <IonRouterOutlet id="main">
-          <IonTabs>
+          {isAuthenticated() ? (
+            <IonTabs>
+              {/* Rutas privadas */}
+              <IonRouterOutlet>
+                <PrivateRoute exact path="/edit-profile">
+                  <EditProfile />
+                </PrivateRoute>
+                <PrivateRoute exact path="/upgrade-subscription">
+                  <UpgradeSubscription />
+                </PrivateRoute>
+                <PrivateRoute exact path="/tab1">
+                  <Tab1 />
+                </PrivateRoute>
+                <PrivateRoute exact path="/home-operario">
+                  <HomeOperario />
+                </PrivateRoute>
+                <PrivateRoute exact path="/solicitud">
+                  <Solicitud />
+                </PrivateRoute>
+                <PrivateRoute exact path="/reserva">
+                  <ReservasPage />
+                </PrivateRoute>
+                <PrivateRoute path="/profile">
+                  <Profile />
+                </PrivateRoute>
+                <PrivateRoute path="/update-parking">
+                  <UpdateParking />
+                </PrivateRoute>
+                <PrivateRoute path="/codigoqr">
+                  <CodigoQr />
+                </PrivateRoute>
+                <PrivateRoute path="/pagos">
+                  <PaymentPage />
+                </PrivateRoute>
+                <PrivateRoute path="/agregarvehiculo">
+                  <AgregarVehiculo />
+                </PrivateRoute>
+                <PrivateRoute path="/home">
+                  <Home />
+                </PrivateRoute>
+                <PrivateRoute path="/report-problem">
+                  <ReportProblem />
+                </PrivateRoute>
+                <PrivateRoute path="/autos">
+                  <Vehiculos />
+                </PrivateRoute>
+                <PrivateRoute path="/editarvehiculo/:id">
+                  <EditarVehiculo />
+                </PrivateRoute>
+              </IonRouterOutlet>
+              {/* Barra de pestañas */}
+              <IonTabBar slot="bottom">
+                <IonTabButton tab="home" href="/home">
+                  <IonIcon aria-hidden="true" icon={home} />
+                  <IonLabel>Home</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="Profile" href="/profile">
+                  <IonIcon aria-hidden="true" icon={person} />
+                  <IonLabel>Perfil</IonLabel>
+                </IonTabButton>
+              </IonTabBar>
+            </IonTabs>
+          ) : (
             <IonRouterOutlet>
+              {/* Rutas públicas */}
               <Route exact path="/login">
                 <LoginRegister />
               </Route>
@@ -132,68 +200,9 @@ const App: React.FC = () => (
               <Route exact path="/ForgotPassword">
                 <ForgotPassword />
               </Route>
-              <Route exact path="/" render={()=> <Redirect to="/login" />}></Route>
-              {/* Rutas privadas */}
-              <PrivateRoute exact path="/edit-profile">
-                <EditProfile />
-              </PrivateRoute>
-              <PrivateRoute exact path="/upgrade-subscription">
-                <UpgradeSubscription />
-              </PrivateRoute>
-              <PrivateRoute exact path="/tab1">
-                <Tab1 />
-              </PrivateRoute>
-              <PrivateRoute exact path="/home-operario">
-                <HomeOperario />
-              </PrivateRoute>
-              <PrivateRoute exact path="/solicitud">
-                <Solicitud />
-              </PrivateRoute>
-              <PrivateRoute exact path="/reserva">
-                <ReservasPage />
-              </PrivateRoute>
-              <PrivateRoute path="/profile">
-                <Profile />
-              </PrivateRoute>
-              <PrivateRoute path="/update-parking">
-                <UpdateParking />
-              </PrivateRoute>
-              <PrivateRoute path="/codigoqr">
-                <CodigoQr />
-              </PrivateRoute>
-              <PrivateRoute path="/pagos">
-                <PaymentPage />
-              </PrivateRoute>
-              <PrivateRoute path="/agregarvehiculo">
-                <AgregarVehiculo />
-              </PrivateRoute>
-              <PrivateRoute path="/home">
-                <Home />
-              </PrivateRoute>
-              <PrivateRoute path="/report-problem">
-                <ReportProblem />
-              </PrivateRoute>
-              <PrivateRoute path="/autos">
-                <Vehiculos />
-              </PrivateRoute>
-              <PrivateRoute>
-                <AgregarVehiculo />
-              </PrivateRoute>
-              <PrivateRoute path="/editarvehiculo/:id">
-                <EditarVehiculo />
-              </PrivateRoute>
+              <Route exact path="/" render={() => <Redirect to="/login" />} />
             </IonRouterOutlet>
-            <IonTabBar slot="bottom">
-              <IonTabButton tab="home" href="/home">
-                <IonIcon aria-hidden="true" icon={home} />
-                <IonLabel>Home</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="Profile" href="/profile">
-                <IonIcon aria-hidden="true" icon={person} />
-                <IonLabel>Perfil</IonLabel>
-              </IonTabButton>
-            </IonTabBar>
-          </IonTabs>
+          )}
         </IonRouterOutlet>
       </IonReactRouter>
     </IonApp>
