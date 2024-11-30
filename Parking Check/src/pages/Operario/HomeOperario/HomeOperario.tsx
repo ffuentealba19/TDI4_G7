@@ -146,7 +146,7 @@ const history = useHistory();
 
         <IonCard color={'primary'}>
             <IonSegment
-            onIonChange={(e) => setFilter(e.detail.value!)}
+            onIonChange={(e) => setFilter(e.detail.value! as string)}
             value={filter}
             >
             <IonSegmentButton value="all">Todos</IonSegmentButton>
