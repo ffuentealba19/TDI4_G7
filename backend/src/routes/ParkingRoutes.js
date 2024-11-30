@@ -275,5 +275,33 @@ module.exports = (io, transporter) => {
     }
   });
 
+  router.post('/free-parking', async (req, res) => {
+    const { userId } = req.body; // ID del usuario que libera el espacio
+  
+    if (!userId) {
+      return res.status(400).json({ error: 'El ID del usuario es requerido' });
+    }
+  
+    try {
+      // Buscar el espacio ocupado por este usuario
+      const occupiedSpot = await Parking.findOne({ occupiedBy: userId });
+  
+      if (!occupiedSpot) {
+        return res.status(404).json({ error: 'No se encontró un espacio ocupado por este usuario' });
+      }
+  
+      // Liberar el espacio
+      occupiedSpot.occupiedBy = null;
+      occupiedSpot.status = 'enabled';
+      await occupiedSpot.save();
+  
+      // Respuesta simplificada
+      return res.status(200).json({ message: 'Espacio liberado exitosamente' });
+    } catch (error) {
+      console.error('Error al liberar el espacio de estacionamiento:', error);
+      return res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  });
+  
   return router;
 };
