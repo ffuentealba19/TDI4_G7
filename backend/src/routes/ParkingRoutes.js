@@ -238,5 +238,42 @@ module.exports = (io, transporter) => {
   }
   });
 
+  router.post('/assign-parking', async (req, res) => {
+    const { userId, userName } = req.body; // Información extraída del código QR
+  
+    if (!userId || !userName) {
+      return res.status(400).json({ error: 'El ID y el nombre del usuario son requeridos' });
+    }
+  
+    try {
+      // Buscar un espacio disponible
+      const availableSpot = await Parking.findOne({
+        status: 'enabled', 
+        occupiedBy: null,
+      });
+  
+      if (!availableSpot) {
+        return res.status(404).json({ error: 'No hay espacios de estacionamiento disponibles' });
+      }
+  
+      // Asignar el espacio al usuario
+      availableSpot.occupiedBy = userId; // Asignar el ID del usuario al espacio
+      availableSpot.status = 'disabled'; // Cambiar el estado del espacio a "ocupado"
+      await availableSpot.save(); // Guardar los cambios
+  
+      return res.status(200).json({
+        message: 'Espacio asignado exitosamente',
+        parkingSpot: {
+          id: availableSpot._id,
+          number: availableSpot.number,
+          section: availableSpot.section,
+        },
+      });
+    } catch (error) {
+      console.error('Error al asignar el espacio de estacionamiento:', error);
+      return res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  });
+
   return router;
 };
