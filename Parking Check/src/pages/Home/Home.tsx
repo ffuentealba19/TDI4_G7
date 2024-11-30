@@ -20,6 +20,7 @@ import {
   IonIcon,
   IonAvatar
 } from '@ionic/react';
+import { useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
 import { menu, moon } from 'ionicons/icons'; // Icono para el botón de modo oscuro
 import './Home.css';
@@ -31,7 +32,7 @@ const Home: React.FC = () => {
   const [userData, setUserData] = useState<any>(null);
   const [profileImage, setProfileImage] = useState('/assets/profile-placeholder.png');
   const [availableSpots, setAvailableSpots] = useState(90); // Estado inicial de espacios disponibles
-
+  const history = useHistory();
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
     document.body.classList.toggle('dark', !darkMode); // Activamos el modo oscuro
@@ -51,7 +52,8 @@ const Home: React.FC = () => {
     // Obtener los espacios disponibles y conectarse a Socket.io
     useEffect(() => {
       fetchData();
-  
+      
+      
       // Obtener los espacios disponibles inicialmente desde la API
       const fetchAvailableSpots = async () => {
         try {
@@ -76,6 +78,8 @@ const Home: React.FC = () => {
       return () => {
         disconnectSocket();
       };
+
+      
     }, []);
 
   return (

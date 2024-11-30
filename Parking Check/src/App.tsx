@@ -61,12 +61,14 @@ import './theme/variables.css';
 import { getToken } from './services/AuthServices';
 import { AuthProvider } from './context/authcontext'; // Importar el AuthProvider
 import { logout } from './services/AuthServices'
+
 setupIonicReact();
 
 const isAuthenticated = (): boolean => {
   const token = getToken();
   return !!token;
 }
+
 
 
 const PrivateRoute: React.FC<any> = ({ children, ...rest }) => {
@@ -114,7 +116,7 @@ const App: React.FC = () => (
                 <IonLabel>Reportar un problema</IonLabel>
               </IonItem>
             </IonList>
-            <IonItem button onClick={logout}>
+            <IonItem button onClick={logout} routerLink='/login'>
               <IonIcon icon={logOut} slot="start" />
               <IonLabel>Cerrar sesión</IonLabel>
             </IonItem>

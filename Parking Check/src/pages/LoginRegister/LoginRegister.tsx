@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import {
   IonContent,
   IonHeader,
@@ -21,8 +21,11 @@ import { useHistory } from 'react-router-dom';
 import { registerUser, loginUser } from '../../services/AuthServices';
 import { AuthContext } from '../../context/authcontext'; // Importar el contexto
 import './login.css';
+import { reload } from 'ionicons/icons';
 
 const LoginRegister: React.FC = () => {
+   // Dependencia vacía para que se ejecute solo una vez al montar el componente
+
   const [selectedSegment, setSelectedSegment] = useState<'login' | 'register'>('login');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');

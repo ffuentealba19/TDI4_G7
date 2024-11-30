@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { push, reload } from 'ionicons/icons';
+import { Redirect, Router } from 'react-router';
 
 // Crear instancia de axios con configuración básica
 const apiClient = axios.create({
@@ -296,5 +298,10 @@ export const getToken = () => {
 
 // Función para cerrar sesión
 export const logout = () => {
-  localStorage.removeItem('token');
+  localStorage.removeItem('token'); // Eliminar token del localStorage
+  window.location.href = '/login'; // Redirigir a la página de inicio de sesión
+
+// Función para recargar la página
+
+
 };
