@@ -5,31 +5,34 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
-  IonAvatar,
   IonText,
   IonButton,
   IonCard,
   IonCardHeader,
-  IonCardTitle,
   IonCardContent,
 } from '@ionic/react';
 import QRCode from 'qrcode';
-import { getUserProfile } from '../../services/AuthServices';
-
+import { getUserProfile, solicitarEspacio, liberarEspacio } from '../../services/AuthServices'; // Importa las funciones necesarias
 
 const CodigoQr: React.FC = () => {
   const [userData, setUserData] = useState<any>(null);
   const [username, setUsername] = useState<string>('');
   const [qrCode, setQrCode] = useState<string>('');
+  const [hasParking, setHasParking] = useState<boolean>(false); // Nuevo estado para verificar si tiene espacio
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const profileResponse = await getUserProfile();
         setUsername(profileResponse.UserName);
         setUserData(profileResponse);
+
+        // Verificar si el usuario tiene un espacio asignado
+        setHasParking(profileResponse.parkingAssigned);  // Asume que la respuesta tiene este campo
+
         const qrData = JSON.stringify({
           id: profileResponse._id,
-          name: profileResponse.UserName
+          name: profileResponse.UserName,
         });
         QRCode.toDataURL(qrData, (err, url) => {
           if (err) {
@@ -45,6 +48,25 @@ const CodigoQr: React.FC = () => {
     fetchData();
   }, []);
 
+  // Función para manejar el click del botón
+  const handleButtonClick = async () => {
+    try {
+      if (hasParking) {
+        // Si tiene espacio, liberar el espacio
+        await liberarEspacio(userData._id);
+        setHasParking(false); // Actualiza el estado para reflejar que el espacio fue liberado
+        alert('Espacio liberado exitosamente');
+      } else {
+        // Si no tiene espacio, solicitar uno
+        await solicitarEspacio(userData._id, username);
+        setHasParking(true); // Actualiza el estado para reflejar que el espacio fue asignado
+        alert('Espacio asignado exitosamente');
+      }
+    } catch (error) {
+      console.error('Error al manejar el espacio de estacionamiento:', error);
+      alert('Hubo un error al procesar la solicitud.');
+    }
+  };
 
   return (
     <IonPage>
@@ -59,13 +81,22 @@ const CodigoQr: React.FC = () => {
           <IonCardHeader>
             <IonText className='ion-text-center'>
               <h1 className="page-title">¡Hola, {username}!</h1>
-              <p>Este es tu codigo QR</p>
+              <p>Este es tu código QR</p>
             </IonText>
           </IonCardHeader>
           <IonCardContent>
-          <IonText className="ion-text-center">
-              <img width='350px' src={qrCode}/>
+            <IonText className="ion-text-center">
+              <img width='350px' src={qrCode} />
             </IonText>
+
+            {/* Botón para solicitar o liberar el espacio */}
+            <IonButton 
+              expand="block" 
+              color="primary" 
+              onClick={handleButtonClick}>
+              {hasParking ? 'Liberar espacio' : 'Solicitar espacio'}
+            </IonButton>
+
             <IonButton expand="block" color="primary" routerLink="/solicitud">
               Regresar
             </IonButton>

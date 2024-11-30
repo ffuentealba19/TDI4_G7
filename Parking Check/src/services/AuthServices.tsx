@@ -301,7 +301,33 @@ export const logout = () => {
   localStorage.removeItem('token'); // Eliminar token del localStorage
   window.location.href = '/login'; // Redirigir a la página de inicio de sesión
 
-// Función para recargar la página
+};
 
+export const solicitarEspacio = async (userId: string, userName: string) => {
+  try {
+    const response = await apiClient.post(`/parking/assign-parking/${userId}/${userName}`);
+    
+    // Aquí procesas la respuesta, puedes guardar el parking info si lo necesitas
+    console.log('Espacio asignado:', response.data);
+    return response.data;  // Devuelve la respuesta para que pueda ser utilizada en otro lado si es necesario
 
+  } catch (error) {
+    console.error('Error al solicitar el espacio de estacionamiento:', error);
+    throw new Error('Error al solicitar el espacio de estacionamiento');
+  }
+};
+
+// Función para liberar un espacio de estacionamiento
+export const liberarEspacio = async (userId: string) => {
+  try {
+    const response = await apiClient.post(`/parking/free-parking/${userId}`);
+    
+    // Aquí procesas la respuesta, puedes mostrar un mensaje o realizar acciones adicionales
+    console.log('Espacio liberado:', response.data);
+    return response.data;  // Devuelve la respuesta para que pueda ser utilizada en otro lado si es necesario
+
+  } catch (error) {
+    console.error('Error al liberar el espacio de estacionamiento:', error);
+    throw new Error('Error al liberar el espacio de estacionamiento');
+  }
 };

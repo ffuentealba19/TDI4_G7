@@ -237,19 +237,18 @@ module.exports = (io, transporter) => {
     res.status(500).json({ error: 'Error al actualizar el estado del estacionamiento' });
   }
   });
-
-  router.post('/assign-parking', async (req, res) => {
-    const { userId, userName } = req.body; // Información extraída del código QR
+  
+  router.post('/assign-parking/:userId/:userName', async (req, res) => {
+    const { userId, userName } = req.params;  // Información extraída de la URL
   
     if (!userId || !userName) {
       return res.status(400).json({ error: 'El ID y el nombre del usuario son requeridos' });
     }
   
     try {
-      // Buscar un espacio disponible
+      // Buscar un espacio disponible (solo por el campo status: 'enabled')
       const availableSpot = await Parking.findOne({
-        status: 'enabled', 
-        occupiedBy: null,
+        status: 'enabled',  // Solo el status 'enabled', sin considerar 'occupiedBy'
       });
   
       if (!availableSpot) {
@@ -257,9 +256,9 @@ module.exports = (io, transporter) => {
       }
   
       // Asignar el espacio al usuario
-      availableSpot.occupiedBy = userId; // Asignar el ID del usuario al espacio
-      availableSpot.status = 'disabled'; // Cambiar el estado del espacio a "ocupado"
-      await availableSpot.save(); // Guardar los cambios
+      availableSpot.occupiedBy = userId;  // Asignar el ID del usuario
+      availableSpot.status = 'disabled';  // Cambiar el estado del espacio a 'ocupado'
+      await availableSpot.save();  // Guardar los cambios en la base de datos
   
       return res.status(200).json({
         message: 'Espacio asignado exitosamente',
@@ -274,9 +273,10 @@ module.exports = (io, transporter) => {
       return res.status(500).json({ error: 'Error interno del servidor' });
     }
   });
-
-  router.post('/free-parking', async (req, res) => {
-    const { userId } = req.body; // ID del usuario que libera el espacio
+  
+  // Ruta para liberar un espacio de estacionamiento (con userId en la URL)
+  router.post('/free-parking/:userId', async (req, res) => {
+    const { userId } = req.params;  // ID del usuario extraído de la URL
   
     if (!userId) {
       return res.status(400).json({ error: 'El ID del usuario es requerido' });
@@ -291,17 +291,16 @@ module.exports = (io, transporter) => {
       }
   
       // Liberar el espacio
-      occupiedSpot.occupiedBy = null;
-      occupiedSpot.status = 'enabled';
-      await occupiedSpot.save();
+      occupiedSpot.occupiedBy = null;  // Eliminar al usuario del espacio
+      occupiedSpot.status = 'enabled';  // Cambiar el estado del espacio a 'habilitado' (libre)
+      await occupiedSpot.save();  // Guardar los cambios en la base de datos
   
-      // Respuesta simplificada
       return res.status(200).json({ message: 'Espacio liberado exitosamente' });
     } catch (error) {
       console.error('Error al liberar el espacio de estacionamiento:', error);
       return res.status(500).json({ error: 'Error interno del servidor' });
     }
   });
-  
+
   return router;
 };
