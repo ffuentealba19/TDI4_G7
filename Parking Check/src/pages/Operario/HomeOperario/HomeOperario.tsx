@@ -19,6 +19,7 @@ import {
 } from "@ionic/react";
 import { useHistory } from "react-router"; // Importamos useHistory
 import { getAvailableSpots, getParkings, logoutOperator } from "../../../services/AuthServices"; // Asumimos que tienes estas funciones
+import './qroperario.css';
 
 const HomeOperario: React.FC = () => {
   const history = useHistory();
