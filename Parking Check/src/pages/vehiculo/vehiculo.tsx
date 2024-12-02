@@ -61,7 +61,7 @@ const Vehiculos: React.FC = () => {
             <IonCardTitle>Lista de Vehículos</IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
-            <IonButton expand="block" routerLink='/agregarvehiculos'>
+            <IonButton expand="block" routerLink='/agregarvehiculo'>
               Agregar Vehículo
             </IonButton>
             <IonList>
