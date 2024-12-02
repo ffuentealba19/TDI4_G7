@@ -1,53 +1,131 @@
+/* Contenedor general para la lista de espacios */
 .parking-spots {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 10px 0;
-  }
-  
-  .spot {
-    width: 50px;
-    height: 50px;
-    border: 2px solid #007bff; /* Color del borde */
-    border-radius: 5px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 5px;
-    font-size: 16px;
-    transition: background-color 0.3s;
-  }
-  
-  /* Colores para cada sección */
-  .section-4 .spot {
-    background-color: #ffdddd; /* Color para Sección 4 */
-  }
-  
-  .section-3 .spot {
-    background-color: #ddffdd; /* Color para Sección 3 */
-  }
-  
-  .section-2 .spot {
-    background-color: #ddddff; /* Color para Sección 2 */
-  }
-  
-  .section-1 .spot {
-    background-color: #ffffdd; /* Color para Sección 1 */
-  }
-  
-  /* Estilo para los estacionamientos disponibles */
-  .spot.available {
-    background-color: green; /* Verde para disponibles */
-    color: white; /* Color del texto */
-  }
-  
-  .spot.occupied {
-    background-color: red; /* Rojo para ocupados */
-    color: white; /* Color del texto */
-  }
-  
-  
-  .spot:hover {
-    background-color: #e0e7ff; /* Color de fondo al pasar el mouse */
-  }
-  
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+.spot {
+  width: 50px;
+  height: 50px;
+  border: 2px solid #007bff; /* Color del borde */
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 5px;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Colores para cada sección */
+.section-4 .spot {
+  background-color: #ffdddd; /* Color para Sección 4 */
+}
+
+.section-3 .spot {
+  background-color: #ddffdd; /* Color para Sección 3 */
+}
+
+.section-2 .spot {
+  background-color: #ddddff; /* Color para Sección 2 */
+}
+
+.section-1 .spot {
+  background-color: #ffffdd; /* Color para Sección 1 */
+}
+
+/* Estilo para los estacionamientos disponibles */
+.spot.available {
+  background-color: green; /* Verde para disponibles */
+  color: white; /* Color del texto */
+}
+
+.spot.occupied {
+  background-color: red; /* Rojo para ocupados */
+  color: white; /* Color del texto */
+}
+
+.spot:hover {
+  background-color: #e0e7ff; /* Color de fondo al pasar el mouse */
+  transform: scale(1.1); /* Pequeño zoom al pasar el mouse */
+}
+
+/* Tarjeta principal del formulario */
+.assignment-card {
+  margin: 15px auto;
+  width: 90%;
+  background-color: #f9f9f9;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  transition: transform 0.2s ease;
+}
+
+.assignment-card:hover {
+  transform: scale(1.02); /* Efecto ligero al pasar el mouse */
+}
+
+/* Estilo de los campos del formulario */
+.assignment-card ion-item {
+  margin-bottom: 15px;
+}
+
+/* Botón de confirmación */
+.confirm-button {
+  display: block;
+  margin: 20px auto;
+  --background: #007bff;
+  --background-hover: #0056b3;
+  --color: white;
+  --border-radius: 5px;
+  width: 80%;
+}
+
+body.dark .confirm-button {
+  --background: #16a085;
+  --background-hover: #1abc9c;
+}
+
+/* Tarjeta de la lista de espacios */
+.spaces-list-card {
+  margin: 15px auto;
+  width: 90%;
+  background-color: #f9f9f9;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+}
+
+body.dark .spaces-list-card {
+  background-color: #34495e;
+  box-shadow: 0 6px 12px rgba(255, 255, 255, 0.1);
+}
+
+body.dark .spaces-list-card ion-label {
+  color: #ecf0f1;
+}
+
+/* Estilo de las etiquetas en las tarjetas */
+.spaces-list-card ion-item {
+  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+}
+
+.spaces-list-card ion-item:last-child {
+  border-bottom: none;
+}
+
+body.dark .parking-spots .spot {
+  border-color: #16a085; /* Borde verde en modo oscuro */
+}
+
+body.dark .spot.available {
+  background-color: #1abc9c; /* Verde para disponibles en modo oscuro */
+}
+
+body.dark .spot.occupied {
+  background-color: #e74c3c; /* Rojo para ocupados en modo oscuro */
+}
+
