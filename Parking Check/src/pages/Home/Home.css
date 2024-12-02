@@ -140,3 +140,53 @@ body.dark .bubble-darkmode {
   transform: scale(1.1);
   transition: transform 0.3s ease;
 }
+
+/* Nuevas modificaciones para notificaciones y horarios recomendados */
+/* Estilo para el botón de notificaciones */
+.notify-button {
+  margin: 20px auto;
+  display: block;
+  --background: #007bff;
+  --background-hover: #0056b3;
+  --color: white;
+  --border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+body.dark .notify-button {
+  --background: #16a085;
+  --background-hover: #1abc9c;
+}
+
+/* Tarjeta de recomendaciones de horario */
+.recommendations-card {
+  margin: 15px auto;
+  width: 90%;
+  background-color: #f9f9f9;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+}
+
+.recommendations-card h2 {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 15px;
+  font-size: 1.5em;
+}
+
+.recommendations-card p {
+  font-size: 1em;
+  color: #555;
+  margin: 5px 0;
+}
+
+body.dark .recommendations-card {
+  background-color: #34495e;
+  box-shadow: 0 6px 12px rgba(255, 255, 255, 0.1);
+}
+
+body.dark .recommendations-card h2,
+body.dark .recommendations-card p {
+  color: #ecf0f1;
+}
