@@ -302,5 +302,21 @@ module.exports = (io, transporter) => {
     }
   });
 
+    // Verificar si un usuario tiene un espacio asignado
+  router.get('/check-parking/:userId', async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const assignedParking = await Parking.findOne({ occupiedBy: userId });
+
+      if (assignedParking) {
+        return res.status(200).json({ hasParking: true, parkingDetails: assignedParking });
+      } else {
+        return res.status(200).json({ hasParking: false });
+      }
+    } catch (error) {
+      console.error('Error al verificar el espacio de estacionamiento:', error);
+      res.status(500).json({ error: 'Error interno del servidor' });
+    }
+  });
   return router;
 };

@@ -12,7 +12,7 @@ import {
   IonCardContent,
 } from '@ionic/react';
 import QRCode from 'qrcode';
-import { getUserProfile, solicitarEspacio, liberarEspacio } from '../../services/AuthServices'; // Importa las funciones necesarias
+import { getUserProfile, solicitarEspacio, liberarEspacio, verificarEspacio } from '../../services/AuthServices'; // Importa la nueva función
 
 const CodigoQr: React.FC = () => {
   const [userData, setUserData] = useState<any>(null);
@@ -27,8 +27,9 @@ const CodigoQr: React.FC = () => {
         setUsername(profileResponse.UserName);
         setUserData(profileResponse);
 
-        // Verificar si el usuario tiene un espacio asignado
-        setHasParking(profileResponse.parkingAssigned);  // Asume que la respuesta tiene este campo
+        // Consultar si el usuario tiene espacio asignado en la base de datos
+        const parkingResponse = await verificarEspacio(profileResponse._id);
+        setHasParking(parkingResponse.hasParking); // Actualiza el estado según la respuesta del backend
 
         const qrData = JSON.stringify({
           id: profileResponse._id,

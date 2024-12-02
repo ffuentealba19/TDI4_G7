@@ -331,3 +331,13 @@ export const liberarEspacio = async (userId: string) => {
     throw new Error('Error al liberar el espacio de estacionamiento');
   }
 };
+
+export const verificarEspacio = async (userId: string) => {
+  try {
+    const response = await apiClient.get(`/parking/check-parking/${userId}`);
+    return response.data; // Devuelve { hasParking: boolean, parkingDetails?: object }
+  } catch (error) {
+    console.error('Error al verificar espacio de estacionamiento:', error);
+    throw error;
+  }
+};
