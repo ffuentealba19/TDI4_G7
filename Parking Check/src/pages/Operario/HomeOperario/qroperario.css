@@ -10,46 +10,7 @@ body {
   padding: 20px;
 }
 
-/* Tarjetas generales */
-ion-card {
-  margin: 15px auto;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
 
-ion-card-header {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 15px;
-  border-radius: 10px 10px 0 0;
-}
-
-ion-card-title {
-  font-size: 1.2em;
-  font-weight: bold;
-  margin: 0;
-}
-
-/* Segmento de filtros */
-ion-segment {
-  margin: 10px;
-  background-color: #e9ecef;
-  border-radius: 10px;
-  padding: 5px;
-}
-
-ion-segment-button {
-  font-size: 1em;
-  font-weight: bold;
-  color: #007bff;
-  transition: background-color 0.3s ease;
-}
-
-ion-segment-button.ion-activated {
-  background-color: #007bff;
-  color: white;
-  border-radius: 8px;
-}
 
 /* Resumen de espacios disponibles */
 .summary-card ion-label {
@@ -73,14 +34,7 @@ ion-segment-button.ion-activated {
   margin: 10px 0;
 }
 
-/* Grilla de espacios */
-ion-grid {
-  margin: 10px auto;
-}
 
-ion-row {
-  justify-content: center;
-}
 
 /* Cuadros de espacios */
 .space-card {
