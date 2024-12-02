@@ -16,24 +16,22 @@ import {
   IonSegmentButton,
   IonRouterLink,
   IonToast,
+  IonText,
 } from '@ionic/react';
 import { useHistory } from 'react-router-dom';
 import { registerUser, loginUser } from '../../services/AuthServices';
 import { AuthContext } from '../../context/authcontext'; // Importar el contexto
 import './login.css';
-import { reload } from 'ionicons/icons';
 
 const LoginRegister: React.FC = () => {
-   // Dependencia vacía para que se ejecute solo una vez al montar el componente
-
   const [selectedSegment, setSelectedSegment] = useState<'login' | 'register'>('login');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
+  const [ipAddress, setIpAddress] = useState(''); // Estado para almacenar la IP
   const history = useHistory();
-  
   const { setAuthToken } = useContext(AuthContext); // Usar el contexto para actualizar el token
 
   // Función para manejar el registro de usuario
@@ -67,6 +65,22 @@ const LoginRegister: React.FC = () => {
     }
   };
 
+  // Función para obtener la IP actual
+  const getIP = async () => {
+    try {
+      const response = await fetch('https://api.ipify.org?format=json');
+      const data = await response.json();
+      setIpAddress(data.ip); // Actualizar el estado con la IP obtenida
+    } catch (error) {
+      console.error('Error al obtener la IP:', error);
+    }
+  };
+
+  // Obtener la IP al montar el componente
+  useEffect(() => {
+    getIP();
+  }, []);
+
   return (
     <IonPage>
       <IonHeader>
@@ -77,9 +91,10 @@ const LoginRegister: React.FC = () => {
       <IonContent fullscreen className="ion-padding login-content">
         <IonCard className="login-card">
           <IonCardHeader>
-            <IonCardTitle className="card-title">Bienvenido</IonCardTitle>
+            <IonCardTitle className="card-title">Bienvenido ANDROID</IonCardTitle>
           </IonCardHeader>
           <IonCardContent>
+            <IonText className="ip-display">Tu IP actual: {ipAddress}</IonText>
             <IonSegment
               value={selectedSegment}
               onIonChange={(e) => setSelectedSegment(e.detail.value as 'login' | 'register')}

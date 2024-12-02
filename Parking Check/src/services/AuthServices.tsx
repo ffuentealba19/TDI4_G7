@@ -4,7 +4,7 @@ import { Redirect, Router } from 'react-router';
 
 // Crear instancia de axios con configuración básica
 const apiClient = axios.create({
-  baseURL: 'http://localhost:4001', // Cambiar si usas un entorno en producción https://parkingcheck.onrender.com'
+  baseURL: 'https://parkingcheck.onrender.com', // Cambiar si usas un entorno en producción https://parkingcheck.onrender.com'
 });
 
 
