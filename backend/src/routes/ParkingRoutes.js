@@ -170,19 +170,20 @@ module.exports = (io, transporter) => {
     }
   });
 
- // Ruta para obtener todos los estacionamientos con detalles del usuario
+// Ruta para obtener todos los estacionamientos con detalles del usuario
   router.get('/parkings', async (req, res) => {
     try {
-      // Obtener todos los estacionamientos y "populate" el campo "occupiedBy" con "name" y "email" del usuario
-      const parkings = await Parking.find().populate('occupiedBy', 'name email'); 
+      // Obtener todos los estacionamientos y "populate" el campo "occupiedBy" con "UserName" y "UserEmail"
+      const parkings = await Parking.find()
+        .populate('occupiedBy', 'UserName UserEmail')  // Traemos solo los campos UserName y UserEmail del usuario
+        .exec(); // Ejecutar la consulta
+
       res.status(200).json(parkings);
     } catch (err) {
-      console.error(err);
+      console.error('Error al obtener los estacionamientos:', err);
       res.status(500).json({ error: 'Error al obtener los estacionamientos' });
     }
   });
-
-  
 
   // Ruta para obtener el número de espacios disponibles en tiempo real
   router.get('/available-spots', async (req, res) => {
