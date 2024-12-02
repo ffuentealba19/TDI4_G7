@@ -40,6 +40,7 @@ import PaymentPage from './pages/Pagos/pagos';
 import ReservasPage from './pages/Reserva/reservas';
 import UpdateParking from './pages/Parking/UpdateParking';
 import HomeOperario from './pages/Operario/HomeOperario/HomeOperario';
+import ParkingDetails from './pages/Operario/HomeOperario/QrOperario';
 
 
 /* Core CSS required for Ionic components to work properly */
@@ -140,6 +141,9 @@ const App: React.FC = () => (
                 </PrivateRoute>
                 <PrivateRoute exact path="/home-operario">
                   <HomeOperario />
+                </PrivateRoute>
+                <PrivateRoute exact path="/parking-details/:id">
+                  <ParkingDetails />
                 </PrivateRoute>
                 <PrivateRoute exact path="/solicitud">
                   <Solicitud />
