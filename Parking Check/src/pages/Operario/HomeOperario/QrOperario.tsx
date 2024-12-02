@@ -4,6 +4,8 @@ import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonCar
 import QRCode from "qrcode"; // Librería para generar el QR
 import { getParkings, solicitarEspacio } from "../../../services/AuthServices"; // Usamos estas funciones de AuthServices
 
+import './qroperario.css';
+
 const ParkingDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>(); // Obtener el ID del estacionamiento desde la URL
   const [parkingDetails, setParkingDetails] = useState<any>(null);

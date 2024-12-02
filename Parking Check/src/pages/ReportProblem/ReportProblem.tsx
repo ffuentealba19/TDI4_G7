@@ -14,13 +14,18 @@ import {
   IonToast,
   IonSelect,
   IonSelectOption,
-  IonAlert
+  IonAlert,
+  IonList,
+  IonCard,
+  IonCardContent,
+  IonCardHeader,
 } from '@ionic/react';
 import './ReportProblem.css';
 
 const ReportProblem: React.FC = () => {
   const [problem, setProblem] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState(''); // Campo nuevo
   const [category, setCategory] = useState('');
   const [priority, setPriority] = useState('');
   const [ticketNumber, setTicketNumber] = useState<string | null>(null);
@@ -29,6 +34,8 @@ const ReportProblem: React.FC = () => {
   const [toastMessage, setToastMessage] = useState('');
   const [geolocation, setGeolocation] = useState<string | null>(null);
   const [showAlert, setShowAlert] = useState(false);
+  const [attachedFile, setAttachedFile] = useState<string | null>(null); // Para mostrar archivo adjunto
+  const [reportHistory, setReportHistory] = useState<string[]>([]); // Historial de reportes
 
   const handleSubmit = () => {
     if (!email || !problem || !category || !priority) {
@@ -50,9 +57,14 @@ const ReportProblem: React.FC = () => {
       setShowToast(true);
       setProblem('');
       setEmail('');
+      setPhone('');
       setCategory('');
       setPriority('');
       setGeolocation(null);
+      setAttachedFile(null);
+
+      // Agregar el ticket al historial
+      setReportHistory((prevHistory) => [...prevHistory, ticket]);
 
       // Mostrar confirmación del número de ticket
       setShowAlert(true);
@@ -62,11 +74,15 @@ const ReportProblem: React.FC = () => {
   const handleGeolocation = () => {
     // Simular obtención de geolocalización
     navigator.geolocation.getCurrentPosition((position) => {
-
       const location = `Lat: ${position.coords.latitude}, Lng: ${position.coords.longitude}`;
       setGeolocation(location);
-      console.log(location)
     });
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setAttachedFile(e.target.files[0].name);
+    }
   };
 
   return (
@@ -78,7 +94,7 @@ const ReportProblem: React.FC = () => {
       </IonHeader>
 
       <IonContent>
-        {/* Campos adicionales */}
+        {/* Campos del formulario */}
         <IonItem className="custom-input">
           <IonLabel position="floating">Correo Electrónico</IonLabel>
           <IonInput
@@ -86,6 +102,15 @@ const ReportProblem: React.FC = () => {
             value={email}
             onIonChange={(e) => setEmail(e.detail.value!)}
             required
+          />
+        </IonItem>
+
+        <IonItem className="custom-input">
+          <IonLabel position="floating">Teléfono (Opcional)</IonLabel>
+          <IonInput
+            type="tel"
+            value={phone}
+            onIonChange={(e) => setPhone(e.detail.value!)}
           />
         </IonItem>
 
@@ -115,13 +140,12 @@ const ReportProblem: React.FC = () => {
           </IonSelect>
         </IonItem>
 
-        {/* Adjuntar archivo */}
         <IonItem className="custom-input ion-margin-top">
           <IonLabel>Adjuntar archivo</IonLabel>
-          <input type="file" />
+          <input type="file" onChange={handleFileChange} />
+          {attachedFile && <p>Archivo: {attachedFile}</p>}
         </IonItem>
 
-        {/* Descripción del problema */}
         <IonItem className="custom-input ion-margin-top">
           <IonLabel position="stacked">Descripción del problema</IonLabel>
           <IonTextarea
@@ -133,18 +157,16 @@ const ReportProblem: React.FC = () => {
           />
         </IonItem>
 
-        {/* Geolocalización */}
         <IonButton expand="block" onClick={handleGeolocation} className="ion-margin-top custom-button">
           Obtener mi ubicación
         </IonButton>
         {geolocation && <p className="ion-margin-top">Ubicación actual: {geolocation}</p>}
 
-        {/* Botón de envío */}
         <IonButton expand="block" onClick={handleSubmit} className="ion-margin-top custom-button">
           Enviar Reporte
         </IonButton>
 
-        {/* Loading y Toast */}
+        {/* Loading, Toast y Alerta */}
         <IonLoading isOpen={loading} message="Enviando reporte..." />
         <IonToast
           isOpen={showToast}
@@ -153,8 +175,6 @@ const ReportProblem: React.FC = () => {
           onDidDismiss={() => setShowToast(false)}
           color="success"
         />
-
-        {/* Alerta de ticket */}
         <IonAlert
           isOpen={showAlert}
           onDidDismiss={() => setShowAlert(false)}
@@ -162,6 +182,26 @@ const ReportProblem: React.FC = () => {
           message={`Tu número de ticket es: ${ticketNumber}`}
           buttons={['OK']}
         />
+
+        {/* Historial de Reportes */}
+        <IonCard className="ion-margin-top">
+          <IonCardHeader>
+            <h2>Historial de Reportes</h2>
+          </IonCardHeader>
+          <IonCardContent>
+            {reportHistory.length === 0 ? (
+              <p>No hay reportes anteriores.</p>
+            ) : (
+              <IonList>
+                {reportHistory.map((ticket, index) => (
+                  <IonItem key={index}>
+                    <IonLabel>Número de Ticket: {ticket}</IonLabel>
+                  </IonItem>
+                ))}
+              </IonList>
+            )}
+          </IonCardContent>
+        </IonCard>
       </IonContent>
     </IonPage>
   );
