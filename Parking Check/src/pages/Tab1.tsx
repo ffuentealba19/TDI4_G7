@@ -16,6 +16,8 @@ import {
   IonToast,
   IonInput,
   IonList,
+  IonButtons,
+  IonBackButton,
 } from '@ionic/react';
 import './tab1.css';
 
@@ -34,7 +36,6 @@ const Tab1: React.FC = () => {
   const handleConfirmAssignment = () => {
     if (selectedSpace && userName) {
       setShowToast(true);
-      // Aquí puedes agregar lógica para guardar la asignación en tu backend
     } else {
       alert('Por favor, completa todos los campos.');
     }
@@ -44,6 +45,10 @@ const Tab1: React.FC = () => {
     <IonPage>
       <IonHeader>
         <IonToolbar color="primary">
+          {/* Botón de rollback */}
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="/" />
+          </IonButtons>
           <IonTitle>Asignación de Espacio</IonTitle>
         </IonToolbar>
       </IonHeader>
@@ -109,6 +114,18 @@ const Tab1: React.FC = () => {
           message={`El espacio ${selectedSpace} ha sido asignado a ${userName}.`}
           duration={2000}
         />
+
+        {/* Overlay Bloqueador */}
+        <div className="overlay">
+          <div className="overlay-content">
+            <h1>Work in Progress</h1>
+            <p>Esta sección está en desarrollo. Vuelve pronto.</p>
+            {/* Botón de rollback en el overlay */}
+            <IonButton color="light" href="/home" className="rollback-button">
+              Volver
+            </IonButton>
+          </div>
+        </div>
       </IonContent>
     </IonPage>
   );
