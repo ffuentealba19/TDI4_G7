@@ -8,23 +8,22 @@ import {
   IonCard,
   IonCardHeader,
   IonCardTitle,
-  IonList,
-  IonItem,
-  IonLabel,
-  IonButton,
   IonGrid,
   IonRow,
   IonCol,
+  IonLabel,
+  IonButton,
   IonToast,
   IonSegment,
   IonSegmentButton,
   IonModal
 } from "@ionic/react";
-import { getAvailableSpots, getParkings,logoutOperator } from "../../../services/AuthServices";
+import QRCode from "qrcode"; // Importa la librería qrcode
+import { getAvailableSpots, getParkings, logoutOperator } from "../../../services/AuthServices";
 import { useHistory } from "react-router";
 
 const HomeOperario: React.FC = () => {
-const history = useHistory();
+  const history = useHistory();
   const [availableSpots, setAvailableSpots] = useState(0);
   const [parkings, setParkings] = useState<any[]>([]);
   const [parkingsBySection, setParkingsBySection] = useState<Record<string, any[]>>({});
@@ -34,6 +33,7 @@ const history = useHistory();
   const [filter, setFilter] = useState("all");
   const [showModal, setShowModal] = useState(false);
   const [selectedParking, setSelectedParking] = useState<any>(null);
+  const [qrCodeImage, setQrCodeImage] = useState<string | null>(null);
 
   // Cargar información inicial
   useEffect(() => {
@@ -59,7 +59,7 @@ const history = useHistory();
 
   const fetchParkings = async () => {
     try {
-      const data = await getParkings();
+      const data = await getParkings(); // Obtener estacionamientos con los detalles del usuario
       setParkings(data);
     } catch (error) {
       console.error("Error al obtener estacionamientos:", error);
@@ -100,16 +100,48 @@ const history = useHistory();
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedParking(null);
+    setQrCodeImage(null); // Limpiar el QR cuando se cierra el modal
   };
 
   const logout = async () => {
     try {
       await logoutOperator();
-      history.push('/login');
+      history.push("/login");
       window.location.reload();
     } catch (error: any) {
-      setToastMessage(error.message || 'Error al cerrar sesión');
+      setToastMessage(error.message || "Error al cerrar sesión");
       setShowToast(true);
+    }
+  };
+
+  const handleAssignParking = async () => {
+    if (selectedParking) {
+      try {
+        // Lógica para asignar el estacionamiento (puede ser una llamada a la API)
+        // await assignParking(selectedParking._id);
+
+        // Generar el código QR para el estacionamiento asignado
+        const qrData = JSON.stringify({
+          parkingId: selectedParking._id,
+          parkingNumber: selectedParking.number,
+        });
+
+        // Generar el QR como una URL de imagen
+        QRCode.toDataURL(qrData, { width: 200 }, (err, url) => {
+          if (err) {
+            console.error("Error al generar QR:", err);
+          } else {
+            setQrCodeImage(url); // Guardar la URL del QR en el estado
+            setToastMessage("Estacionamiento asignado correctamente");
+            setShowToast(true);
+
+            handleCloseModal(); // Cierra el modal después de asignar
+          }
+        });
+      } catch (error) {
+        setToastMessage("Error al asignar el estacionamiento");
+        setShowToast(true);
+      }
     }
   };
 
@@ -122,7 +154,7 @@ const history = useHistory();
             slot="end"
             color="danger"
             onClick={() => {
-                logout();
+              logout();
             }}
           >
             Cerrar Sesión
@@ -144,15 +176,15 @@ const history = useHistory();
           </IonGrid>
         </IonCard>
 
-        <IonCard color={'primary'}>
-            <IonSegment
+        <IonCard color={"primary"}>
+          <IonSegment
             onIonChange={(e) => setFilter(e.detail.value! as string)}
             value={filter}
-            >
+          >
             <IonSegmentButton value="all">Todos</IonSegmentButton>
             <IonSegmentButton value="available">Disponibles</IonSegmentButton>
             <IonSegmentButton value="occupied">Ocupados</IonSegmentButton>
-            </IonSegment>
+          </IonSegment>
         </IonCard>
 
         {Object.keys(parkingsBySection).map((section) => (
@@ -218,8 +250,12 @@ const history = useHistory();
                   }`}
                 </p>
                 {selectedParking.occupiedBy && (
-                  <p>{`Ocupado por: ${selectedParking.occupiedBy}`}</p>
+                  <div>
+                    <p>{`Ocupado por: ${selectedParking.occupiedBy.name}`}</p>
+                    <p>{`Correo: ${selectedParking.occupiedBy.email}`}</p>
+                  </div>
                 )}
+
                 <IonButton
                   color="danger"
                   onClick={() => {
@@ -229,16 +265,19 @@ const history = useHistory();
                 >
                   Liberar
                 </IonButton>
+
                 {!selectedParking.occupiedBy && (
-                  <IonButton
-                    color="success"
-                    onClick={() => {
-                      // Lógica para asignar espacio
-                      handleCloseModal();
-                    }}
-                  >
+                  <IonButton color="success" onClick={handleAssignParking}>
                     Asignar
                   </IonButton>
+                )}
+
+                {/* Mostrar el código QR cuando el estacionamiento se ha asignado */}
+                {qrCodeImage && (
+                  <div style={{ marginTop: '20px' }}>
+                    <h3>Escanee este código QR para confirmar la asignación:</h3>
+                    <img src={qrCodeImage} alt="QR Code" width={200} />
+                  </div>
                 )}
               </div>
             )}

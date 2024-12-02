@@ -101,7 +101,7 @@ const EditProfile: React.FC = () => {
         </IonToolbar>
       </IonHeader>
 
-      <IonContent className="ion-padding">
+      <IonContent>
         <div className="profile-header">
           <IonAvatar className="profile-avatar">
             <img src={profileImage} alt="Profile" />
