@@ -20,7 +20,7 @@ const server = http.createServer(app);
 // Configurar Socket.io
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:8100", // Cambia esto a la URL de tu frontend si es necesario
+    origin: "*", // Cambia esto a la URL de tu frontend si es necesario
     methods: ["GET", "POST"]
   }
 });
