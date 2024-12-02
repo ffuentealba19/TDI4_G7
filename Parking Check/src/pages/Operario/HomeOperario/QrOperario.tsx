@@ -1,10 +1,12 @@
+import './qroperario.css';
+
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"; // Para obtener el parámetro de la URL
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonButton, IonCard, IonCardHeader, IonCardTitle } from "@ionic/react";
 import QRCode from "qrcode"; // Librería para generar el QR
 import { getParkings, solicitarEspacio } from "../../../services/AuthServices"; // Usamos estas funciones de AuthServices
 
-import './qroperario.css';
+
 
 const ParkingDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>(); // Obtener el ID del estacionamiento desde la URL
